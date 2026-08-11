@@ -1,26 +1,39 @@
 {
   "name": "influencer-detective-web",
-  "private": true,
   "version": "0.0.0",
+  "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "format": "oxfmt ."
   },
   "dependencies": {
+    "@mantine/core": "^9.5.1",
+    "@phosphor-icons/react": "^2.1.10",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "wouter": "^3.10.0",
     "xior": "^0.8.4"
   },
   "devDependencies": {
+    "@guoyunhe/oxfmt-config": "^1.1.0",
     "@types/node": "^24.13.3",
-    "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.4",
-    "oxlint": "^1.75.0",
-    "typescript": "~6.0.2",
-    "vite": "^8.2.0"
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.0.5",
+    "oxfmt": "^0.62.0",
+    "oxlint": "^1.77.0",
+    "typescript": "~6.0.3",
+    "vite": "^8.2.1"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^11.20.0",
+      "onFail": "download"
+    }
   }
 }
