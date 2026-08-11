@@ -14,6 +14,9 @@ importers:
       react-dom:
         specifier: ^19.2.8
         version: 19.2.8(react@19.2.8)
+      xior:
+        specifier: ^0.8.4
+        version: 0.8.4
     devDependencies:
       '@types/node':
         specifier: ^24.13.3
@@ -426,6 +429,10 @@ packages:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
     engines: {node: '>=0.10.0'}
 
+  tiny-lru@11.4.7:
+    resolution: {integrity: sha512-w/Te7uMUVeH0CR8vZIjr+XiN41V+30lkDdK+NRIDCUYKKuL9VcmaUEmaPISuwGhLlrTGh5yu18lENtR9axSxYw==}
+    engines: {node: '>=12'}
+
   tinyglobby@0.2.17:
     resolution: {integrity: sha512-wXR/dYpcqKmfWpEdZjiKJOwCNFndD0DMnrW/cYjVGttEkBfVgcLFHoNrlj47mjOVic9yyNu65alsgF4NQyTa2g==}
     engines: {node: '>=12.0.0'}
@@ -480,6 +487,9 @@ packages:
         optional: true
       yaml:
         optional: true
+
+  xior@0.8.4:
+    resolution: {integrity: sha512-aY2tUpDuLSKFfcgHs3HpS1cLy9Di31zBfw7CQvmsLONh4TOIfBg/B+5n3HE+xinJbhDvaCgtG5vmEgSXgz/axQ==}
 
 snapshots:
 
@@ -728,6 +738,8 @@ snapshots:
 
   source-map-js@1.2.1: {}
 
+  tiny-lru@11.4.7: {}
+
   tinyglobby@0.2.17:
     dependencies:
       fdir: 6.5.0(picomatch@4.0.5)
@@ -747,3 +759,7 @@ snapshots:
     optionalDependencies:
       '@types/node': 24.13.3
       fsevents: 2.3.3
+
+  xior@0.8.4:
+    dependencies:
+      tiny-lru: 11.4.7
