@@ -20,19 +20,35 @@ function HomePage() {
 export default function App() {
   return (
     <Switch>
-      <Route path='/login' component={LoginPage} />
-      <Route path='/register' component={RegisterPage} />
+      <Route path='/login'>
+        <LoginPage />
+      </Route>
+      <Route path='/register'>
+        <RegisterPage />
+      </Route>
       <Route>
-        <AuthGuard>
-          <AppLayout>
-            <Switch>
-              <Route path='/' component={HomePage} />
-              <Route path='/influencers' component={InfluencerListPage} />
-              <Route path='/influencers/new' component={InfluencerEditPage} />
-              <Route path='/influencers/:id/edit' component={InfluencerEditPage} />
-            </Switch>
-          </AppLayout>
-        </AuthGuard>
+        <AppLayout>
+          <Switch>
+            <Route path='/'>
+              <HomePage />
+            </Route>
+            <Route path='/influencers'>
+              <InfluencerListPage />
+            </Route>
+            <Route>
+              <AuthGuard>
+                <Switch>
+                  <Route path='/influencers/new'>
+                    <InfluencerEditPage />
+                  </Route>
+                  <Route path='/influencers/:id/edit'>
+                    <InfluencerEditPage />
+                  </Route>
+                </Switch>
+              </AuthGuard>
+            </Route>
+          </Switch>
+        </AppLayout>
       </Route>
     </Switch>
   );
