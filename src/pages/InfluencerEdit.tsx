@@ -12,7 +12,7 @@ import {
   Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { Plus, Trash } from '@phosphor-icons/react';
+import { PlusIcon, TrashIcon } from '@phosphor-icons/react';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useParams } from 'wouter';
@@ -193,11 +193,11 @@ export default function InfluencerEditPage() {
                     disabled={form.values.accounts.length <= 1}
                     mt={2}
                   >
-                    <Trash size={16} />
+                    <TrashIcon size={16} />
                   </ActionIcon>
                 </Group>
               ))}
-              <Button variant='light' leftSection={<Plus size={16} />} onClick={addAccount}>
+              <Button variant='light' leftSection={<PlusIcon size={16} />} onClick={addAccount}>
                 {t('influencer.addAccount')}
               </Button>
             </Stack>

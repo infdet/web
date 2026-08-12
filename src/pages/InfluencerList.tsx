@@ -13,7 +13,7 @@ import {
   Text,
   Title,
 } from '@mantine/core';
-import { Pencil, Plus, Trash } from '@phosphor-icons/react';
+import { PencilIcon, PlusIcon, TrashIcon } from '@phosphor-icons/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'wouter';
@@ -64,7 +64,7 @@ export default function InfluencerListPage() {
     <Container size='lg' py='xl'>
       <Group justify='space-between' mb='lg'>
         <Title order={2}>{t('influencer.list')}</Title>
-        <Button component={Link} href='/influencers/new' leftSection={<Plus size={18} />}>
+        <Button component={Link} href='/influencers/new' leftSection={<PlusIcon size={18} />}>
           {t('influencer.new')}
         </Button>
       </Group>
@@ -101,7 +101,7 @@ export default function InfluencerListPage() {
                       color='blue'
                       size='sm'
                     >
-                      <Pencil size={14} />
+                      <PencilIcon size={14} />
                     </ActionIcon>
                     <ActionIcon
                       variant='subtle'
@@ -109,7 +109,7 @@ export default function InfluencerListPage() {
                       size='sm'
                       onClick={() => handleDelete(influencer.id)}
                     >
-                      <Trash size={14} />
+                      <TrashIcon size={14} />
                     </ActionIcon>
                   </Group>
                 </Group>
