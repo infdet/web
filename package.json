@@ -3,14 +3,25 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "imports": {
+    "#components/*": "./src/components/*.js",
+    "#contexts/*": "./src/contexts/*.js",
+    "#hooks/*": "./src/hooks/*.js",
+    "#services/*": "./src/services/*.js",
+    "#types/*": "./src/types/*.js",
+    "#utils/*": "./src/utils/*.js"
+  },
   "scripts": {
-    "dev": "vite",
     "build": "tsc -b && vite build",
+    "dev": "vite",
+    "format": "oxfmt --write .",
+    "format:check": "oxfmt --check .",
     "lint": "oxlint",
-    "preview": "vite preview",
-    "format": "oxfmt ."
+    "prepare": "husky",
+    "preview": "vite preview"
   },
   "dependencies": {
+    "@guoyunhe/react-storage": "^2.0.1",
     "@mantine/core": "^9.5.1",
     "@phosphor-icons/react": "^2.1.10",
     "react": "^19.2.8",
@@ -24,10 +35,15 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "@vitejs/plugin-react": "^6.0.5",
-    "oxfmt": "^0.62.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.3.0",
+    "oxfmt": "^0.63.0",
     "oxlint": "^1.77.0",
     "typescript": "~6.0.3",
     "vite": "^8.2.1"
+  },
+  "lint-staged": {
+    "*": "oxfmt --write"
   },
   "devEngines": {
     "packageManager": {
