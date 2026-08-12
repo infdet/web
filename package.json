@@ -24,6 +24,7 @@
     "@guoyunhe/react-storage": "^2.0.2",
     "@mantine/core": "^9.5.1",
     "@mantine/form": "^9.5.1",
+    "@mantine/hooks": "^9.5.1",
     "@phosphor-icons/react": "^2.1.10",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",

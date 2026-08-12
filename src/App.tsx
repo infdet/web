@@ -3,6 +3,7 @@ import { Route, Switch } from 'wouter';
 import AppLayout from '#components/AppLayout';
 import AuthGuard from '#components/AuthGuard';
 
+import InfluencerDetailPage from './pages/InfluencerDetail';
 import InfluencerEditPage from './pages/InfluencerEdit';
 import InfluencerListPage from './pages/InfluencerList';
 import LoginPage from './pages/Login';
@@ -35,17 +36,18 @@ export default function App() {
             <Route path='/influencers'>
               <InfluencerListPage />
             </Route>
-            <Route>
+            <Route path='/influencers/new'>
               <AuthGuard>
-                <Switch>
-                  <Route path='/influencers/new'>
-                    <InfluencerEditPage />
-                  </Route>
-                  <Route path='/influencers/:id/edit'>
-                    <InfluencerEditPage />
-                  </Route>
-                </Switch>
+                <InfluencerEditPage />
               </AuthGuard>
+            </Route>
+            <Route path='/influencers/:id/edit'>
+              <AuthGuard>
+                <InfluencerEditPage />
+              </AuthGuard>
+            </Route>
+            <Route path='/influencers/:id'>
+              <InfluencerDetailPage />
             </Route>
           </Switch>
         </AppLayout>
