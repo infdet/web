@@ -22,13 +22,13 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {
-  ArrowLeft,
-  Camera,
-  Image as ImageIcon,
-  Link as LinkIcon,
-  Pencil,
-  Plus,
-  Trash,
+  ArrowLeftIcon,
+  CameraIcon,
+  ImageIcon,
+  LinkIcon,
+  PencilIcon,
+  PlusIcon,
+  TrashIcon,
 } from '@phosphor-icons/react';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -225,7 +225,7 @@ export default function InfluencerDetailPage() {
     <Container size='lg' py='xl'>
       <Group mb='md'>
         <ActionIcon component={Link} href='/influencers' variant='subtle'>
-          <ArrowLeft size={20} />
+          <ArrowLeftIcon size={20} />
         </ActionIcon>
         <Title order={2}>{displayName(influencer.name)}</Title>
         <Badge variant='light'>@{influencer.slug}</Badge>
@@ -236,7 +236,7 @@ export default function InfluencerDetailPage() {
             variant='subtle'
             color='blue'
           >
-            <Pencil size={18} />
+            <PencilIcon size={18} />
           </ActionIcon>
         )}
       </Group>
@@ -274,7 +274,7 @@ export default function InfluencerDetailPage() {
                   radius='md'
                   style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                 >
-                  <Camera size={32} color='var(--mantine-color-gray-5)' />
+                  <CameraIcon size={32} color='var(--mantine-color-gray-5)' />
                 </Paper>
               )}
               {authUser && (
@@ -360,10 +360,10 @@ export default function InfluencerDetailPage() {
 
         <Tabs.Panel value='posts' pt='md'>
           <Group justify='flex-end' mb='sm'>
-            <Button variant='light' leftSection={<Plus size={16} />} onClick={handleOpenAttach}>
+            <Button variant='light' leftSection={<PlusIcon size={16} />} onClick={handleOpenAttach}>
               {t('influencer.attachPosts')}
             </Button>
-            <Button variant='light' leftSection={<Plus size={16} />} onClick={openCreate}>
+            <Button variant='light' leftSection={<PlusIcon size={16} />} onClick={openCreate}>
               {t('influencer.createPost')}
             </Button>
           </Group>
@@ -409,7 +409,7 @@ export default function InfluencerDetailPage() {
                           size='sm'
                           onClick={() => handleDetach(post.id)}
                         >
-                          <Trash size={14} />
+                          <TrashIcon size={14} />
                         </ActionIcon>
                         <ActionIcon
                           variant='subtle'
@@ -417,7 +417,7 @@ export default function InfluencerDetailPage() {
                           size='sm'
                           onClick={() => handleDeletePost(post.id)}
                         >
-                          <Trash size={14} />
+                          <TrashIcon size={14} />
                         </ActionIcon>
                       </Group>
                     </Table.Td>
