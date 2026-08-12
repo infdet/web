@@ -1,5 +1,6 @@
 import { Route, Switch } from 'wouter';
 
+import AppLayout from '#components/AppLayout';
 import AuthGuard from '#components/RequireAuth';
 
 import LoginPage from './pages/Login';
@@ -21,9 +22,11 @@ export default function App() {
       <Route path='/register' component={RegisterPage} />
       <Route>
         <AuthGuard>
-          <Switch>
-            <Route path='/' component={HomePage} />
-          </Switch>
+          <AppLayout>
+            <Switch>
+              <Route path='/' component={HomePage} />
+            </Switch>
+          </AppLayout>
         </AuthGuard>
       </Route>
     </Switch>
