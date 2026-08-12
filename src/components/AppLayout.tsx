@@ -26,9 +26,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     <AppShell header={{ height: 56 }}>
       <AppShell.Header>
         <Group h='100%' justify='space-between' px='md'>
-          <Anchor component={Link} href='/' underline='never' fw={700}>
-            Influencer Detective
-          </Anchor>
+          <Group gap='md'>
+            <Anchor component={Link} href='/' underline='never' fw={700}>
+              Influencer Detective
+            </Anchor>
+            <Anchor component={Link} href='/influencers' underline='never' c='dimmed'>
+              Influencers
+            </Anchor>
+          </Group>
 
           <Group gap='sm'>
             <Button
