@@ -4,9 +4,8 @@ import { SignOut, User } from '@phosphor-icons/react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'wouter';
 
-import useAuthToken from '#hooks/useAuthToken';
 import useAuthUser from '#hooks/useAuthUser';
-import { logout } from '#services/auth';
+import { logout, setAuthToken } from '#services/auth';
 
 import classes from './AppLayout.module.css';
 
@@ -18,7 +17,6 @@ const LANGUAGE_OPTIONS = [
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { t, i18n } = useTranslation();
   const [authUser, setAuthUser] = useAuthUser();
-  const [, setAuthToken] = useAuthToken();
   const [, navigate] = useLocation();
   const [opened, { toggle, close }] = useDisclosure();
 
@@ -28,7 +26,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     } catch {
       // ignore logout API errors
     }
-    setAuthToken(null);
+    setAuthToken('');
     setAuthUser(null);
     navigate('/login');
   };

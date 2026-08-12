@@ -13,14 +13,12 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'wouter';
 
-import useAuthToken from '#hooks/useAuthToken';
 import useAuthUser from '#hooks/useAuthUser';
-import { register } from '#services/auth';
+import { register, setAuthToken } from '#services/auth';
 
 export default function RegisterPage() {
   const { t } = useTranslation();
   const [, navigate] = useLocation();
-  const [, setAuthToken] = useAuthToken();
   const [, setAuthUser] = useAuthUser();
 
   const [name, setName] = useState('');

@@ -3,6 +3,7 @@ import { Route, Switch } from 'wouter';
 
 import AppLayout from '#components/AppLayout';
 import AuthGuard from '#components/AuthGuard';
+import AuthValidate from '#components/AuthValidate';
 
 import InfluencerDetailPage from './pages/InfluencerDetail';
 import InfluencerEditPage from './pages/InfluencerEdit';
@@ -22,38 +23,41 @@ function HomePage() {
 
 export default function App() {
   return (
-    <Switch>
-      <Route path='/login'>
-        <LoginPage />
-      </Route>
-      <Route path='/register'>
-        <RegisterPage />
-      </Route>
-      <Route>
-        <AppLayout>
-          <Switch>
-            <Route path='/'>
-              <HomePage />
-            </Route>
-            <Route path='/influencers'>
-              <InfluencerListPage />
-            </Route>
-            <Route path='/influencers/new'>
-              <AuthGuard>
-                <InfluencerEditPage />
-              </AuthGuard>
-            </Route>
-            <Route path='/influencers/:id/edit'>
-              <AuthGuard>
-                <InfluencerEditPage />
-              </AuthGuard>
-            </Route>
-            <Route path='/influencers/:id'>
-              <InfluencerDetailPage />
-            </Route>
-          </Switch>
-        </AppLayout>
-      </Route>
-    </Switch>
+    <div>
+      <Switch>
+        <Route path='/login'>
+          <LoginPage />
+        </Route>
+        <Route path='/register'>
+          <RegisterPage />
+        </Route>
+        <Route>
+          <AppLayout>
+            <Switch>
+              <Route path='/'>
+                <HomePage />
+              </Route>
+              <Route path='/influencers'>
+                <InfluencerListPage />
+              </Route>
+              <Route path='/influencers/new'>
+                <AuthGuard>
+                  <InfluencerEditPage />
+                </AuthGuard>
+              </Route>
+              <Route path='/influencers/:id/edit'>
+                <AuthGuard>
+                  <InfluencerEditPage />
+                </AuthGuard>
+              </Route>
+              <Route path='/influencers/:id'>
+                <InfluencerDetailPage />
+              </Route>
+            </Switch>
+          </AppLayout>
+        </Route>
+      </Switch>
+      <AuthValidate />
+    </div>
   );
 }

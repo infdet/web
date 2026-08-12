@@ -3,16 +3,6 @@ import xior from 'xior';
 import type User from '#types/User';
 import type { AuthPayload, AuthResponse } from '#types/User';
 
-xior.defaults.baseURL = import.meta.env.VITE_API_URL;
-
-xior.interceptors.request.use((config) => {
-  const token = localStorage.getItem('authToken');
-  if (token) {
-    config.headers.Authorization = `Bearer ${JSON.parse(token)}`;
-  }
-  return config;
-});
-
 export interface RegisterParams {
   name: string;
   email: string;
@@ -42,4 +32,24 @@ export async function logout(): Promise<void> {
 export async function getProfile(): Promise<User> {
   const res = await xior.get<{ data: User }>('/account/profile');
   return res.data.data;
+}
+
+export function getAuthToken(): string | null {
+  return localStorage.getItem('authToken');
+}
+
+export function initAuthToken(): void {
+  const token = getAuthToken();
+  if (token) {
+    setAuthHeader(token);
+  }
+}
+
+export function setAuthToken(token: string): void {
+  setAuthHeader(token);
+  localStorage.setItem('authToken', token);
+}
+
+export function setAuthHeader(token: string): void {
+  xior.defaults.headers['Authorization'] = `Bearer ${token}`;
 }
