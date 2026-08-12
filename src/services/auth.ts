@@ -8,7 +8,7 @@ xior.defaults.baseURL = import.meta.env.VITE_API_URL;
 xior.interceptors.request.use((config) => {
   const token = localStorage.getItem('authToken');
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+    config.headers.Authorization = `Bearer ${JSON.parse(token)}`;
   }
   return config;
 });

@@ -46,17 +46,13 @@ export async function deleteInfluencer(id: number): Promise<void> {
 export async function uploadAvatar(id: number, file: File): Promise<Influencer> {
   const formData = new FormData();
   formData.append('avatar', file);
-  const res = await xior.post<InfluencerDetailResponse>(`/influencers/${id}/avatar`, formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  });
+  const res = await xior.post<InfluencerDetailResponse>(`/influencers/${id}/avatar`, formData);
   return res.data.data;
 }
 
 export async function uploadCover(id: number, file: File): Promise<Influencer> {
   const formData = new FormData();
   formData.append('cover', file);
-  const res = await xior.post<InfluencerDetailResponse>(`/influencers/${id}/cover`, formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  });
+  const res = await xior.post<InfluencerDetailResponse>(`/influencers/${id}/cover`, formData);
   return res.data.data;
 }

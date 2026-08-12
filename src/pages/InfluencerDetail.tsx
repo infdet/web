@@ -3,13 +3,16 @@ import {
   Anchor,
   Badge,
   Button,
-  Card,
   Container,
+  FileInput,
   Group,
+  Image,
   Loader,
   Modal,
   MultiSelect,
+  Paper,
   Select,
+  SimpleGrid,
   Stack,
   Table,
   Tabs,
@@ -18,11 +21,20 @@ import {
   Title,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { ArrowLeft, Link as LinkIcon, Plus, Trash } from '@phosphor-icons/react';
+import {
+  ArrowLeft,
+  Camera,
+  Image as ImageIcon,
+  Link as LinkIcon,
+  Pencil,
+  Plus,
+  Trash,
+} from '@phosphor-icons/react';
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useParams } from 'wouter';
 
-import { getInfluencer } from '#services/influencer';
+import useAuthUser from '#hooks/useAuthUser';
+import { getInfluencer, uploadAvatar, uploadCover } from '#services/influencer';
 import {
   attachPosts,
   createPost,
@@ -56,9 +68,14 @@ export default function InfluencerDetailPage() {
   const params = useParams();
   const id = Number(params.id);
 
+  const [authUser] = useAuthUser();
   const [influencer, setInfluencer] = useState<Influencer | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Upload state
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [uploadingCover, setUploadingCover] = useState(false);
 
   // Attach post modal
   const [attachOpened, { open: openAttach, close: closeAttach }] = useDisclosure(false);
@@ -158,6 +175,32 @@ export default function InfluencerDetailPage() {
     }
   };
 
+  const handleUploadAvatar = async (file: File | null) => {
+    if (!file) return;
+    setUploadingAvatar(true);
+    try {
+      const updated = await uploadAvatar(id, file);
+      setInfluencer(updated);
+    } catch {
+      // ignore
+    } finally {
+      setUploadingAvatar(false);
+    }
+  };
+
+  const handleUploadCover = async (file: File | null) => {
+    if (!file) return;
+    setUploadingCover(true);
+    try {
+      const updated = await uploadCover(id, file);
+      setInfluencer(updated);
+    } catch {
+      // ignore
+    } finally {
+      setUploadingCover(false);
+    }
+  };
+
   if (loading) {
     return (
       <Container size='lg' py='xl'>
@@ -184,12 +227,132 @@ export default function InfluencerDetailPage() {
         </ActionIcon>
         <Title order={2}>{displayName(influencer.name)}</Title>
         <Badge variant='light'>@{influencer.slug}</Badge>
+        {authUser && (
+          <ActionIcon
+            component={Link}
+            href={`/influencers/${influencer.id}/edit`}
+            variant='subtle'
+            color='blue'
+          >
+            <Pencil size={18} />
+          </ActionIcon>
+        )}
       </Group>
 
-      <Tabs defaultValue='posts'>
+      <Tabs defaultValue='info'>
         <Tabs.List>
+          <Tabs.Tab value='info' leftSection={<ImageIcon size={16} />}>
+            Info
+          </Tabs.Tab>
           <Tabs.Tab value='posts'>Posts ({posts.length})</Tabs.Tab>
         </Tabs.List>
+
+        <Tabs.Panel value='info' pt='md'>
+          <SimpleGrid cols={{ base: 1, sm: 2 }} spacing='lg'>
+            <Paper withBorder p='md' radius='md'>
+              <Text fw={600} mb='sm'>
+                Avatar
+              </Text>
+              {influencer.avatar ? (
+                <Image
+                  src={influencer.avatar}
+                  alt='Avatar'
+                  width={120}
+                  height={120}
+                  radius='md'
+                  fit='cover'
+                />
+              ) : (
+                <Paper
+                  bg='gray.1'
+                  w={120}
+                  h={120}
+                  radius='md'
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                >
+                  <Camera size={32} color='var(--mantine-color-gray-5)' />
+                </Paper>
+              )}
+              {authUser && (
+                <FileInput
+                  mt='sm'
+                  size='sm'
+                  placeholder='Upload avatar'
+                  accept='image/*'
+                  leftSection={<ImageIcon size={14} />}
+                  value={null}
+                  onChange={handleUploadAvatar}
+                  disabled={uploadingAvatar}
+                  clearable={false}
+                />
+              )}
+            </Paper>
+
+            <Paper withBorder p='md' radius='md'>
+              <Text fw={600} mb='sm'>
+                Cover
+              </Text>
+              {influencer.cover ? (
+                <Image
+                  src={influencer.cover}
+                  alt='Cover'
+                  width={180}
+                  height={320}
+                  radius='md'
+                  fit='cover'
+                />
+              ) : (
+                <Paper
+                  bg='gray.1'
+                  w={180}
+                  h={320}
+                  radius='md'
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                >
+                  <ImageIcon size={32} color='var(--mantine-color-gray-5)' />
+                </Paper>
+              )}
+              {authUser && (
+                <FileInput
+                  mt='sm'
+                  size='sm'
+                  placeholder='Upload cover'
+                  accept='image/*'
+                  leftSection={<ImageIcon size={14} />}
+                  value={null}
+                  onChange={handleUploadCover}
+                  disabled={uploadingCover}
+                  clearable={false}
+                />
+              )}
+            </Paper>
+          </SimpleGrid>
+
+          <SimpleGrid cols={{ base: 1, sm: 2 }} spacing='lg' mt='lg'>
+            <Stack gap='xs'>
+              <Text fw={600}>Accounts</Text>
+              {influencer.accounts?.map((a) => (
+                <Badge key={a.id} variant='light' size='lg'>
+                  {a.platform}: {a.username}
+                </Badge>
+              ))}
+              {(!influencer.accounts || influencer.accounts.length === 0) && (
+                <Text c='dimmed' size='sm'>
+                  No accounts linked.
+                </Text>
+              )}
+            </Stack>
+
+            <Stack gap='xs'>
+              <Text fw={600}>Name</Text>
+              {Object.entries(influencer.name).map(([locale, name]) => (
+                <Text key={locale} size='sm' c='dimmed'>
+                  {locale}: {name}
+                </Text>
+              ))}
+            </Stack>
+          </SimpleGrid>
+        </Tabs.Panel>
 
         <Tabs.Panel value='posts' pt='md'>
           <Group justify='flex-end' mb='sm'>
