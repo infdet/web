@@ -1,5 +1,5 @@
 import { Button, Center } from '@mantine/core';
-import { Link, Redirect } from 'wouter';
+import { Link } from 'wouter';
 
 import useAuthUser from '#hooks/useAuthUser';
 

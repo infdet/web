@@ -1,6 +1,7 @@
-import { Anchor, AppShell, Burger, Button, Group, UnstyledButton } from '@mantine/core';
+import { Anchor, AppShell, Burger, Button, Group, Select, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { SignOut, User } from '@phosphor-icons/react';
+import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'wouter';
 
 import useAuthToken from '#hooks/useAuthToken';
@@ -9,7 +10,13 @@ import { logout } from '#services/auth';
 
 import classes from './AppLayout.module.css';
 
+const LANGUAGE_OPTIONS = [
+  { value: 'en', label: 'English' },
+  { value: 'zh', label: '中文' },
+];
+
 export default function AppLayout({ children }: { children: React.ReactNode }) {
+  const { t, i18n } = useTranslation();
   const [authUser, setAuthUser] = useAuthUser();
   const [, setAuthToken] = useAuthToken();
   const [, navigate] = useLocation();
@@ -35,16 +42,16 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           className={classes.control}
           onClick={close}
         >
-          Profile
+          {t('nav.profile')}
         </UnstyledButton>
       ) : (
         <UnstyledButton component={Link} href='/login' className={classes.control} onClick={close}>
-          Login
+          {t('nav.login')}
         </UnstyledButton>
       )}
       {authUser && (
         <UnstyledButton className={classes.control} c='red' onClick={handleLogout}>
-          Logout
+          {t('nav.logout')}
         </UnstyledButton>
       )}
     </>
@@ -65,7 +72,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <Group justify='space-between' style={{ flex: 1 }}>
             <Group gap='md'>
               <Anchor component={Link} href='/' underline='never' fw={700}>
-                Influencer Detective
+                {t('app.title')}
               </Anchor>
               <Group gap={0} visibleFrom='sm'>
                 <Anchor
@@ -74,12 +81,19 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                   className={classes.control}
                   underline='never'
                 >
-                  Influencers
+                  {t('nav.influencers')}
                 </Anchor>
               </Group>
             </Group>
 
             <Group gap='sm' visibleFrom='sm'>
+              <Select
+                data={LANGUAGE_OPTIONS}
+                value={i18n.language.split('-')[0]}
+                onChange={(v) => v && i18n.changeLanguage(v)}
+                size='xs'
+                w={100}
+              />
               {authUser ? (
                 <Button
                   component={Link}
@@ -91,7 +105,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 </Button>
               ) : (
                 <Button component={Link} href='/login' variant='subtle'>
-                  Login
+                  {t('nav.login')}
                 </Button>
               )}
               {authUser && (
@@ -101,7 +115,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                   leftSection={<SignOut size={18} />}
                   onClick={handleLogout}
                 >
-                  Logout
+                  {t('nav.logout')}
                 </Button>
               )}
             </Group>
@@ -116,9 +130,17 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           className={classes.control}
           onClick={close}
         >
-          Influencers
+          {t('nav.influencers')}
         </UnstyledButton>
         {navLinks}
+        <Select
+          data={LANGUAGE_OPTIONS}
+          value={i18n.language.split('-')[0]}
+          onChange={(v) => v && i18n.changeLanguage(v)}
+          size='xs'
+          mt='md'
+          mx='xs'
+        />
       </AppShell.Navbar>
 
       <AppShell.Main>{children}</AppShell.Main>

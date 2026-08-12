@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Route, Switch } from 'wouter';
 
 import AppLayout from '#components/AppLayout';
@@ -10,10 +11,11 @@ import LoginPage from './pages/Login';
 import RegisterPage from './pages/Register';
 
 function HomePage() {
+  const { t } = useTranslation();
   return (
     <div style={{ padding: 40 }}>
-      <h1>Influencer Detective</h1>
-      <p>Welcome!</p>
+      <h1>{t('app.title')}</h1>
+      <p>{t('app.welcome')}</p>
     </div>
   );
 }

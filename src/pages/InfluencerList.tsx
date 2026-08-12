@@ -15,6 +15,7 @@ import {
 } from '@mantine/core';
 import { Pencil, Plus, Trash } from '@phosphor-icons/react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'wouter';
 
 import { deleteInfluencer, getInfluencers } from '#services/influencer';
@@ -22,6 +23,7 @@ import type Influencer from '#types/Influencer';
 import type { InfluencerListMeta } from '#types/Influencer';
 
 export default function InfluencerListPage() {
+  const { t } = useTranslation();
   const [influencers, setInfluencers] = useState<Influencer[]>([]);
   const [meta, setMeta] = useState<InfluencerListMeta | null>(null);
   const [page, setPage] = useState(1);
@@ -45,7 +47,7 @@ export default function InfluencerListPage() {
   }, [page]);
 
   const handleDelete = async (id: number) => {
-    if (!window.confirm('Are you sure you want to delete this influencer?')) return;
+    if (!window.confirm(t('influencer.deleteConfirm'))) return;
     try {
       await deleteInfluencer(id);
       setInfluencers((prev) => prev.filter((i) => i.id !== id));
@@ -55,15 +57,15 @@ export default function InfluencerListPage() {
   };
 
   const displayName = (name: Record<string, string>) => {
-    return name.en || name.zh || Object.values(name)[0] || 'Unknown';
+    return name.en || name.zh || Object.values(name)[0] || t('influencer.unknown');
   };
 
   return (
     <Container size='lg' py='xl'>
       <Group justify='space-between' mb='lg'>
-        <Title order={2}>Influencers</Title>
+        <Title order={2}>{t('influencer.list')}</Title>
         <Button component={Link} href='/influencers/new' leftSection={<Plus size={18} />}>
-          New Influencer
+          {t('influencer.new')}
         </Button>
       </Group>
 
@@ -75,7 +77,7 @@ export default function InfluencerListPage() {
         </SimpleGrid>
       ) : influencers.length === 0 ? (
         <Text c='dimmed' ta='center' py='xl'>
-          No influencers found.
+          {t('influencer.noInfluencers')}
         </Text>
       ) : (
         <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }}>

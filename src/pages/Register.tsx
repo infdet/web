@@ -10,6 +10,7 @@ import {
   Title,
 } from '@mantine/core';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLocation } from 'wouter';
 
 import useAuthToken from '#hooks/useAuthToken';
@@ -17,6 +18,7 @@ import useAuthUser from '#hooks/useAuthUser';
 import { register } from '#services/auth';
 
 export default function RegisterPage() {
+  const { t } = useTranslation();
   const [, navigate] = useLocation();
   const [, setAuthToken] = useAuthToken();
   const [, setAuthUser] = useAuthUser();
@@ -33,7 +35,7 @@ export default function RegisterPage() {
     setError('');
 
     if (password !== passwordConfirmation) {
-      setError('Passwords do not match');
+      setError(t('auth.passwordMismatch'));
       return;
     }
 
@@ -49,7 +51,7 @@ export default function RegisterPage() {
       if (Array.isArray(messages)) {
         setError(messages.map((m: { message: string }) => m.message).join(', '));
       } else {
-        setError(err?.response?.data?.message || err?.message || 'Registration failed');
+        setError(err?.response?.data?.message || err?.message || t('auth.registrationFailed'));
       }
     } finally {
       setLoading(false);
@@ -58,11 +60,11 @@ export default function RegisterPage() {
 
   return (
     <Container size={420} my={80}>
-      <Title ta='center'>Create account</Title>
+      <Title ta='center'>{t('auth.createAccount')}</Title>
       <Text c='dimmed' size='sm' ta='center' mt={5}>
-        Already have an account?{' '}
+        {t('auth.haveAccount')}{' '}
         <Anchor size='sm' component='button' onClick={() => navigate('/login')}>
-          Sign in
+          {t('auth.signIn')}
         </Anchor>
       </Text>
 
@@ -70,29 +72,29 @@ export default function RegisterPage() {
         <form onSubmit={handleSubmit}>
           <Stack>
             <TextInput
-              label='Name'
-              placeholder='Your name'
+              label={t('auth.name')}
+              placeholder={t('auth.namePlaceholder')}
               required
               value={name}
               onChange={(e) => setName(e.currentTarget.value)}
             />
             <TextInput
-              label='Email'
-              placeholder='hello@example.com'
+              label={t('auth.email')}
+              placeholder={t('auth.emailPlaceholder')}
               required
               value={email}
               onChange={(e) => setEmail(e.currentTarget.value)}
             />
             <PasswordInput
-              label='Password'
-              placeholder='At least 8 characters'
+              label={t('auth.password')}
+              placeholder={t('auth.passwordMinLength')}
               required
               value={password}
               onChange={(e) => setPassword(e.currentTarget.value)}
             />
             <PasswordInput
-              label='Confirm Password'
-              placeholder='Repeat your password'
+              label={t('auth.confirmPassword')}
+              placeholder={t('auth.confirmPasswordPlaceholder')}
               required
               value={passwordConfirmation}
               onChange={(e) => setPasswordConfirmation(e.currentTarget.value)}
@@ -103,7 +105,7 @@ export default function RegisterPage() {
               </Text>
             )}
             <Button type='submit' fullWidth loading={loading}>
-              Create account
+              {t('auth.createAccount')}
             </Button>
           </Stack>
         </form>

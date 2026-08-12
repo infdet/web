@@ -5,7 +5,6 @@ import {
   Fieldset,
   Group,
   Loader,
-  Paper,
   Select,
   Stack,
   Text,
@@ -15,10 +14,10 @@ import {
 import { useForm } from '@mantine/form';
 import { Plus, Trash } from '@phosphor-icons/react';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLocation, useParams } from 'wouter';
 
 import { createInfluencer, getInfluencer, updateInfluencer } from '#services/influencer';
-import type Influencer from '#types/Influencer';
 
 interface AccountForm {
   platform: string;
@@ -46,6 +45,7 @@ const PLATFORM_OPTIONS = [
 ];
 
 export default function InfluencerEditPage() {
+  const { t } = useTranslation();
   const params = useParams();
   const [, navigate] = useLocation();
   const isNew = !params.id || params.id === 'new';
@@ -62,11 +62,11 @@ export default function InfluencerEditPage() {
       accounts: [{ platform: '', username: '' }],
     },
     validate: {
-      slug: (v) => (!v.trim() ? 'Slug is required' : null),
-      nameEn: (v) => (!v.trim() ? 'English name is required' : null),
+      slug: (v) => (!v.trim() ? t('influencer.slugRequired') : null),
+      nameEn: (v) => (!v.trim() ? t('influencer.nameEnRequired') : null),
       accounts: {
-        platform: (v) => (!v ? 'Platform is required' : null),
-        username: (v) => (!v ? 'Username is required' : null),
+        platform: (v) => (!v ? t('influencer.platformRequired') : null),
+        username: (v) => (!v ? t('influencer.usernameRequired') : null),
       },
     },
   });
@@ -86,7 +86,7 @@ export default function InfluencerEditPage() {
             : [{ platform: '', username: '' }],
       });
     } catch {
-      setError('Failed to load influencer');
+      setError(t('influencer.loadFailed'));
     } finally {
       setLoading(false);
     }
@@ -120,7 +120,7 @@ export default function InfluencerEditPage() {
       }
       navigate('/influencers');
     } catch (err: any) {
-      setError(err?.response?.data?.message || err?.message || 'Save failed');
+      setError(err?.response?.data?.message || err?.message || t('influencer.saveFailed'));
     } finally {
       setSaving(false);
     }
@@ -147,34 +147,42 @@ export default function InfluencerEditPage() {
   return (
     <Container size='sm' py='xl'>
       <Title order={2} mb='lg'>
-        {isNew ? 'New Influencer' : 'Edit Influencer'}
+        {isNew ? t('influencer.new') : t('influencer.edit')}
       </Title>
 
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack gap='md'>
-          <TextInput label='Slug' placeholder='unique-identifier' {...form.getInputProps('slug')} />
+          <TextInput
+            label={t('influencer.slug')}
+            placeholder={t('influencer.slugPlaceholder')}
+            {...form.getInputProps('slug')}
+          />
 
           <TextInput
-            label='Name (English)'
-            placeholder='John Doe'
+            label={t('influencer.nameEn')}
+            placeholder={t('influencer.nameEnPlaceholder')}
             {...form.getInputProps('nameEn')}
           />
 
-          <TextInput label='Name (Chinese)' placeholder='张三' {...form.getInputProps('nameZh')} />
+          <TextInput
+            label={t('influencer.nameZh')}
+            placeholder={t('influencer.nameZhPlaceholder')}
+            {...form.getInputProps('nameZh')}
+          />
 
-          <Fieldset legend='Social Accounts'>
+          <Fieldset legend={t('influencer.socialAccounts')}>
             <Stack gap='sm'>
               {form.values.accounts.map((_, index) => (
                 <Group key={form.key(`accounts.${index}`)} gap='sm' align='flex-start'>
                   <Select
                     data={PLATFORM_OPTIONS}
-                    placeholder='Platform'
+                    placeholder={t('influencer.platformPlaceholder')}
                     searchable
                     style={{ flex: 1 }}
                     {...form.getInputProps(`accounts.${index}.platform`)}
                   />
                   <TextInput
-                    placeholder='Username'
+                    placeholder={t('influencer.usernamePlaceholder')}
                     style={{ flex: 1 }}
                     {...form.getInputProps(`accounts.${index}.username`)}
                   />
@@ -190,7 +198,7 @@ export default function InfluencerEditPage() {
                 </Group>
               ))}
               <Button variant='light' leftSection={<Plus size={16} />} onClick={addAccount}>
-                Add Account
+                {t('influencer.addAccount')}
               </Button>
             </Stack>
           </Fieldset>
@@ -203,10 +211,10 @@ export default function InfluencerEditPage() {
 
           <Group justify='flex-end'>
             <Button variant='default' onClick={() => navigate('/influencers')}>
-              Cancel
+              {t('influencer.cancel')}
             </Button>
             <Button type='submit' loading={saving}>
-              {isNew ? 'Create' : 'Save'}
+              {isNew ? t('influencer.create') : t('influencer.save')}
             </Button>
           </Group>
         </Stack>

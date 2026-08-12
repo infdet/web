@@ -31,6 +31,7 @@ import {
   Trash,
 } from '@phosphor-icons/react';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'wouter';
 
 import useAuthUser from '#hooks/useAuthUser';
@@ -65,6 +66,7 @@ const TYPE_OPTIONS = [
 ];
 
 export default function InfluencerDetailPage() {
+  const { t } = useTranslation();
   const params = useParams();
   const id = Number(params.id);
 
@@ -94,7 +96,7 @@ export default function InfluencerDetailPage() {
   const [creating, setCreating] = useState(false);
 
   const displayName = (name: Record<string, string>) =>
-    name.en || name.zh || Object.values(name)[0] || 'Unknown';
+    name.en || name.zh || Object.values(name)[0] || t('influencer.unknown');
 
   const fetchDetail = useCallback(async () => {
     if (!id) return;
@@ -156,7 +158,7 @@ export default function InfluencerDetailPage() {
   };
 
   const handleDetach = async (postId: number) => {
-    if (!window.confirm('Remove this post from influencer?')) return;
+    if (!window.confirm(t('influencer.detachConfirm'))) return;
     try {
       await detachPost(id, postId);
       setPosts((prev) => prev.filter((p) => p.id !== postId));
@@ -166,7 +168,7 @@ export default function InfluencerDetailPage() {
   };
 
   const handleDeletePost = async (postId: number) => {
-    if (!window.confirm('Permanently delete this post?')) return;
+    if (!window.confirm(t('influencer.deletePostConfirm'))) return;
     try {
       await deletePost(postId);
       setPosts((prev) => prev.filter((p) => p.id !== postId));
@@ -214,7 +216,7 @@ export default function InfluencerDetailPage() {
   if (!influencer) {
     return (
       <Container size='lg' py='xl'>
-        <Text c='dimmed'>Influencer not found.</Text>
+        <Text c='dimmed'>{t('influencer.notFound')}</Text>
       </Container>
     );
   }
@@ -242,16 +244,18 @@ export default function InfluencerDetailPage() {
       <Tabs defaultValue='info'>
         <Tabs.List>
           <Tabs.Tab value='info' leftSection={<ImageIcon size={16} />}>
-            Info
+            {t('influencer.info')}
           </Tabs.Tab>
-          <Tabs.Tab value='posts'>Posts ({posts.length})</Tabs.Tab>
+          <Tabs.Tab value='posts'>
+            {t('influencer.posts')} ({posts.length})
+          </Tabs.Tab>
         </Tabs.List>
 
         <Tabs.Panel value='info' pt='md'>
           <SimpleGrid cols={{ base: 1, sm: 2 }} spacing='lg'>
             <Paper withBorder p='md' radius='md'>
               <Text fw={600} mb='sm'>
-                Avatar
+                {t('influencer.avatar')}
               </Text>
               {influencer.avatar ? (
                 <Image
@@ -277,7 +281,7 @@ export default function InfluencerDetailPage() {
                 <FileInput
                   mt='sm'
                   size='sm'
-                  placeholder='Upload avatar'
+                  placeholder={t('influencer.uploadAvatar')}
                   accept='image/*'
                   leftSection={<ImageIcon size={14} />}
                   value={null}
@@ -290,7 +294,7 @@ export default function InfluencerDetailPage() {
 
             <Paper withBorder p='md' radius='md'>
               <Text fw={600} mb='sm'>
-                Cover
+                {t('influencer.cover')}
               </Text>
               {influencer.cover ? (
                 <Image
@@ -316,7 +320,7 @@ export default function InfluencerDetailPage() {
                 <FileInput
                   mt='sm'
                   size='sm'
-                  placeholder='Upload cover'
+                  placeholder={t('influencer.uploadCover')}
                   accept='image/*'
                   leftSection={<ImageIcon size={14} />}
                   value={null}
@@ -330,7 +334,7 @@ export default function InfluencerDetailPage() {
 
           <SimpleGrid cols={{ base: 1, sm: 2 }} spacing='lg' mt='lg'>
             <Stack gap='xs'>
-              <Text fw={600}>Accounts</Text>
+              <Text fw={600}>{t('influencer.accounts')}</Text>
               {influencer.accounts?.map((a) => (
                 <Badge key={a.id} variant='light' size='lg'>
                   {a.platform}: {a.username}
@@ -338,13 +342,13 @@ export default function InfluencerDetailPage() {
               ))}
               {(!influencer.accounts || influencer.accounts.length === 0) && (
                 <Text c='dimmed' size='sm'>
-                  No accounts linked.
+                  {t('influencer.noAccounts')}
                 </Text>
               )}
             </Stack>
 
             <Stack gap='xs'>
-              <Text fw={600}>Name</Text>
+              <Text fw={600}>{t('influencer.name')}</Text>
               {Object.entries(influencer.name).map(([locale, name]) => (
                 <Text key={locale} size='sm' c='dimmed'>
                   {locale}: {name}
@@ -357,26 +361,26 @@ export default function InfluencerDetailPage() {
         <Tabs.Panel value='posts' pt='md'>
           <Group justify='flex-end' mb='sm'>
             <Button variant='light' leftSection={<Plus size={16} />} onClick={handleOpenAttach}>
-              Attach Posts
+              {t('influencer.attachPosts')}
             </Button>
             <Button variant='light' leftSection={<Plus size={16} />} onClick={openCreate}>
-              Create Post
+              {t('influencer.createPost')}
             </Button>
           </Group>
 
           {posts.length === 0 ? (
             <Text c='dimmed' ta='center' py='xl'>
-              No posts yet.
+              {t('influencer.noPosts')}
             </Text>
           ) : (
             <Table striped highlightOnHover>
               <Table.Thead>
                 <Table.Tr>
-                  <Table.Th>Platform</Table.Th>
-                  <Table.Th>Type</Table.Th>
-                  <Table.Th>External ID</Table.Th>
-                  <Table.Th>URL</Table.Th>
-                  <Table.Th w={100}>Actions</Table.Th>
+                  <Table.Th>{t('influencer.platform')}</Table.Th>
+                  <Table.Th>{t('influencer.type')}</Table.Th>
+                  <Table.Th>{t('influencer.externalId')}</Table.Th>
+                  <Table.Th>{t('influencer.url')}</Table.Th>
+                  <Table.Th w={100}>{t('influencer.actions')}</Table.Th>
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
@@ -394,7 +398,7 @@ export default function InfluencerDetailPage() {
                     <Table.Td>
                       <Anchor href={post.externalUrl} target='_blank' size='sm'>
                         <LinkIcon size={14} style={{ marginRight: 4 }} />
-                        Link
+                        {t('influencer.link')}
                       </Anchor>
                     </Table.Td>
                     <Table.Td>
@@ -426,7 +430,12 @@ export default function InfluencerDetailPage() {
       </Tabs>
 
       {/* Attach Posts Modal */}
-      <Modal opened={attachOpened} onClose={closeAttach} title='Attach Existing Posts' size='lg'>
+      <Modal
+        opened={attachOpened}
+        onClose={closeAttach}
+        title={t('influencer.attachExistingPosts')}
+        size='lg'
+      >
         <Stack gap='md'>
           <MultiSelect
             data={availablePosts.map((p) => ({
@@ -435,30 +444,35 @@ export default function InfluencerDetailPage() {
             }))}
             value={selectedPostIds}
             onChange={setSelectedPostIds}
-            placeholder='Search posts...'
+            placeholder={t('influencer.searchPosts')}
             searchable
             clearable
           />
           <Group justify='flex-end'>
             <Button variant='default' onClick={closeAttach}>
-              Cancel
+              {t('influencer.cancel')}
             </Button>
             <Button
               onClick={handleAttach}
               loading={attaching}
               disabled={selectedPostIds.length === 0}
             >
-              Attach
+              {t('influencer.attach')}
             </Button>
           </Group>
         </Stack>
       </Modal>
 
       {/* Create Post Modal */}
-      <Modal opened={createOpened} onClose={closeCreate} title='Create New Post' size='md'>
+      <Modal
+        opened={createOpened}
+        onClose={closeCreate}
+        title={t('influencer.createNewPost')}
+        size='md'
+      >
         <Stack gap='md'>
           <Select
-            label='Platform'
+            label={t('influencer.platform')}
             data={PLATFORM_OPTIONS}
             value={newPost.platform}
             onChange={(v) =>
@@ -466,29 +480,29 @@ export default function InfluencerDetailPage() {
             }
           />
           <Select
-            label='Type'
+            label={t('influencer.type')}
             data={TYPE_OPTIONS}
             value={newPost.type}
             onChange={(v) => setNewPost((prev) => ({ ...prev, type: (v as PostType) || 'video' }))}
           />
           <TextInput
-            label='External URL'
-            placeholder='https://...'
+            label={t('influencer.externalUrl')}
+            placeholder={t('influencer.externalUrlPlaceholder')}
             value={newPost.externalUrl}
             onChange={(e) => setNewPost((prev) => ({ ...prev, externalUrl: e.target.value }))}
           />
           <TextInput
-            label='External ID'
-            placeholder='e.g. video id'
+            label={t('influencer.externalId')}
+            placeholder={t('influencer.externalIdPlaceholder')}
             value={newPost.externalId}
             onChange={(e) => setNewPost((prev) => ({ ...prev, externalId: e.target.value }))}
           />
           <Group justify='flex-end'>
             <Button variant='default' onClick={closeCreate}>
-              Cancel
+              {t('influencer.cancel')}
             </Button>
             <Button onClick={handleCreate} loading={creating}>
-              Create & Attach
+              {t('influencer.createAndAttach')}
             </Button>
           </Group>
         </Stack>

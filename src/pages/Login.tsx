@@ -10,6 +10,7 @@ import {
   Title,
 } from '@mantine/core';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLocation } from 'wouter';
 
 import useAuthToken from '#hooks/useAuthToken';
@@ -17,6 +18,7 @@ import useAuthUser from '#hooks/useAuthUser';
 import { login } from '#services/auth';
 
 export default function LoginPage() {
+  const { t } = useTranslation();
   const [, navigate] = useLocation();
   const [, setAuthToken] = useAuthToken();
   const [, setAuthUser] = useAuthUser();
@@ -37,7 +39,7 @@ export default function LoginPage() {
       setAuthUser(res.user);
       navigate('/');
     } catch (err: any) {
-      setError(err?.response?.data?.message || err?.message || 'Login failed');
+      setError(err?.response?.data?.message || err?.message || t('auth.loginFailed'));
     } finally {
       setLoading(false);
     }
@@ -45,11 +47,11 @@ export default function LoginPage() {
 
   return (
     <Container size={420} my={80}>
-      <Title ta='center'>Welcome back</Title>
+      <Title ta='center'>{t('auth.welcomeBack')}</Title>
       <Text c='dimmed' size='sm' ta='center' mt={5}>
-        Don&apos;t have an account?{' '}
+        {t('auth.noAccount')}{' '}
         <Anchor size='sm' component='button' onClick={() => navigate('/register')}>
-          Create account
+          {t('auth.createAccount')}
         </Anchor>
       </Text>
 
@@ -57,15 +59,15 @@ export default function LoginPage() {
         <form onSubmit={handleSubmit}>
           <Stack>
             <TextInput
-              label='Email'
-              placeholder='hello@example.com'
+              label={t('auth.email')}
+              placeholder={t('auth.emailPlaceholder')}
               required
               value={email}
               onChange={(e) => setEmail(e.currentTarget.value)}
             />
             <PasswordInput
-              label='Password'
-              placeholder='Your password'
+              label={t('auth.password')}
+              placeholder={t('auth.passwordPlaceholder')}
               required
               value={password}
               onChange={(e) => setPassword(e.currentTarget.value)}
@@ -76,7 +78,7 @@ export default function LoginPage() {
               </Text>
             )}
             <Button type='submit' fullWidth loading={loading}>
-              Sign in
+              {t('auth.signIn')}
             </Button>
           </Stack>
         </form>
