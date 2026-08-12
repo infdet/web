@@ -1,0 +1,2 @@
+minimumReleaseAgeExclude:
+  - '@guoyunhe/react-storage@2.0.2'

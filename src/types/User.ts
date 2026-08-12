@@ -6,4 +6,14 @@ export default interface User extends BaseModel {
   name: string;
   role: UserRole;
   email?: string;
+  initials?: string;
+}
+
+export interface AuthPayload {
+  user: User;
+  token: string;
+}
+
+export interface AuthResponse {
+  data: AuthPayload;
 }

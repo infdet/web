@@ -208,8 +208,8 @@ importers:
   .:
     dependencies:
       '@guoyunhe/react-storage':
-        specifier: ^2.0.1
-        version: 2.0.1(react@19.2.8)
+        specifier: ^2.0.2
+        version: 2.0.2(react@19.2.8)
       '@mantine/core':
         specifier: ^9.5.1
         version: 9.5.1(@mantine/hooks@9.5.1(react@19.2.8))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -289,8 +289,13 @@ packages:
   '@guoyunhe/oxfmt-config@1.1.0':
     resolution: {integrity: sha512-sCb69VSHLpRfOiHr7Q4THMS2eTVxLbRm44tpL8PYy0VIf7qL632ZoIIGze+am4NMbBAznIGz4wk29Qwhn53Tjw==}
 
-  '@guoyunhe/react-storage@2.0.1':
-    resolution: {integrity: sha512-eYmWmAhyNnL+lUSGjznDL6WUh2YNOFZpZCTPc4M+qvIE7dtVVlYqT+qFX8BEv28x68z2fAVG91MLPAORLh/L1w==}
+  '@guoyunhe/react-storage@2.0.2':
+    resolution: {integrity: sha512-zHoUmK0BaupVTM8sLyvji6tsDcVvFCTM11kqDUEEFOhiYFCKUGIP0sSIP1Ox1tBKSb4cEKIvJqI0WbOFMIoQWQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@guoyunhe/use-latest-callback@1.0.0':
+    resolution: {integrity: sha512-MYnapFjp1R8xEgHWRSfqW2s66ZJQcydNtiO9eawAnMu5XeBXTmIMXTicI1TLFWUlBFDJm+6IVKcypZ4RH7G77A==}
     peerDependencies:
       react: '>=16.8.0'
 
@@ -1051,7 +1056,12 @@ snapshots:
 
   '@guoyunhe/oxfmt-config@1.1.0': {}
 
-  '@guoyunhe/react-storage@2.0.1(react@19.2.8)':
+  '@guoyunhe/react-storage@2.0.2(react@19.2.8)':
+    dependencies:
+      '@guoyunhe/use-latest-callback': 1.0.0(react@19.2.8)
+      react: 19.2.8
+
+  '@guoyunhe/use-latest-callback@1.0.0(react@19.2.8)':
     dependencies:
       react: 19.2.8
 
