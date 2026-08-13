@@ -131,11 +131,12 @@ export default function InfluencerEditPage() {
 
     try {
       if (isNew) {
-        await createInfluencer(payload);
+        const influencer = await createInfluencer(payload);
+        navigate(`/influencers/${influencer.id}`);
       } else {
         await updateInfluencer(Number(params.id), payload);
+        navigate(`/influencers/${params.id}`);
       }
-      navigate('/influencers');
     } catch (err: any) {
       setError(err?.response?.data?.message || err?.message || t('influencer.saveFailed'));
     } finally {
