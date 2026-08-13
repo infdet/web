@@ -117,11 +117,25 @@ export default function InfluencerListPage() {
                   @{influencer.slug}
                 </Text>
                 <Group gap={4}>
-                  {influencer.accounts?.map((a) => (
-                    <Badge key={a.id} variant='light' size='sm'>
-                      {a.platform}: {a.username}
-                    </Badge>
-                  ))}
+                  {influencer.accounts?.map((a) =>
+                    a.url ? (
+                      <Anchor
+                        key={a.id}
+                        href={a.url}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        underline='never'
+                      >
+                        <Badge variant='light' size='sm'>
+                          {a.platform}: {a.username}
+                        </Badge>
+                      </Anchor>
+                    ) : (
+                      <Badge key={a.id} variant='light' size='sm'>
+                        {a.platform}: {a.username}
+                      </Badge>
+                    ),
+                  )}
                 </Group>
               </Stack>
             </Card>

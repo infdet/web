@@ -1,4 +1,4 @@
-import { FileInput, Image, Paper, SimpleGrid, Stack, Text } from '@mantine/core';
+import { Anchor, FileInput, Image, Paper, SimpleGrid, Stack, Text } from '@mantine/core';
 import { CameraIcon, ImageIcon } from '@phosphor-icons/react';
 import { useTranslation } from 'react-i18next';
 
@@ -113,9 +113,15 @@ export default function InfluencerInfo({
               <Text size='sm' fw={500}>
                 {a.platform}
               </Text>
-              <Text size='sm' c='dimmed'>
-                @{a.username}
-              </Text>
+              {a.url ? (
+                <Anchor href={a.url} target='_blank' rel='noopener noreferrer' size='sm' c='dimmed'>
+                  @{a.username}
+                </Anchor>
+              ) : (
+                <Text size='sm' c='dimmed'>
+                  @{a.username}
+                </Text>
+              )}
             </Paper>
           ))}
           {(!influencer.accounts || influencer.accounts.length === 0) && (
