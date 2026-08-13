@@ -16,9 +16,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         collapsed: { desktop: true, mobile: !opened },
       }}
     >
-      <AppHeader opened={opened} onToggle={toggle} />
+      <AppShell.Header>
+        <AppHeader opened={opened} onToggle={toggle} />
+      </AppShell.Header>
 
-      <AppNavbar onNavigate={close} />
+      <AppShell.Navbar>
+        <AppNavbar onNavigate={close} />
+      </AppShell.Navbar>
 
       <AppShell.Main>{children}</AppShell.Main>
     </AppShell>

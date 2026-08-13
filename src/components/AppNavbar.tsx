@@ -1,4 +1,4 @@
-import { AppShell, Button } from '@mantine/core';
+import { Button } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'wouter';
 
@@ -16,7 +16,7 @@ export default function AppNavbar({ onNavigate }: AppNavbarProps) {
   const handleLogout = useLogout();
 
   return (
-    <AppShell.Navbar py='md' px={4}>
+    <>
       <Button
         component={Link}
         href='/influencers'
@@ -59,6 +59,6 @@ export default function AppNavbar({ onNavigate }: AppNavbarProps) {
       )}
 
       <LanguageSelect mt='md' mx='xs' />
-    </AppShell.Navbar>
+    </>
   );
 }
