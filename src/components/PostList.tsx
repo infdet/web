@@ -1,22 +1,20 @@
 import {
-  ActionIcon,
-  Anchor,
-  Badge,
   Button,
   Group,
   Modal,
   MultiSelect,
   Select,
+  SimpleGrid,
   Stack,
-  Table,
   Text,
   TextInput,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { LinkIcon, PlusIcon, TrashIcon } from '@phosphor-icons/react';
+import { PlusIcon } from '@phosphor-icons/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import PostCard from '#components/PostCard';
 import { attachPosts, createPost, deletePost, detachPost, getPosts } from '#services/post';
 import type Post from '#types/Post';
 import type { PostFormData, PostPlatform, PostType } from '#types/Post';
@@ -145,58 +143,16 @@ export default function PostList({ posts, influencerId, onRefresh }: PostListPro
           {t('influencer.noPosts')}
         </Text>
       ) : (
-        <Table striped highlightOnHover>
-          <Table.Thead>
-            <Table.Tr>
-              <Table.Th>{t('influencer.platform')}</Table.Th>
-              <Table.Th>{t('influencer.type')}</Table.Th>
-              <Table.Th>{t('influencer.externalId')}</Table.Th>
-              <Table.Th>{t('influencer.url')}</Table.Th>
-              <Table.Th w={100}>{t('influencer.actions')}</Table.Th>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>
-            {posts.map((post) => (
-              <Table.Tr key={post.id}>
-                <Table.Td>
-                  <Badge variant='light' size='sm'>
-                    {post.platform}
-                  </Badge>
-                </Table.Td>
-                <Table.Td>{post.type}</Table.Td>
-                <Table.Td>
-                  <Text size='sm'>{post.externalId}</Text>
-                </Table.Td>
-                <Table.Td>
-                  <Anchor href={post.externalUrl} target='_blank' size='sm'>
-                    <LinkIcon size={14} style={{ marginRight: 4 }} />
-                    {t('influencer.link')}
-                  </Anchor>
-                </Table.Td>
-                <Table.Td>
-                  <Group gap={4}>
-                    <ActionIcon
-                      variant='subtle'
-                      color='orange'
-                      size='sm'
-                      onClick={() => handleDetach(post.id)}
-                    >
-                      <TrashIcon size={14} />
-                    </ActionIcon>
-                    <ActionIcon
-                      variant='subtle'
-                      color='red'
-                      size='sm'
-                      onClick={() => handleDeletePost(post.id)}
-                    >
-                      <TrashIcon size={14} />
-                    </ActionIcon>
-                  </Group>
-                </Table.Td>
-              </Table.Tr>
-            ))}
-          </Table.Tbody>
-        </Table>
+        <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing='md'>
+          {posts.map((post) => (
+            <PostCard
+              key={post.id}
+              post={post}
+              onDetach={handleDetach}
+              onDelete={handleDeletePost}
+            />
+          ))}
+        </SimpleGrid>
       )}
 
       {/* Attach Posts Modal */}

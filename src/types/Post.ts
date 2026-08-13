@@ -18,6 +18,7 @@ export default interface Post extends BaseModel {
   type: PostType;
   externalUrl: string;
   externalId: string;
+  url: string;
 }
 
 export interface PostListMeta {
