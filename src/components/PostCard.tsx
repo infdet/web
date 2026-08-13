@@ -1,6 +1,7 @@
 import { ActionIcon, Anchor, AspectRatio, Badge, Card, Group, Stack, Text } from '@mantine/core';
-import { LinkIcon, TrashIcon } from '@phosphor-icons/react';
+import { EyeIcon, LinkIcon, TrashIcon } from '@phosphor-icons/react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'wouter';
 
 import type Post from '#types/Post';
 
@@ -27,6 +28,15 @@ export default function PostCard({ post, onDetach, onDelete }: PostCardProps) {
             </Badge>
           </Group>
           <Group gap={4} wrap='nowrap'>
+            <ActionIcon
+              component={Link}
+              href={`/posts/${post.id}`}
+              variant='subtle'
+              color='gray'
+              size='sm'
+            >
+              <EyeIcon size={14} />
+            </ActionIcon>
             <ActionIcon variant='subtle' color='orange' size='sm' onClick={() => onDetach(post.id)}>
               <TrashIcon size={14} />
             </ActionIcon>

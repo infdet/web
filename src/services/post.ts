@@ -1,5 +1,6 @@
 import xior from 'xior';
 
+import type Influencer from '#types/Influencer';
 import type Post from '#types/Post';
 import type { PostFormData } from '#types/Post';
 import type { BaseResponse, PaginatedResponse } from '#types/Response';
@@ -15,6 +16,11 @@ export async function getPosts(
 
 export async function getPost(id: number): Promise<Post> {
   const res = await xior.get<BaseResponse<Post>>(`/posts/${id}`);
+  return res.data.data;
+}
+
+export async function getPostInfluencers(postId: number): Promise<Influencer[]> {
+  const res = await xior.get<BaseResponse<Influencer[]>>(`/posts/${postId}/influencers`);
   return res.data.data;
 }
 

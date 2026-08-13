@@ -85,6 +85,16 @@
     "detachConfirm": "Remove this post from influencer?",
     "deletePostConfirm": "Permanently delete this post?"
   },
+  "post": {
+    "title": "Post",
+    "notFound": "Post not found.",
+    "externalId": "External ID",
+    "externalUrl": "External URL",
+    "createdAt": "Created At",
+    "deleteConfirm": "Permanently delete this post?",
+    "influencers": "Influencers",
+    "noInfluencers": "No influencers linked."
+  },
   "common": {
     "cancel": "Cancel",
     "save": "Save",

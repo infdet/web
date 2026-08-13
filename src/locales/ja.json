@@ -85,6 +85,16 @@
     "detachConfirm": "この投稿の関連付けを解除しますか？",
     "deletePostConfirm": "この投稿を完全に削除しますか？"
   },
+  "post": {
+    "title": "投稿",
+    "notFound": "投稿が見つかりません。",
+    "externalId": "外部 ID",
+    "externalUrl": "外部 URL",
+    "createdAt": "作成日時",
+    "deleteConfirm": "この投稿を完全に削除しますか？",
+    "influencers": "インフルエンサー",
+    "noInfluencers": "インフルエンサーがありません。"
+  },
   "common": {
     "cancel": "キャンセル",
     "save": "保存",

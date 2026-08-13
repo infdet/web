@@ -9,6 +9,7 @@ import InfluencerDetailPage from './pages/InfluencerDetail';
 import InfluencerEditPage from './pages/InfluencerEdit';
 import InfluencerListPage from './pages/InfluencerList';
 import LoginPage from './pages/Login';
+import PostDetailPage from './pages/PostDetail';
 import RegisterPage from './pages/Register';
 
 function HomePage() {
@@ -52,6 +53,9 @@ export default function App() {
               </Route>
               <Route path='/influencers/:id'>
                 <InfluencerDetailPage />
+              </Route>
+              <Route path='/posts/:id'>
+                <PostDetailPage />
               </Route>
             </Switch>
           </AppLayout>

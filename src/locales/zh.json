@@ -85,6 +85,16 @@
     "detachConfirm": "确定要移除此帖子关联吗？",
     "deletePostConfirm": "确定要永久删除此帖子吗？"
   },
+  "post": {
+    "title": "帖子",
+    "notFound": "未找到该帖子。",
+    "externalId": "外部 ID",
+    "externalUrl": "外部链接",
+    "createdAt": "创建时间",
+    "deleteConfirm": "确定要永久删除此帖子吗？",
+    "influencers": "关联网红",
+    "noInfluencers": "暂无关联网红。"
+  },
   "common": {
     "cancel": "取消",
     "save": "保存",
