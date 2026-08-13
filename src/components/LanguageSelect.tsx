@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 const LANGUAGE_OPTIONS = [
   { value: 'en', label: 'English' },
   { value: 'zh', label: '中文' },
+  { value: 'ja', label: '日本語' },
+  { value: 'ko', label: '한국어' },
 ];
 
 interface LanguageSelectProps {

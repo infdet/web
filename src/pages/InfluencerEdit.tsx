@@ -26,10 +26,20 @@ interface AccountForm {
 
 interface InfluencerForm {
   slug: string;
-  nameEn: string;
-  nameZh: string;
+  name: Record<string, string>;
   accounts: AccountForm[];
 }
+
+const NAME_LANGUAGES = [
+  {
+    key: 'en',
+    label: 'influencer.nameEn',
+    required: true,
+  },
+  { key: 'zh', label: 'influencer.nameZh' },
+  { key: 'ja', label: 'influencer.nameJa' },
+  { key: 'ko', label: 'influencer.nameKo' },
+];
 
 const PLATFORM_OPTIONS = [
   { value: 'youtube', label: 'YouTube' },
@@ -57,13 +67,14 @@ export default function InfluencerEditPage() {
   const form = useForm<InfluencerForm>({
     initialValues: {
       slug: '',
-      nameEn: '',
-      nameZh: '',
+      name: { en: '', zh: '', ja: '', ko: '' },
       accounts: [{ platform: '', username: '' }],
     },
     validate: {
       slug: (v) => (!v.trim() ? t('influencer.slugRequired') : null),
-      nameEn: (v) => (!v.trim() ? t('influencer.nameEnRequired') : null),
+      name: {
+        en: (v) => (!v.trim() ? t('influencer.nameEnRequired') : null),
+      },
       accounts: {
         platform: (v) => (!v ? t('influencer.platformRequired') : null),
         username: (v) => (!v ? t('influencer.usernameRequired') : null),
@@ -78,8 +89,12 @@ export default function InfluencerEditPage() {
       const influencer = await getInfluencer(Number(params.id));
       form.setValues({
         slug: influencer.slug,
-        nameEn: influencer.name?.en ?? '',
-        nameZh: influencer.name?.zh ?? '',
+        name: {
+          en: influencer.name?.en ?? '',
+          zh: influencer.name?.zh ?? '',
+          ja: influencer.name?.ja ?? '',
+          ko: influencer.name?.ko ?? '',
+        },
         accounts:
           influencer.accounts?.length > 0
             ? influencer.accounts.map((a) => ({ platform: a.platform, username: a.username }))
@@ -101,8 +116,10 @@ export default function InfluencerEditPage() {
     setError('');
 
     const name: Record<string, string> = {};
-    if (values.nameEn.trim()) name.en = values.nameEn.trim();
-    if (values.nameZh.trim()) name.zh = values.nameZh.trim();
+    for (const [locale, value] of Object.entries(values.name)) {
+      const trimmed = value.trim();
+      if (trimmed) name[locale] = trimmed;
+    }
 
     const accounts = values.accounts.filter((a) => a.platform && a.username);
 
@@ -158,17 +175,14 @@ export default function InfluencerEditPage() {
             {...form.getInputProps('slug')}
           />
 
-          <TextInput
-            label={t('influencer.nameEn')}
-            placeholder={t('influencer.nameEnPlaceholder')}
-            {...form.getInputProps('nameEn')}
-          />
-
-          <TextInput
-            label={t('influencer.nameZh')}
-            placeholder={t('influencer.nameZhPlaceholder')}
-            {...form.getInputProps('nameZh')}
-          />
+          {NAME_LANGUAGES.map((lang) => (
+            <TextInput
+              key={lang.key}
+              label={t(lang.label)}
+              required={lang.required}
+              {...form.getInputProps(`name.${lang.key}`)}
+            />
+          ))}
 
           <Fieldset legend={t('influencer.socialAccounts')}>
             <Stack gap='sm'>
