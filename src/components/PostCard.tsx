@@ -3,20 +3,6 @@ import { LinkIcon, TrashIcon } from '@phosphor-icons/react';
 import { useTranslation } from 'react-i18next';
 
 import type Post from '#types/Post';
-import type { PostPlatform } from '#types/Post';
-
-/** Embed URL builders for platforms that can be rendered inside an iframe. */
-const EMBED_URL_BUILDERS: Partial<Record<PostPlatform, (id: string) => string>> = {
-  youtube: (id) => `https://www.youtube.com/embed/${id}`,
-  bilibili: (id) => `https://player.bilibili.com/player.html?bvid=${id}&autoplay=0`,
-};
-
-function getEmbedUrl(post: Post): string | null {
-  if (post.type !== 'video' || !post.externalId) return null;
-  const builder = EMBED_URL_BUILDERS[post.platform];
-  if (!builder) return null;
-  return builder(post.externalId);
-}
 
 interface PostCardProps {
   post: Post;
@@ -26,7 +12,7 @@ interface PostCardProps {
 
 export default function PostCard({ post, onDetach, onDelete }: PostCardProps) {
   const { t } = useTranslation();
-  const embedUrl = getEmbedUrl(post);
+  const embedUrl = post.embedUrl;
 
   return (
     <Card shadow='sm' padding='md' radius='md' withBorder>
@@ -77,7 +63,7 @@ export default function PostCard({ post, onDetach, onDelete }: PostCardProps) {
           <Text size='xs' c='dimmed' truncate style={{ flex: 1 }}>
             {post.externalId}
           </Text>
-          <Anchor href={post.url} target='_blank' size='sm' rel='noreferrer'>
+          <Anchor href={post.externalUrl} target='_blank' size='sm' rel='noreferrer'>
             <LinkIcon size={14} style={{ marginRight: 4 }} />
             {t('influencer.link')}
           </Anchor>
