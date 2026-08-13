@@ -1,10 +1,5 @@
+import type Account from './Account';
 import type BaseModel from './BaseModel';
-
-export interface Account {
-  id: number;
-  platform: string;
-  username: string;
-}
 
 export default interface Influencer extends BaseModel {
   slug: string;
