@@ -21,10 +21,6 @@ export default interface Post extends BaseModel {
   embedUrl: string | null;
 }
 
-export interface PostDetailResponse {
-  data: Post;
-}
-
 export interface PostFormData {
   platform: PostPlatform;
   type: PostType;

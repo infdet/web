@@ -1,8 +1,8 @@
 import xior from 'xior';
 
-import type { PaginatedResponse } from '#types/Pagination';
 import type Post from '#types/Post';
-import type { PostDetailResponse, PostFormData } from '#types/Post';
+import type { PostFormData } from '#types/Post';
+import type { BaseResponse, PaginatedResponse } from '#types/Response';
 
 // ── Posts CRUD ──
 
@@ -14,17 +14,17 @@ export async function getPosts(
 }
 
 export async function getPost(id: number): Promise<Post> {
-  const res = await xior.get<PostDetailResponse>(`/posts/${id}`);
+  const res = await xior.get<BaseResponse<Post>>(`/posts/${id}`);
   return res.data.data;
 }
 
 export async function createPost(data: PostFormData): Promise<Post> {
-  const res = await xior.post<PostDetailResponse>('/posts', data);
+  const res = await xior.post<BaseResponse<Post>>('/posts', data);
   return res.data.data;
 }
 
 export async function updatePost(id: number, data: Partial<PostFormData>): Promise<Post> {
-  const res = await xior.put<PostDetailResponse>(`/posts/${id}`, data);
+  const res = await xior.put<BaseResponse<Post>>(`/posts/${id}`, data);
   return res.data.data;
 }
 

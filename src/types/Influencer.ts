@@ -8,7 +8,3 @@ export default interface Influencer extends BaseModel {
   cover: string | null;
   accounts: Account[];
 }
-
-export interface InfluencerDetailResponse {
-  data: Influencer;
-}

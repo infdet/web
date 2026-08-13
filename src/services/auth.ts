@@ -1,7 +1,8 @@
 import xior from 'xior';
 
+import type { BaseResponse } from '#types/Response';
 import type User from '#types/User';
-import type { AuthPayload, AuthResponse } from '#types/User';
+import type { AuthPayload } from '#types/User';
 
 export interface RegisterParams {
   name: string;
@@ -16,12 +17,12 @@ export interface LoginParams {
 }
 
 export async function register(params: RegisterParams): Promise<AuthPayload> {
-  const res = await xior.post<AuthResponse>('/auth/register', params);
+  const res = await xior.post<BaseResponse<AuthPayload>>('/auth/register', params);
   return res.data.data;
 }
 
 export async function login(params: LoginParams): Promise<AuthPayload> {
-  const res = await xior.post<AuthResponse>('/auth/login', params);
+  const res = await xior.post<BaseResponse<AuthPayload>>('/auth/login', params);
   return res.data.data;
 }
 
@@ -30,8 +31,8 @@ export async function logout(): Promise<void> {
 }
 
 export async function getProfile(): Promise<User> {
-  const res = await xior.get<User>('/auth/user');
-  return res.data;
+  const res = await xior.get<BaseResponse<User>>('/auth/user');
+  return res.data.data;
 }
 
 export function getAuthToken(): string | null {

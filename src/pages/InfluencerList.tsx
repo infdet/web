@@ -20,7 +20,7 @@ import { Link } from 'wouter';
 
 import { deleteInfluencer, getInfluencers } from '#services/influencer';
 import type Influencer from '#types/Influencer';
-import type { PaginationMeta } from '#types/Pagination';
+import type { PaginationMeta } from '#types/Response';
 
 export default function InfluencerListPage() {
   const { t } = useTranslation();

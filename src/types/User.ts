@@ -12,7 +12,3 @@ export interface AuthPayload {
   user: User;
   token: string;
 }
-
-export interface AuthResponse {
-  data: AuthPayload;
-}

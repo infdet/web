@@ -1,3 +1,7 @@
+export interface BaseResponse<T> {
+  data: T;
+}
+
 export interface PaginationMeta {
   total: number;
   perPage: number;
@@ -10,7 +14,6 @@ export interface PaginationMeta {
   previousPageUrl: string | null;
 }
 
-export interface PaginatedResponse<T> {
-  data: T[];
+export interface PaginatedResponse<T> extends BaseResponse<T[]> {
   meta: PaginationMeta;
 }

@@ -24,9 +24,9 @@ import {
   getInfluencerPosts,
   getPosts,
 } from '#services/post';
-import type { PaginationMeta } from '#types/Pagination';
 import type Post from '#types/Post';
 import type { PostFormData, PostPlatform, PostType } from '#types/Post';
+import type { PaginationMeta } from '#types/Response';
 
 const PLATFORM_OPTIONS = [
   { value: 'youtube', label: 'YouTube' },
