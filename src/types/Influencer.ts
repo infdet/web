@@ -14,23 +14,6 @@ export default interface Influencer extends BaseModel {
   accounts: Account[];
 }
 
-export interface InfluencerListMeta {
-  total: number;
-  perPage: number;
-  currentPage: number;
-  lastPage: number;
-  firstPage: number;
-  firstPageUrl: string;
-  lastPageUrl: string;
-  nextPageUrl: string | null;
-  previousPageUrl: string | null;
-}
-
-export interface InfluencerListResponse {
-  data: Influencer[];
-  meta: InfluencerListMeta;
-}
-
 export interface InfluencerDetailResponse {
   data: Influencer;
 }

@@ -20,12 +20,12 @@ import { Link } from 'wouter';
 
 import { deleteInfluencer, getInfluencers } from '#services/influencer';
 import type Influencer from '#types/Influencer';
-import type { InfluencerListMeta } from '#types/Influencer';
+import type { PaginationMeta } from '#types/Pagination';
 
 export default function InfluencerListPage() {
   const { t } = useTranslation();
   const [influencers, setInfluencers] = useState<Influencer[]>([]);
-  const [meta, setMeta] = useState<InfluencerListMeta | null>(null);
+  const [meta, setMeta] = useState<PaginationMeta | null>(null);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
 

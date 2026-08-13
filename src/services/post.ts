@@ -1,14 +1,15 @@
 import xior from 'xior';
 
+import type { PaginatedResponse } from '#types/Pagination';
 import type Post from '#types/Post';
-import type { PostDetailResponse, PostFormData, PostListResponse } from '#types/Post';
+import type { PostDetailResponse, PostFormData } from '#types/Post';
 
 // ── Posts CRUD ──
 
 export async function getPosts(
   params: { page?: number; perPage?: number } = {},
-): Promise<PostListResponse> {
-  const res = await xior.get<PostListResponse>('/posts', { params });
+): Promise<PaginatedResponse<Post>> {
+  const res = await xior.get<PaginatedResponse<Post>>('/posts', { params });
   return res.data;
 }
 
@@ -36,8 +37,10 @@ export async function deletePost(id: number): Promise<void> {
 export async function getInfluencerPosts(
   influencerId: number,
   params: { page?: number; perPage?: number } = {},
-): Promise<PostListResponse> {
-  const res = await xior.get<PostListResponse>(`/influencers/${influencerId}/posts`, { params });
+): Promise<PaginatedResponse<Post>> {
+  const res = await xior.get<PaginatedResponse<Post>>(`/influencers/${influencerId}/posts`, {
+    params,
+  });
   return res.data;
 }
 

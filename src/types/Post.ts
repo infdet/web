@@ -21,23 +21,6 @@ export default interface Post extends BaseModel {
   embedUrl: string | null;
 }
 
-export interface PostListMeta {
-  total: number;
-  perPage: number;
-  currentPage: number;
-  lastPage: number;
-  firstPage: number;
-  firstPageUrl: string;
-  lastPageUrl: string;
-  nextPageUrl: string | null;
-  previousPageUrl: string | null;
-}
-
-export interface PostListResponse {
-  data: Post[];
-  meta: PostListMeta;
-}
-
 export interface PostDetailResponse {
   data: Post;
 }

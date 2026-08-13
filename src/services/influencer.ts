@@ -1,7 +1,8 @@
 import xior from 'xior';
 
 import type Influencer from '#types/Influencer';
-import type { InfluencerDetailResponse, InfluencerListResponse } from '#types/Influencer';
+import type { InfluencerDetailResponse } from '#types/Influencer';
+import type { PaginatedResponse } from '#types/Pagination';
 
 export interface InfluencerListParams {
   page?: number;
@@ -16,8 +17,8 @@ export interface InfluencerFormData {
 
 export async function getInfluencers(
   params: InfluencerListParams = {},
-): Promise<InfluencerListResponse> {
-  const res = await xior.get<InfluencerListResponse>('/influencers', { params });
+): Promise<PaginatedResponse<Influencer>> {
+  const res = await xior.get<PaginatedResponse<Influencer>>('/influencers', { params });
   return res.data;
 }
 

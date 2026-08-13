@@ -24,8 +24,9 @@ import {
   getInfluencerPosts,
   getPosts,
 } from '#services/post';
+import type { PaginationMeta } from '#types/Pagination';
 import type Post from '#types/Post';
-import type { PostFormData, PostListMeta, PostPlatform, PostType } from '#types/Post';
+import type { PostFormData, PostPlatform, PostType } from '#types/Post';
 
 const PLATFORM_OPTIONS = [
   { value: 'youtube', label: 'YouTube' },
@@ -54,7 +55,7 @@ export default function PostList({ influencerId }: PostListProps) {
   const { t } = useTranslation();
 
   const [posts, setPosts] = useState<Post[]>([]);
-  const [meta, setMeta] = useState<PostListMeta | null>(null);
+  const [meta, setMeta] = useState<PaginationMeta | null>(null);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
 
