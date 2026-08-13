@@ -26,7 +26,7 @@ export async function login(params: LoginParams): Promise<AuthPayload> {
 }
 
 export async function logout(): Promise<void> {
-  await xior.post('/account/logout');
+  await xior.post('/auth/logout');
 }
 
 export async function getProfile(): Promise<User> {
