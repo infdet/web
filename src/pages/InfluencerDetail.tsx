@@ -8,9 +8,7 @@ import InfluencerInfo from '#components/InfluencerInfo';
 import PostList from '#components/PostList';
 import useAuthUser from '#hooks/useAuthUser';
 import { getInfluencer, uploadAvatar, uploadCover } from '#services/influencer';
-import { getInfluencerPosts } from '#services/post';
 import type Influencer from '#types/Influencer';
-import type Post from '#types/Post';
 
 export default function InfluencerDetailPage() {
   const { t } = useTranslation();
@@ -19,7 +17,6 @@ export default function InfluencerDetailPage() {
 
   const [authUser] = useAuthUser();
   const [influencer, setInfluencer] = useState<Influencer | null>(null);
-  const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
@@ -32,9 +29,8 @@ export default function InfluencerDetailPage() {
     if (!id) return;
     setLoading(true);
     try {
-      const [inf, pts] = await Promise.all([getInfluencer(id), getInfluencerPosts(id)]);
+      const inf = await getInfluencer(id);
       setInfluencer(inf);
-      setPosts(pts);
     } catch {
       // ignore
     } finally {
@@ -121,7 +117,7 @@ export default function InfluencerDetailPage() {
 
       <Divider my='xl' />
 
-      <PostList posts={posts} influencerId={id} onRefresh={fetchDetail} />
+      <PostList influencerId={id} />
     </Container>
   );
 }

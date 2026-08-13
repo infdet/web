@@ -33,9 +33,12 @@ export async function deletePost(id: number): Promise<void> {
 
 // ── Influencer-Post relationships ──
 
-export async function getInfluencerPosts(influencerId: number): Promise<Post[]> {
-  const res = await xior.get<{ data: Post[] }>(`/influencers/${influencerId}/posts`);
-  return Array.isArray(res.data) ? res.data : (res.data.data ?? []);
+export async function getInfluencerPosts(
+  influencerId: number,
+  params: { page?: number; perPage?: number } = {},
+): Promise<PostListResponse> {
+  const res = await xior.get<PostListResponse>(`/influencers/${influencerId}/posts`, { params });
+  return res.data;
 }
 
 export async function attachPosts(influencerId: number, postIds: number[]): Promise<void> {
