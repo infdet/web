@@ -30,8 +30,8 @@ export async function logout(): Promise<void> {
 }
 
 export async function getProfile(): Promise<User> {
-  const res = await xior.get<{ data: User }>('/account/profile');
-  return res.data.data;
+  const res = await xior.get<User>('/auth/user');
+  return res.data;
 }
 
 export function getAuthToken(): string | null {
