@@ -5,17 +5,17 @@ import { useTranslation } from 'react-i18next';
 import type Post from '#types/Post';
 import type { PostPlatform } from '#types/Post';
 
-/** Embed URL templates for platforms that can be rendered inside an iframe. */
-const EMBED_URL_TEMPLATES: Partial<Record<PostPlatform, string>> = {
-  youtube: 'https://www.youtube.com/embed/',
-  bilibili: 'https://player.bilibili.com/player.html?bvid=',
+/** Embed URL builders for platforms that can be rendered inside an iframe. */
+const EMBED_URL_BUILDERS: Partial<Record<PostPlatform, (id: string) => string>> = {
+  youtube: (id) => `https://www.youtube.com/embed/${id}`,
+  bilibili: (id) => `https://player.bilibili.com/player.html?bvid=${id}&autoplay=0`,
 };
 
 function getEmbedUrl(post: Post): string | null {
   if (post.type !== 'video' || !post.externalId) return null;
-  const template = EMBED_URL_TEMPLATES[post.platform];
-  if (!template) return null;
-  return `${template}${post.externalId}`;
+  const builder = EMBED_URL_BUILDERS[post.platform];
+  if (!builder) return null;
+  return builder(post.externalId);
 }
 
 interface PostCardProps {
