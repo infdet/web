@@ -1,8 +1,7 @@
-import { ActionIcon, Badge, Container, Divider, Group, Loader, Text, Title } from '@mantine/core';
-import { ArrowLeftIcon, PencilIcon } from '@phosphor-icons/react';
+import { Container, Divider, Group, Loader, Text } from '@mantine/core';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useParams } from 'wouter';
+import { useParams } from 'wouter';
 
 import InfluencerInfo from '#components/InfluencerInfo';
 import PostList from '#components/PostList';
@@ -10,7 +9,6 @@ import useAuthUser from '#hooks/useAuthUser';
 import { createAccount, deleteAccount, updateAccount } from '#services/account';
 import { getInfluencer, uploadAvatar, uploadCover } from '#services/influencer';
 import type Influencer from '#types/Influencer';
-import { getInfluencerName } from '#utils/influencer';
 
 export default function InfluencerDetailPage() {
   const { t } = useTranslation();
@@ -116,24 +114,6 @@ export default function InfluencerDetailPage() {
 
   return (
     <Container size='lg' py='xl'>
-      <Group mb='xl'>
-        <ActionIcon component={Link} href='/influencers' variant='subtle'>
-          <ArrowLeftIcon size={20} />
-        </ActionIcon>
-        <Title order={2}>{getInfluencerName(influencer.name, t('influencer.unknown'))}</Title>
-        <Badge variant='light'>@{influencer.slug}</Badge>
-        {authUser && (
-          <ActionIcon
-            component={Link}
-            href={`/influencers/${influencer.id}/edit`}
-            variant='subtle'
-            color='blue'
-          >
-            <PencilIcon size={18} />
-          </ActionIcon>
-        )}
-      </Group>
-
       <InfluencerInfo
         influencer={influencer}
         showUpload={!!authUser}

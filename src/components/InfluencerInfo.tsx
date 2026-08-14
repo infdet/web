@@ -1,6 +1,7 @@
 import {
   ActionIcon,
   Anchor,
+  Badge,
   Button,
   FileInput,
   Group,
@@ -11,8 +12,10 @@ import {
   Stack,
   Text,
   TextInput,
+  Title,
 } from '@mantine/core';
 import {
+  ArrowLeftIcon,
   CameraIcon,
   CheckIcon,
   ImageIcon,
@@ -23,9 +26,12 @@ import {
 } from '@phosphor-icons/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'wouter';
 
+import useAuthUser from '#hooks/useAuthUser';
 import type Account from '#types/Account';
 import type Influencer from '#types/Influencer';
+import { getInfluencerName } from '#utils/influencer';
 import { PLATFORM_OPTIONS } from '#utils/platforms';
 
 interface InfluencerInfoProps {
@@ -52,6 +58,8 @@ export default function InfluencerInfo({
   onDeleteAccount,
 }: InfluencerInfoProps) {
   const { t } = useTranslation();
+
+  const [authUser] = useAuthUser();
 
   const [adding, setAdding] = useState(false);
   const [newPlatform, setNewPlatform] = useState('');
@@ -129,6 +137,23 @@ export default function InfluencerInfo({
 
   return (
     <>
+      <Group mb='xl'>
+        <ActionIcon component={Link} href='/influencers' variant='subtle'>
+          <ArrowLeftIcon size={20} />
+        </ActionIcon>
+        <Title order={2}>{getInfluencerName(influencer.name, t('influencer.unknown'))}</Title>
+        <Badge variant='light'>@{influencer.slug}</Badge>
+        {authUser && (
+          <ActionIcon
+            component={Link}
+            href={`/influencers/${influencer.id}/edit`}
+            variant='subtle'
+            color='blue'
+          >
+            <PencilIcon size={18} />
+          </ActionIcon>
+        )}
+      </Group>
       <SimpleGrid cols={{ base: 1, sm: 2 }} spacing='lg'>
         <Paper withBorder p='md' radius='md'>
           <Text fw={600} mb='sm'>
