@@ -5,6 +5,7 @@
   },
   "nav": {
     "influencers": "インフルエンサー",
+    "newPost": "新規投稿",
     "profile": "プロフィール",
     "login": "ログイン",
     "logout": "ログアウト"
@@ -87,7 +88,15 @@
   },
   "post": {
     "title": "投稿",
+    "new": "新規投稿",
     "notFound": "投稿が見つかりません。",
+    "url": "投稿 URL",
+    "urlPlaceholder": "https://www.youtube.com/watch?v=...",
+    "enterUrl": "投稿リンクを貼り付けてプレビューしてください。",
+    "unsupportedUrl": "サポートされていないリンクです。YouTube、Instagram、TikTok、Bilibili のリンクのみ対応しています。",
+    "preview": "プレビュー",
+    "create": "作成",
+    "createFailed": "投稿の作成に失敗しました",
     "externalId": "外部 ID",
     "externalUrl": "外部 URL",
     "createdAt": "作成日時",

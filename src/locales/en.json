@@ -5,6 +5,7 @@
   },
   "nav": {
     "influencers": "Influencers",
+    "newPost": "New Post",
     "profile": "Profile",
     "login": "Login",
     "logout": "Logout"
@@ -87,7 +88,15 @@
   },
   "post": {
     "title": "Post",
+    "new": "New Post",
     "notFound": "Post not found.",
+    "url": "Post URL",
+    "urlPlaceholder": "https://www.youtube.com/watch?v=...",
+    "enterUrl": "Paste a post link to preview it.",
+    "unsupportedUrl": "Unsupported link. Only YouTube, Instagram, TikTok, and Bilibili links are supported.",
+    "preview": "Preview",
+    "create": "Create",
+    "createFailed": "Failed to create post",
     "externalId": "External ID",
     "externalUrl": "External URL",
     "createdAt": "Created At",

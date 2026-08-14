@@ -1,4 +1,5 @@
 import { Button } from '@mantine/core';
+import { PlusIcon } from '@phosphor-icons/react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'wouter';
 
@@ -26,6 +27,18 @@ export default function AppNavbar({ onNavigate }: AppNavbarProps) {
         onClick={onNavigate}
       >
         {t('nav.influencers')}
+      </Button>
+
+      <Button
+        component={Link}
+        href='/posts/new'
+        variant='subtle'
+        fullWidth
+        justify='start'
+        leftSection={<PlusIcon size={16} />}
+        onClick={onNavigate}
+      >
+        {t('nav.newPost')}
       </Button>
 
       {authUser ? (
