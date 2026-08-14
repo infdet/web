@@ -84,7 +84,8 @@
     "externalUrlPlaceholder": "https://...",
     "externalIdPlaceholder": "例如：视频 ID",
     "detachConfirm": "确定要移除此帖子关联吗？",
-    "deletePostConfirm": "确定要永久删除此帖子吗？"
+    "deletePostConfirm": "确定要永久删除此帖子吗？",
+    "deleteAccountConfirm": "确定要移除这个账号吗？"
   },
   "post": {
     "title": "帖子",

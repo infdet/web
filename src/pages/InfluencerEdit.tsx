@@ -17,9 +17,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useParams } from 'wouter';
 
+import { createAccount, deleteAccount, updateAccount } from '#services/account';
 import { createInfluencer, getInfluencer, updateInfluencer } from '#services/influencer';
+import { PLATFORM_OPTIONS } from '#utils/platforms';
 
 interface AccountForm {
+  id?: number;
   platform: string;
   username: string;
 }
@@ -41,19 +44,6 @@ const NAME_LANGUAGES = [
   { key: 'ko', label: 'influencer.nameKo' },
 ];
 
-const PLATFORM_OPTIONS = [
-  { value: 'youtube', label: 'YouTube' },
-  { value: 'instagram', label: 'Instagram' },
-  { value: 'tiktok', label: 'TikTok' },
-  { value: 'twitter', label: 'Twitter / X' },
-  { value: 'facebook', label: 'Facebook' },
-  { value: 'bilibili', label: 'Bilibili' },
-  { value: 'weibo', label: 'Weibo' },
-  { value: 'douyin', label: 'Douyin' },
-  { value: 'xiaohongshu', label: 'Xiaohongshu' },
-  { value: 'other', label: 'Other' },
-];
-
 export default function InfluencerEditPage() {
   const { t } = useTranslation();
   const params = useParams();
@@ -63,6 +53,7 @@ export default function InfluencerEditPage() {
   const [loading, setLoading] = useState(!isNew);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [existingAccountIds, setExistingAccountIds] = useState<number[]>([]);
 
   const form = useForm<InfluencerForm>({
     initialValues: {
@@ -87,6 +78,8 @@ export default function InfluencerEditPage() {
     setLoading(true);
     try {
       const influencer = await getInfluencer(Number(params.id));
+      const accounts = influencer.accounts ?? [];
+      setExistingAccountIds(accounts.map((a) => a.id));
       form.setValues({
         slug: influencer.slug,
         name: {
@@ -96,8 +89,8 @@ export default function InfluencerEditPage() {
           ko: influencer.name?.ko ?? '',
         },
         accounts:
-          influencer.accounts?.length > 0
-            ? influencer.accounts.map((a) => ({ platform: a.platform, username: a.username }))
+          accounts.length > 0
+            ? accounts.map((a) => ({ id: a.id, platform: a.platform, username: a.username }))
             : [{ platform: '', username: '' }],
       });
     } catch {
@@ -126,16 +119,34 @@ export default function InfluencerEditPage() {
     const payload = {
       slug: values.slug.trim(),
       name,
-      accounts,
     };
 
     try {
       if (isNew) {
         const influencer = await createInfluencer(payload);
+        await Promise.all(
+          accounts.map((a) =>
+            createAccount(influencer.id, { platform: a.platform, username: a.username }),
+          ),
+        );
         navigate(`/influencers/${influencer.id}`);
       } else {
-        await updateInfluencer(Number(params.id), payload);
-        navigate(`/influencers/${params.id}`);
+        const influencerId = Number(params.id);
+        await updateInfluencer(influencerId, payload);
+
+        const submittedIds = new Set(accounts.filter((a) => a.id).map((a) => a.id as number));
+        const removedIds = existingAccountIds.filter((id) => !submittedIds.has(id));
+
+        await Promise.all([
+          ...removedIds.map((id) => deleteAccount(influencerId, id)),
+          ...accounts.map((a) =>
+            a.id
+              ? updateAccount(influencerId, a.id, { platform: a.platform, username: a.username })
+              : createAccount(influencerId, { platform: a.platform, username: a.username }),
+          ),
+        ]);
+
+        navigate(`/influencers/${influencerId}`);
       }
     } catch (err: any) {
       setError(err?.response?.data?.message || err?.message || t('influencer.saveFailed'));

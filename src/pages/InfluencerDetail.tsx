@@ -7,6 +7,7 @@ import { Link, useParams } from 'wouter';
 import InfluencerInfo from '#components/InfluencerInfo';
 import PostList from '#components/PostList';
 import useAuthUser from '#hooks/useAuthUser';
+import { createAccount, deleteAccount, updateAccount } from '#services/account';
 import { getInfluencer, uploadAvatar, uploadCover } from '#services/influencer';
 import type Influencer from '#types/Influencer';
 
@@ -68,6 +69,35 @@ export default function InfluencerDetailPage() {
     }
   };
 
+  const handleCreateAccount = async (data: { platform: string; username: string }) => {
+    const account = await createAccount(id, data);
+    setInfluencer((prev) =>
+      prev ? { ...prev, accounts: [...(prev.accounts ?? []), account] } : prev,
+    );
+  };
+
+  const handleUpdateAccount = async (
+    accountId: number,
+    data: { platform: string; username: string },
+  ) => {
+    const account = await updateAccount(id, accountId, data);
+    setInfluencer((prev) =>
+      prev
+        ? {
+            ...prev,
+            accounts: (prev.accounts ?? []).map((a) => (a.id === accountId ? account : a)),
+          }
+        : prev,
+    );
+  };
+
+  const handleDeleteAccount = async (accountId: number) => {
+    await deleteAccount(id, accountId);
+    setInfluencer((prev) =>
+      prev ? { ...prev, accounts: (prev.accounts ?? []).filter((a) => a.id !== accountId) } : prev,
+    );
+  };
+
   if (loading) {
     return (
       <Container size='lg' py='xl'>
@@ -113,6 +143,9 @@ export default function InfluencerDetailPage() {
         uploadingCover={uploadingCover}
         onUploadAvatar={handleUploadAvatar}
         onUploadCover={handleUploadCover}
+        onCreateAccount={handleCreateAccount}
+        onUpdateAccount={handleUpdateAccount}
+        onDeleteAccount={handleDeleteAccount}
       />
 
       <Divider my='xl' />

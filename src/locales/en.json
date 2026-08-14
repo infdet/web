@@ -84,7 +84,8 @@
     "externalUrlPlaceholder": "https://...",
     "externalIdPlaceholder": "e.g. video id",
     "detachConfirm": "Remove this post from influencer?",
-    "deletePostConfirm": "Permanently delete this post?"
+    "deletePostConfirm": "Permanently delete this post?",
+    "deleteAccountConfirm": "Remove this account?"
   },
   "post": {
     "title": "Post",

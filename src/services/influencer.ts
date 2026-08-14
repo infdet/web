@@ -11,7 +11,6 @@ export interface InfluencerListParams {
 export interface InfluencerFormData {
   slug: string;
   name: Record<string, string>;
-  accounts: { platform: string; username: string }[];
 }
 
 export async function getInfluencers(
