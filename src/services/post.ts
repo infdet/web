@@ -57,3 +57,11 @@ export async function attachPosts(influencerId: number, postIds: number[]): Prom
 export async function detachPost(influencerId: number, postId: number): Promise<void> {
   await xior.delete(`/influencers/${influencerId}/posts/${postId}`);
 }
+
+export async function attachInfluencers(postId: number, influencerIds: number[]): Promise<void> {
+  await xior.post(`/posts/${postId}/influencers`, { influencerIds });
+}
+
+export async function detachInfluencer(postId: number, influencerId: number): Promise<void> {
+  await xior.delete(`/posts/${postId}/influencers/${influencerId}`);
+}

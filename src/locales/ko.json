@@ -103,7 +103,11 @@
     "createdAt": "생성일",
     "deleteConfirm": "이 게시물을 영구적으로 삭제하시겠습니까?",
     "influencers": "인플루언서",
-    "noInfluencers": "연결된 인플루언서가 없습니다."
+    "noInfluencers": "연결된 인플루언서가 없습니다.",
+    "attachInfluencers": "인플루언서 연결",
+    "searchInfluencers": "인플루언서 검색...",
+    "attach": "연결",
+    "detachInfluencerConfirm": "이 인플루언서의 연결을 해제하시겠습니까?"
   },
   "comment": {
     "title": "댓글",

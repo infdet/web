@@ -10,6 +10,7 @@ import useAuthUser from '#hooks/useAuthUser';
 import { createAccount, deleteAccount, updateAccount } from '#services/account';
 import { getInfluencer, uploadAvatar, uploadCover } from '#services/influencer';
 import type Influencer from '#types/Influencer';
+import { getInfluencerName } from '#utils/influencer';
 
 export default function InfluencerDetailPage() {
   const { t } = useTranslation();
@@ -22,9 +23,6 @@ export default function InfluencerDetailPage() {
 
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const [uploadingCover, setUploadingCover] = useState(false);
-
-  const displayName = (name: Record<string, string>) =>
-    name.en || name.zh || Object.values(name)[0] || t('influencer.unknown');
 
   const fetchDetail = useCallback(async () => {
     if (!id) return;
@@ -122,7 +120,7 @@ export default function InfluencerDetailPage() {
         <ActionIcon component={Link} href='/influencers' variant='subtle'>
           <ArrowLeftIcon size={20} />
         </ActionIcon>
-        <Title order={2}>{displayName(influencer.name)}</Title>
+        <Title order={2}>{getInfluencerName(influencer.name, t('influencer.unknown'))}</Title>
         <Badge variant='light'>@{influencer.slug}</Badge>
         {authUser && (
           <ActionIcon

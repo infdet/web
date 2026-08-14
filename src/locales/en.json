@@ -103,7 +103,11 @@
     "createdAt": "Created At",
     "deleteConfirm": "Permanently delete this post?",
     "influencers": "Influencers",
-    "noInfluencers": "No influencers linked."
+    "noInfluencers": "No influencers linked.",
+    "attachInfluencers": "Attach Influencers",
+    "searchInfluencers": "Search influencers...",
+    "attach": "Attach",
+    "detachInfluencerConfirm": "Remove this influencer from post?"
   },
   "comment": {
     "title": "Comments",

@@ -3,27 +3,39 @@ import {
   Anchor,
   AspectRatio,
   Badge,
-  Card,
+  Button,
   Container,
   Divider,
   Group,
   Loader,
+  Modal,
+  MultiSelect,
   Paper,
   SimpleGrid,
   Stack,
   Text,
   Title,
 } from '@mantine/core';
-import { ArrowLeftIcon, LinkIcon, TrashIcon } from '@phosphor-icons/react';
+import { useDisclosure } from '@mantine/hooks';
+import { ArrowLeftIcon, LinkIcon, PlusIcon, TrashIcon, XIcon } from '@phosphor-icons/react';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useParams } from 'wouter';
 
 import CommentList from '#components/CommentList';
+import InfluencerCard from '#components/InfluencerCard';
 import useAuthUser from '#hooks/useAuthUser';
-import { deletePost, getPost, getPostInfluencers } from '#services/post';
+import { getInfluencers } from '#services/influencer';
+import {
+  attachInfluencers,
+  deletePost,
+  detachInfluencer,
+  getPost,
+  getPostInfluencers,
+} from '#services/post';
 import type Influencer from '#types/Influencer';
 import type Post from '#types/Post';
+import { getInfluencerName } from '#utils/influencer';
 
 export default function PostDetailPage() {
   const { t } = useTranslation();
@@ -36,8 +48,12 @@ export default function PostDetailPage() {
   const [influencers, setInfluencers] = useState<Influencer[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const displayName = (name: Record<string, string>) =>
-    name.en || name.zh || Object.values(name)[0] || t('influencer.unknown');
+  const [attachOpened, { open: openAttach, close: closeAttach }] = useDisclosure(false);
+  const [availableInfluencers, setAvailableInfluencers] = useState<Influencer[]>([]);
+  const [selectedInfluencerIds, setSelectedInfluencerIds] = useState<string[]>([]);
+  const [attaching, setAttaching] = useState(false);
+
+  const canManageInfluencers = authUser?.role === 'editor' || authUser?.role === 'admin';
 
   const fetchPost = useCallback(async () => {
     if (!id) return;
@@ -72,6 +88,43 @@ export default function PostDetailPage() {
     try {
       await deletePost(id);
       navigate('/influencers');
+    } catch {
+      // ignore
+    }
+  };
+
+  const handleOpenAttach = async () => {
+    try {
+      const res = await getInfluencers({ perPage: 100 });
+      const linkedIds = new Set(influencers.map((inf) => inf.id));
+      setAvailableInfluencers(res.data.filter((inf) => !linkedIds.has(inf.id)));
+      setSelectedInfluencerIds([]);
+    } catch {
+      // ignore
+    }
+    openAttach();
+  };
+
+  const handleAttach = async () => {
+    if (selectedInfluencerIds.length === 0) return;
+    setAttaching(true);
+    try {
+      await attachInfluencers(id, selectedInfluencerIds.map(Number));
+      await fetchInfluencers();
+      closeAttach();
+      setSelectedInfluencerIds([]);
+    } catch {
+      // ignore
+    } finally {
+      setAttaching(false);
+    }
+  };
+
+  const handleDetach = async (influencerId: number) => {
+    if (!window.confirm(t('post.detachInfluencerConfirm'))) return;
+    try {
+      await detachInfluencer(id, influencerId);
+      await fetchInfluencers();
     } catch {
       // ignore
     }
@@ -158,29 +211,37 @@ export default function PostDetailPage() {
 
       <Divider my='xl' />
 
-      <Text fw={600} size='lg' mb='sm'>
-        {t('post.influencers')} ({influencers.length})
-      </Text>
+      <Group justify='space-between' mb='sm'>
+        <Text fw={600} size='lg'>
+          {t('post.influencers')} ({influencers.length})
+        </Text>
+        {canManageInfluencers && (
+          <Button variant='light' leftSection={<PlusIcon size={16} />} onClick={handleOpenAttach}>
+            {t('post.attachInfluencers')}
+          </Button>
+        )}
+      </Group>
       {influencers.length === 0 ? (
         <Text c='dimmed'>{t('post.noInfluencers')}</Text>
       ) : (
         <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing='md'>
           {influencers.map((influencer) => (
-            <Card key={influencer.id} shadow='sm' padding='md' radius='md' withBorder>
-              <Stack gap='xs'>
-                <Anchor
-                  component={Link}
-                  href={`/influencers/${influencer.id}`}
-                  fw={600}
-                  lineClamp={1}
-                >
-                  {displayName(influencer.name)}
-                </Anchor>
-                <Text size='sm' c='dimmed'>
-                  @{influencer.slug}
-                </Text>
-              </Stack>
-            </Card>
+            <InfluencerCard
+              key={influencer.id}
+              influencer={influencer}
+              actions={
+                canManageInfluencers && (
+                  <ActionIcon
+                    variant='subtle'
+                    color='red'
+                    size='sm'
+                    onClick={() => handleDetach(influencer.id)}
+                  >
+                    <XIcon size={14} />
+                  </ActionIcon>
+                )
+              }
+            />
           ))}
         </SimpleGrid>
       )}
@@ -191,6 +252,39 @@ export default function PostDetailPage() {
         {t('comment.title')}
       </Text>
       <CommentList postId={id} />
+
+      <Modal
+        opened={attachOpened}
+        onClose={closeAttach}
+        title={t('post.attachInfluencers')}
+        size='lg'
+      >
+        <Stack gap='md'>
+          <MultiSelect
+            data={availableInfluencers.map((inf) => ({
+              value: String(inf.id),
+              label: `${getInfluencerName(inf.name, t('influencer.unknown'))} (@${inf.slug})`,
+            }))}
+            value={selectedInfluencerIds}
+            onChange={setSelectedInfluencerIds}
+            placeholder={t('post.searchInfluencers')}
+            searchable
+            clearable
+          />
+          <Group justify='flex-end'>
+            <Button variant='default' onClick={closeAttach}>
+              {t('common.cancel')}
+            </Button>
+            <Button
+              onClick={handleAttach}
+              loading={attaching}
+              disabled={selectedInfluencerIds.length === 0}
+            >
+              {t('post.attach')}
+            </Button>
+          </Group>
+        </Stack>
+      </Modal>
     </Container>
   );
 }

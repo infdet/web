@@ -1,15 +1,11 @@
 import {
   ActionIcon,
-  Anchor,
-  Badge,
   Button,
-  Card,
   Container,
   Group,
   Pagination,
   SimpleGrid,
   Skeleton,
-  Stack,
   Text,
   Title,
 } from '@mantine/core';
@@ -18,6 +14,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'wouter';
 
+import InfluencerCard from '#components/InfluencerCard';
 import { deleteInfluencer, getInfluencers } from '#services/influencer';
 import type Influencer from '#types/Influencer';
 import type { PaginationMeta } from '#types/Response';
@@ -56,10 +53,6 @@ export default function InfluencerListPage() {
     }
   };
 
-  const displayName = (name: Record<string, string>) => {
-    return name.en || name.zh || Object.values(name)[0] || t('influencer.unknown');
-  };
-
   return (
     <Container size='lg' py='xl'>
       <Group justify='space-between' mb='lg'>
@@ -82,63 +75,32 @@ export default function InfluencerListPage() {
       ) : (
         <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }}>
           {influencers.map((influencer) => (
-            <Card key={influencer.id} shadow='sm' padding='md' radius='md' withBorder>
-              <Stack gap='xs'>
-                <Group justify='space-between' wrap='nowrap'>
-                  <Anchor
+            <InfluencerCard
+              key={influencer.id}
+              influencer={influencer}
+              showAccounts
+              actions={
+                <Group gap={4} wrap='nowrap'>
+                  <ActionIcon
                     component={Link}
-                    href={`/influencers/${influencer.id}`}
-                    fw={600}
-                    lineClamp={1}
+                    href={`/influencers/${influencer.id}/edit`}
+                    variant='subtle'
+                    color='blue'
+                    size='sm'
                   >
-                    {displayName(influencer.name)}
-                  </Anchor>
-                  <Group gap={4} wrap='nowrap'>
-                    <ActionIcon
-                      component={Link}
-                      href={`/influencers/${influencer.id}/edit`}
-                      variant='subtle'
-                      color='blue'
-                      size='sm'
-                    >
-                      <PencilIcon size={14} />
-                    </ActionIcon>
-                    <ActionIcon
-                      variant='subtle'
-                      color='red'
-                      size='sm'
-                      onClick={() => handleDelete(influencer.id)}
-                    >
-                      <TrashIcon size={14} />
-                    </ActionIcon>
-                  </Group>
+                    <PencilIcon size={14} />
+                  </ActionIcon>
+                  <ActionIcon
+                    variant='subtle'
+                    color='red'
+                    size='sm'
+                    onClick={() => handleDelete(influencer.id)}
+                  >
+                    <TrashIcon size={14} />
+                  </ActionIcon>
                 </Group>
-                <Text size='sm' c='dimmed'>
-                  @{influencer.slug}
-                </Text>
-                <Group gap={4}>
-                  {influencer.accounts?.map((a) =>
-                    a.url ? (
-                      <Anchor
-                        key={a.id}
-                        href={a.url}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                        underline='never'
-                      >
-                        <Badge variant='light' size='sm'>
-                          {a.platform}: {a.username}
-                        </Badge>
-                      </Anchor>
-                    ) : (
-                      <Badge key={a.id} variant='light' size='sm'>
-                        {a.platform}: {a.username}
-                      </Badge>
-                    ),
-                  )}
-                </Group>
-              </Stack>
-            </Card>
+              }
+            />
           ))}
         </SimpleGrid>
       )}

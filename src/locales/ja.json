@@ -103,7 +103,11 @@
     "createdAt": "作成日時",
     "deleteConfirm": "この投稿を完全に削除しますか？",
     "influencers": "インフルエンサー",
-    "noInfluencers": "インフルエンサーがありません。"
+    "noInfluencers": "インフルエンサーがありません。",
+    "attachInfluencers": "インフルエンサーを関連付け",
+    "searchInfluencers": "インフルエンサーを検索...",
+    "attach": "関連付け",
+    "detachInfluencerConfirm": "このインフルエンサーの関連付けを解除しますか？"
   },
   "comment": {
     "title": "コメント",
