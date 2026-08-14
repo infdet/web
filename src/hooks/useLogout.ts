@@ -15,6 +15,6 @@ export default function useLogout() {
     }
     setAuthToken('');
     setAuthUser(null);
-    navigate('/login');
+    navigate('/');
   };
 }

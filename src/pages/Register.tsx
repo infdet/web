@@ -11,7 +11,7 @@ import {
 } from '@mantine/core';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'wouter';
+import { useLocation, useSearchParams } from 'wouter';
 
 import useAuthUser from '#hooks/useAuthUser';
 import { register, setAuthToken } from '#services/auth';
@@ -19,7 +19,9 @@ import { register, setAuthToken } from '#services/auth';
 export default function RegisterPage() {
   const { t } = useTranslation();
   const [, navigate] = useLocation();
+  const [searchParams] = useSearchParams();
   const [, setAuthUser] = useAuthUser();
+  const from = searchParams.get('from') ?? '';
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -43,7 +45,7 @@ export default function RegisterPage() {
       const res = await register({ name, email, password, passwordConfirmation });
       setAuthToken(res.token);
       setAuthUser(res.user);
-      navigate('/');
+      navigate(from || '/');
     } catch (err: any) {
       const messages = err?.response?.data?.errors;
       if (Array.isArray(messages)) {
@@ -61,7 +63,11 @@ export default function RegisterPage() {
       <Title ta='center'>{t('auth.createAccount')}</Title>
       <Text c='dimmed' size='sm' ta='center' mt={5}>
         {t('auth.haveAccount')}{' '}
-        <Anchor size='sm' component='button' onClick={() => navigate('/login')}>
+        <Anchor
+          size='sm'
+          component='button'
+          onClick={() => navigate(from ? `/login?from=${encodeURIComponent(from)}` : '/login')}
+        >
           {t('auth.signIn')}
         </Anchor>
       </Text>
