@@ -95,6 +95,14 @@
     "influencers": "关联网红",
     "noInfluencers": "暂无关联网红。"
   },
+  "comment": {
+    "title": "评论",
+    "empty": "暂无评论。",
+    "placeholder": "写下你的评论...",
+    "submit": "提交",
+    "deleteConfirm": "确定要删除这条评论吗？",
+    "anonymous": "匿名用户"
+  },
   "common": {
     "cancel": "取消",
     "save": "保存",

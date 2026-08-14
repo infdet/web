@@ -95,6 +95,14 @@
     "influencers": "인플루언서",
     "noInfluencers": "연결된 인플루언서가 없습니다."
   },
+  "comment": {
+    "title": "댓글",
+    "empty": "아직 댓글이 없습니다.",
+    "placeholder": "댓글을 작성하세요...",
+    "submit": "등록",
+    "deleteConfirm": "이 댓글을 삭제하시겠습니까?",
+    "anonymous": "익명"
+  },
   "common": {
     "cancel": "취소",
     "save": "저장",

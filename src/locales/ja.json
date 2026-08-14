@@ -95,6 +95,14 @@
     "influencers": "インフルエンサー",
     "noInfluencers": "インフルエンサーがありません。"
   },
+  "comment": {
+    "title": "コメント",
+    "empty": "まだコメントがありません。",
+    "placeholder": "コメントを書く...",
+    "submit": "送信",
+    "deleteConfirm": "このコメントを削除しますか？",
+    "anonymous": "匿名"
+  },
   "common": {
     "cancel": "キャンセル",
     "save": "保存",

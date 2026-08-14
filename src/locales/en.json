@@ -95,6 +95,14 @@
     "influencers": "Influencers",
     "noInfluencers": "No influencers linked."
   },
+  "comment": {
+    "title": "Comments",
+    "empty": "No comments yet.",
+    "placeholder": "Write a comment...",
+    "submit": "Submit",
+    "deleteConfirm": "Delete this comment?",
+    "anonymous": "Anonymous"
+  },
   "common": {
     "cancel": "Cancel",
     "save": "Save",

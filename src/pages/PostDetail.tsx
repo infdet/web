@@ -19,6 +19,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useParams } from 'wouter';
 
+import CommentList from '#components/CommentList';
 import useAuthUser from '#hooks/useAuthUser';
 import { deletePost, getPost, getPostInfluencers } from '#services/post';
 import type Influencer from '#types/Influencer';
@@ -183,6 +184,13 @@ export default function PostDetailPage() {
           ))}
         </SimpleGrid>
       )}
+
+      <Divider my='xl' />
+
+      <Text fw={600} size='lg' mb='sm'>
+        {t('comment.title')}
+      </Text>
+      <CommentList postId={id} />
     </Container>
   );
 }
