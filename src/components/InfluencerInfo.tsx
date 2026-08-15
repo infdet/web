@@ -1,4 +1,4 @@
-import { Badge, Button, Group, Stack, Text, Title } from '@mantine/core';
+import { Button, Group, Stack, Title } from '@mantine/core';
 import { PencilIcon } from '@phosphor-icons/react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'wouter';
@@ -6,6 +6,7 @@ import { Link } from 'wouter';
 import AccountList from '#components/AccountList';
 import InfluencerAvatar from '#components/InfluencerAvatar';
 import InfluencerCover from '#components/InfluencerCover';
+import InfluencerNameList from '#components/InfluencerNameList';
 import TagList from '#components/TagList';
 import useAuthUser from '#hooks/useAuthUser';
 import type Influencer from '#types/Influencer';
@@ -61,18 +62,7 @@ export default function InfluencerInfo({
           />
           <Stack gap={2} style={{ flex: 1, minWidth: 0 }}>
             <Title order={2}>{getLocalizedName(influencer.name, t('influencer.unknown'))}</Title>
-            <Group gap='xs'>
-              {Object.entries(influencer.name).map(([locale, name]) => (
-                <Group key={locale} gap='xs'>
-                  <Badge variant='outline' size='xs' tt='uppercase'>
-                    {locale}
-                  </Badge>
-                  <Text size='sm' c='dimmed'>
-                    {name}
-                  </Text>
-                </Group>
-              ))}
-            </Group>
+            <InfluencerNameList name={influencer.name} />
           </Stack>
           {authUser && (
             <Button

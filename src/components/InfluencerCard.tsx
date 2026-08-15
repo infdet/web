@@ -1,8 +1,9 @@
-import { Anchor, Avatar, Badge, Card, Flex, Group, Stack, Text } from '@mantine/core';
+import { Anchor, Avatar, Card, Group, Stack } from '@mantine/core';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'wouter';
 
+import InfluencerNameList from '#components/InfluencerNameList';
 import type Influencer from '#types/Influencer';
 import { getLocalizedName } from '#utils/localized';
 
@@ -35,20 +36,7 @@ export default function InfluencerCard({ influencer, actions }: InfluencerCardPr
           {actions && <div onClick={(e) => e.stopPropagation()}>{actions}</div>}
         </Group>
 
-        <Group gap='xs'>
-          {Object.entries(influencer.name)
-            .filter(([locale, name]) => name !== localeName)
-            .map(([locale, name]) => (
-              <Flex key={locale} gap={4} wrap='nowrap' align='center'>
-                <Badge variant='outline' size='xs' tt='uppercase'>
-                  {locale}
-                </Badge>
-                <Text size='sm' c='dimmed' lineClamp={1}>
-                  {name}
-                </Text>
-              </Flex>
-            ))}
-        </Group>
+        <InfluencerNameList name={influencer.name} exclude={localeName} badgeVariant='filled' />
       </Stack>
     </Card>
   );
