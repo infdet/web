@@ -115,7 +115,9 @@
     "attach": "Add Tag",
     "searchTags": "Search tags...",
     "detachConfirm": "Remove this tag?",
-    "noAttached": "No tags linked."
+    "noAttached": "No tags linked.",
+    "filterByTag": "Filter by tag",
+    "clearFilter": "Clear filter"
   },
   "post": {
     "title": "Post",

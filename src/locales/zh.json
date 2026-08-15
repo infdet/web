@@ -115,7 +115,9 @@
     "attach": "添加标签",
     "searchTags": "搜索标签...",
     "detachConfirm": "确定要移除此标签关联吗？",
-    "noAttached": "暂无关联标签。"
+    "noAttached": "暂无关联标签。",
+    "filterByTag": "按标签筛选",
+    "clearFilter": "清除筛选"
   },
   "post": {
     "title": "帖子",

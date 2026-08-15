@@ -115,7 +115,9 @@
     "attach": "태그 추가",
     "searchTags": "태그 검색...",
     "detachConfirm": "이 태그 연결을 해제하시겠습니까?",
-    "noAttached": "연결된 태그가 없습니다."
+    "noAttached": "연결된 태그가 없습니다.",
+    "filterByTag": "태그로 필터",
+    "clearFilter": "필터 지우기"
   },
   "post": {
     "title": "게시물",

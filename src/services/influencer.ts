@@ -6,6 +6,7 @@ import type { BaseResponse, PaginatedResponse } from '#types/Response';
 export interface InfluencerListParams {
   page?: number;
   perPage?: number;
+  tagIds?: number[];
 }
 
 export interface InfluencerFormData {
