@@ -1,5 +1,4 @@
 import {
-  ActionIcon,
   Button,
   Chip,
   Container,
@@ -10,13 +9,13 @@ import {
   Text,
   Title,
 } from '@mantine/core';
-import { PencilIcon, PlusIcon, TrashIcon } from '@phosphor-icons/react';
+import { PlusIcon } from '@phosphor-icons/react';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'wouter';
 
 import InfluencerCard from '#components/InfluencerCard';
-import { deleteInfluencer, getInfluencers } from '#services/influencer';
+import { getInfluencers } from '#services/influencer';
 import { getTags } from '#services/tag';
 import type Influencer from '#types/Influencer';
 import type { PaginationMeta } from '#types/Response';
@@ -62,16 +61,6 @@ export default function InfluencerListPage() {
       cancelled = true;
     };
   }, []);
-
-  const handleDelete = async (id: number) => {
-    if (!window.confirm(t('influencer.deleteConfirm'))) return;
-    try {
-      await deleteInfluencer(id);
-      setInfluencers((prev) => prev.filter((i) => i.id !== id));
-    } catch {
-      // ignore
-    }
-  };
 
   const clearFilter = () => {
     setSelectedTagIds([]);
@@ -129,32 +118,7 @@ export default function InfluencerListPage() {
       ) : (
         <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }}>
           {influencers.map((influencer) => (
-            <InfluencerCard
-              key={influencer.id}
-              influencer={influencer}
-              showAccounts
-              actions={
-                <Group gap={4} wrap='nowrap'>
-                  <ActionIcon
-                    component={Link}
-                    href={`/influencers/${influencer.id}/edit`}
-                    variant='subtle'
-                    color='blue'
-                    size='sm'
-                  >
-                    <PencilIcon size={14} />
-                  </ActionIcon>
-                  <ActionIcon
-                    variant='subtle'
-                    color='red'
-                    size='sm'
-                    onClick={() => handleDelete(influencer.id)}
-                  >
-                    <TrashIcon size={14} />
-                  </ActionIcon>
-                </Group>
-              }
-            />
+            <InfluencerCard key={influencer.id} influencer={influencer} />
           ))}
         </SimpleGrid>
       )}

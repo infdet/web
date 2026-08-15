@@ -1,4 +1,4 @@
-import { Anchor, Avatar, Badge, Card, Group, Stack, Text } from '@mantine/core';
+import { Anchor, Avatar, Badge, Card, Flex, Group, Stack, Text } from '@mantine/core';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'wouter';
@@ -8,16 +8,13 @@ import { getLocalizedName } from '#utils/localized';
 
 interface InfluencerCardProps {
   influencer: Influencer;
-  showAccounts?: boolean;
   actions?: ReactNode;
 }
 
-export default function InfluencerCard({
-  influencer,
-  showAccounts = false,
-  actions,
-}: InfluencerCardProps) {
+export default function InfluencerCard({ influencer, actions }: InfluencerCardProps) {
   const { t } = useTranslation();
+
+  const localeName = getLocalizedName(influencer.name, t('influencer.unknown'));
 
   return (
     <Card shadow='sm' padding='md' radius='md' withBorder>
@@ -32,37 +29,26 @@ export default function InfluencerCard({
               lineClamp={1}
               style={{ flex: 1, minWidth: 0 }}
             >
-              {getLocalizedName(influencer.name, t('influencer.unknown'))}
+              {localeName}
             </Anchor>
           </Group>
-          {actions}
+          {actions && <div onClick={(e) => e.stopPropagation()}>{actions}</div>}
         </Group>
-        <Text size='sm' c='dimmed'>
-          @{influencer.slug}
-        </Text>
-        {showAccounts && influencer.accounts?.length > 0 && (
-          <Group gap={4}>
-            {influencer.accounts.map((a) =>
-              a.url ? (
-                <Anchor
-                  key={a.id}
-                  href={a.url}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  underline='never'
-                >
-                  <Badge variant='light' size='sm'>
-                    {a.platform}: {a.username}
-                  </Badge>
-                </Anchor>
-              ) : (
-                <Badge key={a.id} variant='light' size='sm'>
-                  {a.platform}: {a.username}
+
+        <Group gap='xs'>
+          {Object.entries(influencer.name)
+            .filter(([locale, name]) => name !== localeName)
+            .map(([locale, name]) => (
+              <Flex key={locale} gap={4} wrap='nowrap' align='center'>
+                <Badge variant='outline' size='xs' tt='uppercase'>
+                  {locale}
                 </Badge>
-              ),
-            )}
-          </Group>
-        )}
+                <Text size='sm' c='dimmed' lineClamp={1}>
+                  {name}
+                </Text>
+              </Flex>
+            ))}
+        </Group>
       </Stack>
     </Card>
   );
