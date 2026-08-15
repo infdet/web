@@ -48,6 +48,8 @@
     "usernameRequired": "ユーザー名は必須です",
     "socialAccounts": "ソーシャルアカウント",
     "addAccount": "アカウント追加",
+    "editAccount": "アカウントを編集",
+    "deleteAccount": "アカウントを削除",
     "platform": "プラットフォーム",
     "platformPlaceholder": "プラットフォーム",
     "username": "ユーザー名",

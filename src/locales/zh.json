@@ -48,6 +48,8 @@
     "usernameRequired": "用户名不能为空",
     "socialAccounts": "社交账号",
     "addAccount": "添加账号",
+    "editAccount": "编辑账号",
+    "deleteAccount": "删除账号",
     "platform": "平台",
     "platformPlaceholder": "选择平台",
     "username": "用户名",

@@ -48,6 +48,8 @@
     "usernameRequired": "Username is required",
     "socialAccounts": "Social Accounts",
     "addAccount": "Add Account",
+    "editAccount": "Edit Account",
+    "deleteAccount": "Delete Account",
     "platform": "Platform",
     "platformPlaceholder": "Platform",
     "username": "Username",

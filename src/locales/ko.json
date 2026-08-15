@@ -48,6 +48,8 @@
     "usernameRequired": "사용자 이름은 필수입니다",
     "socialAccounts": "소셜 계정",
     "addAccount": "계정 추가",
+    "editAccount": "계정 편집",
+    "deleteAccount": "계정 삭제",
     "platform": "플랫폼",
     "platformPlaceholder": "플랫폼",
     "username": "사용자 이름",
