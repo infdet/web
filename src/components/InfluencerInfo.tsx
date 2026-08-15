@@ -1,29 +1,37 @@
 import {
   ActionIcon,
-  Anchor,
+  Avatar,
+  BackgroundImage,
   Badge,
+  Box,
   Button,
-  FileInput,
+  FileButton,
   Group,
-  Image,
   Paper,
   Select,
-  SimpleGrid,
   Stack,
   Text,
   TextInput,
   Title,
+  Tooltip,
 } from '@mantine/core';
 import {
   ArrowLeftIcon,
   CameraIcon,
   CheckIcon,
+  FacebookLogo,
+  GlobeSimple,
   ImageIcon,
+  InstagramLogo,
   PencilIcon,
   PlusIcon,
+  TiktokLogo,
   TrashIcon,
   XIcon,
+  XLogo,
+  YoutubeLogo,
 } from '@phosphor-icons/react';
+import type { Icon } from '@phosphor-icons/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'wouter';
@@ -44,6 +52,24 @@ interface InfluencerInfoProps {
   onCreateAccount: (data: { platform: string; username: string }) => Promise<void>;
   onUpdateAccount: (id: number, data: { platform: string; username: string }) => Promise<void>;
   onDeleteAccount: (id: number) => Promise<void>;
+}
+
+const PLATFORM_ICONS: Record<string, Icon> = {
+  youtube: YoutubeLogo,
+  instagram: InstagramLogo,
+  tiktok: TiktokLogo,
+  twitter: XLogo,
+  facebook: FacebookLogo,
+  bilibili: GlobeSimple,
+  weibo: GlobeSimple,
+  douyin: GlobeSimple,
+  xiaohongshu: GlobeSimple,
+  other: GlobeSimple,
+};
+
+function PlatformIcon({ platform, size = 16 }: { platform: string; size?: number }) {
+  const IconComponent = PLATFORM_ICONS[platform] ?? GlobeSimple;
+  return <IconComponent size={size} />;
 }
 
 export default function InfluencerInfo({
@@ -136,221 +162,146 @@ export default function InfluencerInfo({
   };
 
   return (
-    <>
-      <Group mb='xl'>
-        <ActionIcon component={Link} href='/influencers' variant='subtle'>
-          <ArrowLeftIcon size={20} />
+    <Box>
+      <Box pos='relative'>
+        {influencer.cover ? (
+          <BackgroundImage src={influencer.cover} h={{ base: 150, sm: 200 }} radius='md' />
+        ) : (
+          <Box
+            h={{ base: 150, sm: 200 }}
+            bg='gray.2'
+            style={{ borderRadius: 'var(--mantine-radius-md)' }}
+          >
+            <Group h='100%' justify='center'>
+              <ImageIcon size={40} color='var(--mantine-color-gray-5)' />
+            </Group>
+          </Box>
+        )}
+
+        <ActionIcon
+          component={Link}
+          href='/influencers'
+          variant='filled'
+          color='dark'
+          radius='xl'
+          aria-label={t('influencer.list')}
+          pos='absolute'
+          top={12}
+          left={12}
+          style={{ opacity: 0.85 }}
+        >
+          <ArrowLeftIcon size={18} />
         </ActionIcon>
-        <Title order={2}>{getInfluencerName(influencer.name, t('influencer.unknown'))}</Title>
-        <Badge variant='light'>@{influencer.slug}</Badge>
+
+        {showUpload && (
+          <FileButton onChange={onUploadCover} accept='image/*'>
+            {(props) => (
+              <Tooltip label={t('influencer.uploadCover')} withArrow>
+                <ActionIcon
+                  {...props}
+                  variant='filled'
+                  color='dark'
+                  radius='xl'
+                  aria-label={t('influencer.uploadCover')}
+                  loading={uploadingCover}
+                  pos='absolute'
+                  top={12}
+                  right={12}
+                  style={{ opacity: 0.85 }}
+                >
+                  <CameraIcon size={16} />
+                </ActionIcon>
+              </Tooltip>
+            )}
+          </FileButton>
+        )}
+      </Box>
+
+      <Group justify='space-between' align='flex-end' px='md' mt={-40}>
+        <Box pos='relative'>
+          <Avatar
+            src={influencer.avatar ?? undefined}
+            size={96}
+            radius='50%'
+            color='gray'
+            style={{ border: '4px solid var(--mantine-color-body)' }}
+          >
+            {!influencer.avatar && <CameraIcon size={32} />}
+          </Avatar>
+          {showUpload && (
+            <FileButton onChange={onUploadAvatar} accept='image/*'>
+              {(props) => (
+                <Tooltip label={t('influencer.uploadAvatar')} withArrow>
+                  <ActionIcon
+                    {...props}
+                    variant='filled'
+                    color='dark'
+                    radius='xl'
+                    size='sm'
+                    aria-label={t('influencer.uploadAvatar')}
+                    loading={uploadingAvatar}
+                    pos='absolute'
+                    bottom={0}
+                    right={0}
+                  >
+                    <CameraIcon size={14} />
+                  </ActionIcon>
+                </Tooltip>
+              )}
+            </FileButton>
+          )}
+        </Box>
+
         {authUser && (
-          <ActionIcon
+          <Button
             component={Link}
             href={`/influencers/${influencer.id}/edit`}
-            variant='subtle'
-            color='blue'
+            variant='light'
+            leftSection={<PencilIcon size={14} />}
           >
-            <PencilIcon size={18} />
-          </ActionIcon>
+            {t('influencer.edit')}
+          </Button>
         )}
       </Group>
-      <SimpleGrid cols={{ base: 1, sm: 2 }} spacing='lg'>
-        <Paper withBorder p='md' radius='md'>
-          <Text fw={600} mb='sm'>
-            {t('influencer.avatar')}
-          </Text>
-          {influencer.avatar ? (
-            <Image
-              src={influencer.avatar}
-              alt='Avatar'
-              width={120}
-              height={120}
-              radius='md'
-              fit='cover'
-            />
-          ) : (
-            <Paper
-              bg='gray.1'
-              w={120}
-              h={120}
-              radius='md'
-              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-            >
-              <CameraIcon size={32} color='var(--mantine-color-gray-5)' />
-            </Paper>
-          )}
+
+      <Stack gap={2} px='md' mt='sm'>
+        <Title order={2}>{getInfluencerName(influencer.name, t('influencer.unknown'))}</Title>
+        <Text c='dimmed'>@{influencer.slug}</Text>
+      </Stack>
+
+      <Stack gap='xs' px='md' mt='lg'>
+        <Group justify='space-between'>
+          <Text fw={600}>{t('influencer.accounts')}</Text>
           {showUpload && (
-            <FileInput
-              mt='sm'
-              size='sm'
-              placeholder={t('influencer.uploadAvatar')}
-              accept='image/*'
-              leftSection={<ImageIcon size={14} />}
-              value={null}
-              onChange={onUploadAvatar}
-              disabled={uploadingAvatar}
-              clearable={false}
-            />
-          )}
-        </Paper>
-
-        <Paper withBorder p='md' radius='md'>
-          <Text fw={600} mb='sm'>
-            {t('influencer.cover')}
-          </Text>
-          {influencer.cover ? (
-            <Image
-              src={influencer.cover}
-              alt='Cover'
-              width={180}
-              height={320}
-              radius='md'
-              fit='cover'
-            />
-          ) : (
-            <Paper
-              bg='gray.1'
-              w={180}
-              h={320}
-              radius='md'
-              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            <Button
+              size='xs'
+              variant='light'
+              leftSection={<PlusIcon size={14} />}
+              onClick={() => setAdding(true)}
             >
-              <ImageIcon size={32} color='var(--mantine-color-gray-5)' />
-            </Paper>
+              {t('influencer.addAccount')}
+            </Button>
           )}
-          {showUpload && (
-            <FileInput
-              mt='sm'
-              size='sm'
-              placeholder={t('influencer.uploadCover')}
-              accept='image/*'
-              leftSection={<ImageIcon size={14} />}
-              value={null}
-              onChange={onUploadCover}
-              disabled={uploadingCover}
-              clearable={false}
-            />
-          )}
-        </Paper>
-      </SimpleGrid>
+        </Group>
 
-      <SimpleGrid cols={{ base: 1, sm: 2 }} spacing='lg' mt='lg'>
-        <Stack gap='xs'>
-          <Group justify='space-between'>
-            <Text fw={600}>{t('influencer.accounts')}</Text>
-            {showUpload && (
-              <Button
-                size='xs'
-                variant='light'
-                leftSection={<PlusIcon size={14} />}
-                onClick={() => setAdding(true)}
-              >
-                {t('influencer.addAccount')}
-              </Button>
-            )}
-          </Group>
-
-          {influencer.accounts?.map((a) =>
-            editingId === a.id ? (
-              <Paper key={a.id} withBorder p='xs' radius='sm'>
-                <Stack gap='xs'>
-                  <Select
-                    size='xs'
-                    data={PLATFORM_OPTIONS}
-                    value={editingPlatform}
-                    onChange={(v) => setEditingPlatform(v ?? '')}
-                    searchable
-                  />
-                  <TextInput
-                    size='xs'
-                    value={editingUsername}
-                    onChange={(e) => setEditingUsername(e.currentTarget.value)}
-                  />
-                  <Group gap='xs' justify='flex-end'>
-                    <ActionIcon variant='subtle' size='sm' onClick={cancelEdit}>
-                      <XIcon size={14} />
-                    </ActionIcon>
-                    <ActionIcon
-                      variant='subtle'
-                      color='green'
-                      size='sm'
-                      loading={saving}
-                      disabled={!editingPlatform || !editingUsername}
-                      onClick={() => saveEdit(a.id)}
-                    >
-                      <CheckIcon size={14} />
-                    </ActionIcon>
-                  </Group>
-                </Stack>
-              </Paper>
-            ) : (
-              <Paper key={a.id} withBorder p='xs' radius='sm'>
-                <Group justify='space-between' wrap='nowrap'>
-                  <Stack gap={0} style={{ flex: 1, minWidth: 0 }}>
-                    <Text size='sm' fw={500}>
-                      {a.platform}
-                    </Text>
-                    {a.url ? (
-                      <Anchor
-                        href={a.url}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                        size='sm'
-                        c='dimmed'
-                        truncate
-                      >
-                        @{a.username}
-                      </Anchor>
-                    ) : (
-                      <Text size='sm' c='dimmed' truncate>
-                        @{a.username}
-                      </Text>
-                    )}
-                  </Stack>
-                  {showUpload && (
-                    <Group gap={4} wrap='nowrap'>
-                      <ActionIcon
-                        variant='subtle'
-                        color='blue'
-                        size='sm'
-                        onClick={() => startEdit(a)}
-                      >
-                        <PencilIcon size={14} />
-                      </ActionIcon>
-                      <ActionIcon
-                        variant='subtle'
-                        color='red'
-                        size='sm'
-                        onClick={() => handleDelete(a)}
-                      >
-                        <TrashIcon size={14} />
-                      </ActionIcon>
-                    </Group>
-                  )}
-                </Group>
-              </Paper>
-            ),
-          )}
-
-          {adding && (
-            <Paper withBorder p='xs' radius='sm'>
+        {influencer.accounts?.map((a) =>
+          editingId === a.id ? (
+            <Paper key={a.id} withBorder p='xs' radius='md'>
               <Stack gap='xs'>
                 <Select
                   size='xs'
                   data={PLATFORM_OPTIONS}
-                  placeholder={t('influencer.platformPlaceholder')}
-                  value={newPlatform}
-                  onChange={(v) => setNewPlatform(v ?? '')}
+                  value={editingPlatform}
+                  onChange={(v) => setEditingPlatform(v ?? '')}
                   searchable
                 />
                 <TextInput
                   size='xs'
-                  placeholder={t('influencer.usernamePlaceholder')}
-                  value={newUsername}
-                  onChange={(e) => setNewUsername(e.currentTarget.value)}
+                  value={editingUsername}
+                  onChange={(e) => setEditingUsername(e.currentTarget.value)}
                 />
                 <Group gap='xs' justify='flex-end'>
-                  <ActionIcon variant='subtle' size='sm' onClick={() => setAdding(false)}>
+                  <ActionIcon variant='subtle' size='sm' onClick={cancelEdit}>
                     <XIcon size={14} />
                   </ActionIcon>
                   <ActionIcon
@@ -358,38 +309,120 @@ export default function InfluencerInfo({
                     color='green'
                     size='sm'
                     loading={saving}
-                    disabled={!newPlatform || !newUsername}
-                    onClick={handleAdd}
+                    disabled={!editingPlatform || !editingUsername}
+                    onClick={() => saveEdit(a.id)}
                   >
                     <CheckIcon size={14} />
                   </ActionIcon>
                 </Group>
               </Stack>
             </Paper>
-          )}
+          ) : (
+            <Group key={a.id} gap='xs' wrap='nowrap'>
+              {a.url ? (
+                <Badge
+                  component='a'
+                  href={a.url}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  variant='light'
+                  size='lg'
+                  radius='xl'
+                  leftSection={<PlatformIcon platform={a.platform} size={16} />}
+                >
+                  @{a.username}
+                </Badge>
+              ) : (
+                <Badge
+                  variant='light'
+                  size='lg'
+                  radius='xl'
+                  leftSection={<PlatformIcon platform={a.platform} size={16} />}
+                >
+                  @{a.username}
+                </Badge>
+              )}
+              {showUpload && (
+                <Group gap={2} wrap='nowrap'>
+                  <ActionIcon variant='subtle' color='blue' size='sm' onClick={() => startEdit(a)}>
+                    <PencilIcon size={14} />
+                  </ActionIcon>
+                  <ActionIcon
+                    variant='subtle'
+                    color='red'
+                    size='sm'
+                    onClick={() => handleDelete(a)}
+                  >
+                    <TrashIcon size={14} />
+                  </ActionIcon>
+                </Group>
+              )}
+            </Group>
+          ),
+        )}
 
-          {(!influencer.accounts || influencer.accounts.length === 0) && !adding && (
-            <Text c='dimmed' size='sm'>
-              {t('influencer.noAccounts')}
-            </Text>
-          )}
+        {(!influencer.accounts || influencer.accounts.length === 0) && !adding && (
+          <Text c='dimmed' size='sm'>
+            {t('influencer.noAccounts')}
+          </Text>
+        )}
 
-          {error && (
-            <Text c='red' size='sm'>
-              {error}
-            </Text>
-          )}
-        </Stack>
+        {adding && (
+          <Paper withBorder p='xs' radius='md'>
+            <Stack gap='xs'>
+              <Select
+                size='xs'
+                data={PLATFORM_OPTIONS}
+                placeholder={t('influencer.platformPlaceholder')}
+                value={newPlatform}
+                onChange={(v) => setNewPlatform(v ?? '')}
+                searchable
+              />
+              <TextInput
+                size='xs'
+                placeholder={t('influencer.usernamePlaceholder')}
+                value={newUsername}
+                onChange={(e) => setNewUsername(e.currentTarget.value)}
+              />
+              <Group gap='xs' justify='flex-end'>
+                <ActionIcon variant='subtle' size='sm' onClick={() => setAdding(false)}>
+                  <XIcon size={14} />
+                </ActionIcon>
+                <ActionIcon
+                  variant='subtle'
+                  color='green'
+                  size='sm'
+                  loading={saving}
+                  disabled={!newPlatform || !newUsername}
+                  onClick={handleAdd}
+                >
+                  <CheckIcon size={14} />
+                </ActionIcon>
+              </Group>
+            </Stack>
+          </Paper>
+        )}
 
-        <Stack gap='xs'>
-          <Text fw={600}>{t('influencer.name')}</Text>
-          {Object.entries(influencer.name).map(([locale, name]) => (
-            <Text key={locale} size='sm' c='dimmed'>
-              {locale}: {name}
+        {error && (
+          <Text c='red' size='sm'>
+            {error}
+          </Text>
+        )}
+      </Stack>
+
+      <Stack gap={4} px='md' mt='lg'>
+        <Text fw={600}>{t('influencer.name')}</Text>
+        {Object.entries(influencer.name).map(([locale, name]) => (
+          <Group key={locale} gap='xs'>
+            <Badge variant='outline' size='xs' tt='uppercase'>
+              {locale}
+            </Badge>
+            <Text size='sm' c='dimmed'>
+              {name}
             </Text>
-          ))}
-        </Stack>
-      </SimpleGrid>
-    </>
+          </Group>
+        ))}
+      </Stack>
+    </Box>
   );
 }
