@@ -1,4 +1,4 @@
-import { Button, Group, Modal, Stack, Text, TextInput } from '@mantine/core';
+import { Button, Group, Modal, Stack, Switch, Text, TextInput } from '@mantine/core';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -9,7 +9,11 @@ interface TagFormModalProps {
   title: string;
   initialValues?: Tag;
   onClose: () => void;
-  onSubmit: (data: { slug: string; name: Record<string, string> }) => Promise<void>;
+  onSubmit: (data: {
+    slug: string;
+    name: Record<string, string>;
+    forInfluencer: boolean;
+  }) => Promise<void>;
 }
 
 const NAME_LANGUAGES = [
@@ -29,6 +33,7 @@ export default function TagFormModal({
   const { t } = useTranslation();
   const [slug, setSlug] = useState('');
   const [name, setName] = useState<Record<string, string>>({ en: '', zh: '', ja: '', ko: '' });
+  const [forInfluencer, setForInfluencer] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
@@ -47,6 +52,7 @@ export default function TagFormModal({
       ja: init?.name?.ja ?? '',
       ko: init?.name?.ko ?? '',
     });
+    setForInfluencer(init?.forInfluencer ?? false);
     setError('');
     setSaving(false);
   }, [opened]);
@@ -62,7 +68,7 @@ export default function TagFormModal({
     }
 
     try {
-      await onSubmit({ slug: slug.trim(), name: trimmedName });
+      await onSubmit({ slug: slug.trim(), name: trimmedName, forInfluencer });
       onClose();
     } catch (err: any) {
       setError(
@@ -95,6 +101,11 @@ export default function TagFormModal({
             onChange={(e) => setName((prev) => ({ ...prev, [lang.key]: e.currentTarget.value }))}
           />
         ))}
+        <Switch
+          label={t('tag.forInfluencer')}
+          checked={forInfluencer}
+          onChange={(e) => setForInfluencer(e.currentTarget.checked)}
+        />
         {error && (
           <Text c='red' size='sm'>
             {error}

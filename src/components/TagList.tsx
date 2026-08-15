@@ -11,11 +11,19 @@ import { getLocalizedName } from '#utils/localized';
 interface TagListProps {
   tags: Tag[];
   showActions: boolean;
+  /** When true, only tags marked `forInfluencer` can be attached. */
+  forInfluencerOnly?: boolean;
   onAttach: (tagIds: number[]) => Promise<void>;
   onDetach: (tagId: number) => Promise<void>;
 }
 
-export default function TagList({ tags, showActions, onAttach, onDetach }: TagListProps) {
+export default function TagList({
+  tags,
+  showActions,
+  forInfluencerOnly = false,
+  onAttach,
+  onDetach,
+}: TagListProps) {
   const { t } = useTranslation();
 
   const [attachOpened, { open: openAttach, close: closeAttach }] = useDisclosure(false);
@@ -25,7 +33,8 @@ export default function TagList({ tags, showActions, onAttach, onDetach }: TagLi
 
   const handleOpenAttach = async () => {
     try {
-      const res = await getTags({ perPage: 100 });
+      const params = forInfluencerOnly ? { perPage: 100, forInfluencer: true } : { perPage: 100 };
+      const res = await getTags(params);
       const linkedIds = new Set(tags.map((tag) => tag.id));
       setAvailableTags(res.data.filter((tag) => !linkedIds.has(tag.id)));
       setSelectedIds([]);

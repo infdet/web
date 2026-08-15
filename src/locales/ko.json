@@ -104,6 +104,7 @@
     "nameZh": "이름 (중국어)",
     "nameJa": "이름 (일본어)",
     "nameKo": "이름 (한국어)",
+    "forInfluencer": "인플루언서에 사용 가능",
     "slugRequired": "슬러그는 필수입니다",
     "nameEnRequired": "영어 이름은 필수입니다",
     "create": "생성",

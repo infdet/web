@@ -6,12 +6,13 @@ import type Tag from '#types/Tag';
 export interface TagFormData {
   slug: string;
   name: Record<string, string>;
+  forInfluencer?: boolean;
 }
 
 // ── Tags CRUD ──
 
 export async function getTags(
-  params: { page?: number; perPage?: number } = {},
+  params: { page?: number; perPage?: number; forInfluencer?: boolean } = {},
 ): Promise<PaginatedResponse<Tag>> {
   const res = await xior.get<PaginatedResponse<Tag>>('/tags', { params });
   return res.data;

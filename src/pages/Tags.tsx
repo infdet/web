@@ -64,7 +64,11 @@ export default function TagsPage() {
     }
   };
 
-  const handleSubmit = async (data: { slug: string; name: Record<string, string> }) => {
+  const handleSubmit = async (data: {
+    slug: string;
+    name: Record<string, string>;
+    forInfluencer: boolean;
+  }) => {
     if (editing) {
       const updated = await updateTag(editing.id, data);
       setTags((prev) => prev.map((x) => (x.id === updated.id ? updated : x)));
@@ -97,6 +101,7 @@ export default function TagsPage() {
             <Table.Tr>
               <Table.Th>{t('tag.slug')}</Table.Th>
               <Table.Th>{t('tag.name')}</Table.Th>
+              <Table.Th>{t('tag.forInfluencer')}</Table.Th>
               <Table.Th w={100}></Table.Th>
             </Table.Tr>
           </Table.Thead>
@@ -105,6 +110,7 @@ export default function TagsPage() {
               <Table.Tr key={tag.id}>
                 <Table.Td>@{tag.slug}</Table.Td>
                 <Table.Td>{getLocalizedName(tag.name, t('tag.unknown'))}</Table.Td>
+                <Table.Td>{tag.forInfluencer ? '✓' : ''}</Table.Td>
                 <Table.Td>
                   <Group gap={4} wrap='nowrap'>
                     <ActionIcon

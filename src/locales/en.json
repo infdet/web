@@ -104,6 +104,7 @@
     "nameZh": "Name (Chinese)",
     "nameJa": "Name (Japanese)",
     "nameKo": "Name (Korean)",
+    "forInfluencer": "Usable for influencers",
     "slugRequired": "Slug is required",
     "nameEnRequired": "English name is required",
     "create": "Create",

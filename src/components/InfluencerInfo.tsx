@@ -87,6 +87,7 @@ export default function InfluencerInfo({
         <TagList
           tags={influencer.tags ?? []}
           showActions={showUpload}
+          forInfluencerOnly
           onAttach={onAttachTags}
           onDetach={onDetachTag}
         />
