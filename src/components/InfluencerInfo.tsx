@@ -1,12 +1,12 @@
 import {
   ActionIcon,
   Avatar,
-  BackgroundImage,
   Badge,
   Box,
   Button,
   FileButton,
   Group,
+  Image,
   Stack,
   Text,
   Title,
@@ -49,36 +49,31 @@ export default function InfluencerInfo({
   const [authUser] = useAuthUser();
 
   return (
-    <Box>
-      <Box pos='relative'>
+    <Group align='flex-start' gap='xl' wrap='wrap'>
+      <Box pos='relative' w={300} mx={{ base: 'auto', sm: 0 }} style={{ flexShrink: 0 }}>
         {influencer.cover ? (
-          <BackgroundImage src={influencer.cover} h={{ base: 150, sm: 200 }} radius='md' />
+          <Image
+            src={influencer.cover}
+            alt={t('influencer.cover')}
+            w='100%'
+            radius='md'
+            fit='cover'
+            style={{ aspectRatio: '9 / 16' }}
+          />
         ) : (
           <Box
-            h={{ base: 150, sm: 200 }}
             bg='gray.2'
-            style={{ borderRadius: 'var(--mantine-radius-md)' }}
+            style={{
+              aspectRatio: '9 / 16',
+              borderRadius: 'var(--mantine-radius-md)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
           >
-            <Group h='100%' justify='center'>
-              <ImageIcon size={40} color='var(--mantine-color-gray-5)' />
-            </Group>
+            <ImageIcon size={40} color='var(--mantine-color-gray-5)' />
           </Box>
         )}
-
-        <ActionIcon
-          component={Link}
-          href='/influencers'
-          variant='filled'
-          color='dark'
-          radius='xl'
-          aria-label={t('influencer.list')}
-          pos='absolute'
-          top={12}
-          left={12}
-          style={{ opacity: 0.85 }}
-        >
-          <ArrowLeftIcon size={18} />
-        </ActionIcon>
 
         {showUpload && (
           <FileButton onChange={onUploadCover} accept='image/*'>
@@ -94,7 +89,6 @@ export default function InfluencerInfo({
                   pos='absolute'
                   top={12}
                   right={12}
-                  style={{ opacity: 0.85 }}
                 >
                   <CameraIcon size={16} />
                 </ActionIcon>
@@ -104,59 +98,57 @@ export default function InfluencerInfo({
         )}
       </Box>
 
-      <Group justify='space-between' align='flex-end' px='md' mt={-40}>
-        <Box pos='relative'>
-          <Avatar
-            src={influencer.avatar ?? undefined}
-            size={96}
-            radius='50%'
-            color='gray'
-            style={{ border: '4px solid var(--mantine-color-body)' }}
-          >
-            {!influencer.avatar && <CameraIcon size={32} />}
-          </Avatar>
-          {showUpload && (
-            <FileButton onChange={onUploadAvatar} accept='image/*'>
-              {(props) => (
-                <Tooltip label={t('influencer.uploadAvatar')} withArrow>
-                  <ActionIcon
-                    {...props}
-                    variant='filled'
-                    color='dark'
-                    radius='xl'
-                    size='sm'
-                    aria-label={t('influencer.uploadAvatar')}
-                    loading={uploadingAvatar}
-                    pos='absolute'
-                    bottom={0}
-                    right={0}
-                  >
-                    <CameraIcon size={14} />
-                  </ActionIcon>
-                </Tooltip>
-              )}
-            </FileButton>
+      <Stack gap='md' style={{ flex: 1, minWidth: 280 }}>
+        <Group justify='space-between'>
+          <ActionIcon component={Link} href='/influencers' variant='subtle' color='gray'>
+            <ArrowLeftIcon size={20} />
+          </ActionIcon>
+          {authUser && (
+            <Button
+              component={Link}
+              href={`/influencers/${influencer.id}/edit`}
+              variant='light'
+              leftSection={<PencilIcon size={14} />}
+            >
+              {t('influencer.edit')}
+            </Button>
           )}
-        </Box>
+        </Group>
 
-        {authUser && (
-          <Button
-            component={Link}
-            href={`/influencers/${influencer.id}/edit`}
-            variant='light'
-            leftSection={<PencilIcon size={14} />}
-          >
-            {t('influencer.edit')}
-          </Button>
-        )}
-      </Group>
+        <Group align='center' gap='md' wrap='nowrap'>
+          <Box pos='relative'>
+            <Avatar src={influencer.avatar ?? undefined} size={80} radius='50%' color='gray'>
+              {!influencer.avatar && <CameraIcon size={28} />}
+            </Avatar>
+            {showUpload && (
+              <FileButton onChange={onUploadAvatar} accept='image/*'>
+                {(props) => (
+                  <Tooltip label={t('influencer.uploadAvatar')} withArrow>
+                    <ActionIcon
+                      {...props}
+                      variant='filled'
+                      color='dark'
+                      radius='xl'
+                      size='sm'
+                      aria-label={t('influencer.uploadAvatar')}
+                      loading={uploadingAvatar}
+                      pos='absolute'
+                      bottom={0}
+                      right={0}
+                    >
+                      <CameraIcon size={14} />
+                    </ActionIcon>
+                  </Tooltip>
+                )}
+              </FileButton>
+            )}
+          </Box>
+          <Stack gap={2} style={{ flex: 1, minWidth: 0 }}>
+            <Title order={2}>{getInfluencerName(influencer.name, t('influencer.unknown'))}</Title>
+            <Text c='dimmed'>@{influencer.slug}</Text>
+          </Stack>
+        </Group>
 
-      <Stack gap={2} px='md' mt='sm'>
-        <Title order={2}>{getInfluencerName(influencer.name, t('influencer.unknown'))}</Title>
-        <Text c='dimmed'>@{influencer.slug}</Text>
-      </Stack>
-
-      <Stack gap='xs' px='md' mt='lg'>
         <AccountList
           accounts={influencer.accounts ?? []}
           showActions={showUpload}
@@ -164,21 +156,21 @@ export default function InfluencerInfo({
           onUpdateAccount={onUpdateAccount}
           onDeleteAccount={onDeleteAccount}
         />
-      </Stack>
 
-      <Stack gap={4} px='md' mt='lg'>
-        <Text fw={600}>{t('influencer.name')}</Text>
-        {Object.entries(influencer.name).map(([locale, name]) => (
-          <Group key={locale} gap='xs'>
-            <Badge variant='outline' size='xs' tt='uppercase'>
-              {locale}
-            </Badge>
-            <Text size='sm' c='dimmed'>
-              {name}
-            </Text>
-          </Group>
-        ))}
+        <Stack gap={4}>
+          <Text fw={600}>{t('influencer.name')}</Text>
+          {Object.entries(influencer.name).map(([locale, name]) => (
+            <Group key={locale} gap='xs'>
+              <Badge variant='outline' size='xs' tt='uppercase'>
+                {locale}
+              </Badge>
+              <Text size='sm' c='dimmed'>
+                {name}
+              </Text>
+            </Group>
+          ))}
+        </Stack>
       </Stack>
-    </Box>
+    </Group>
   );
 }
