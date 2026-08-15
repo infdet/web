@@ -1,4 +1,4 @@
-import { Anchor, Burger, Button, Group } from '@mantine/core';
+import { Anchor, Burger, Button, Group, Image } from '@mantine/core';
 import { PlusIcon, SignOutIcon, UserIcon } from '@phosphor-icons/react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'wouter';
@@ -22,9 +22,12 @@ export default function AppHeader({ opened, onToggle }: AppHeaderProps) {
       <Burger opened={opened} onClick={onToggle} hiddenFrom='sm' size='sm' />
       <Group justify='space-between' style={{ flex: 1 }}>
         <Group gap='md'>
-          <Anchor component={Link} href='/' underline='never' fw={700}>
-            {t('app.title')}
-          </Anchor>
+          <Group gap='xs' wrap='nowrap' align='center'>
+            <Image src='/favicon.svg' alt='' h={28} w={28} radius='sm' />
+            <Anchor component={Link} href='/' underline='never' fw={700}>
+              {t('app.title')}
+            </Anchor>
+          </Group>
           <Group gap='md' visibleFrom='sm'>
             <Anchor component={Link} href='/influencers' underline='never'>
               {t('nav.influencers')}
