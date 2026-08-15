@@ -1,5 +1,5 @@
-import { ActionIcon, Badge, Button, Group, Stack, Text, Title } from '@mantine/core';
-import { ArrowLeftIcon, PencilIcon } from '@phosphor-icons/react';
+import { Badge, Button, Group, Stack, Text, Title } from '@mantine/core';
+import { PencilIcon } from '@phosphor-icons/react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'wouter';
 
