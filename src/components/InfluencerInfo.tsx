@@ -6,6 +6,7 @@ import { Link } from 'wouter';
 import AccountList from '#components/AccountList';
 import InfluencerAvatar from '#components/InfluencerAvatar';
 import InfluencerCover from '#components/InfluencerCover';
+import TagList from '#components/TagList';
 import useAuthUser from '#hooks/useAuthUser';
 import type Influencer from '#types/Influencer';
 import { getInfluencerName } from '#utils/influencer';
@@ -20,6 +21,8 @@ interface InfluencerInfoProps {
   onCreateAccount: (data: { platform: string; username: string }) => Promise<void>;
   onUpdateAccount: (id: number, data: { platform: string; username: string }) => Promise<void>;
   onDeleteAccount: (id: number) => Promise<void>;
+  onAttachTags: (tagIds: number[]) => Promise<void>;
+  onDetachTag: (tagId: number) => Promise<void>;
 }
 
 export default function InfluencerInfo({
@@ -32,6 +35,8 @@ export default function InfluencerInfo({
   onCreateAccount,
   onUpdateAccount,
   onDeleteAccount,
+  onAttachTags,
+  onDetachTag,
 }: InfluencerInfoProps) {
   const { t } = useTranslation();
 
@@ -87,6 +92,13 @@ export default function InfluencerInfo({
           onCreateAccount={onCreateAccount}
           onUpdateAccount={onUpdateAccount}
           onDeleteAccount={onDeleteAccount}
+        />
+
+        <TagList
+          tags={influencer.tags ?? []}
+          showActions={showUpload}
+          onAttach={onAttachTags}
+          onDetach={onDetachTag}
         />
       </Stack>
     </Group>

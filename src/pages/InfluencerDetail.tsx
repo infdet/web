@@ -8,6 +8,7 @@ import PostList from '#components/PostList';
 import useAuthUser from '#hooks/useAuthUser';
 import { createAccount, deleteAccount, updateAccount } from '#services/account';
 import { getInfluencer, uploadAvatar, uploadCover } from '#services/influencer';
+import { attachTags, detachTag } from '#services/tag';
 import type Influencer from '#types/Influencer';
 
 export default function InfluencerDetailPage() {
@@ -94,6 +95,18 @@ export default function InfluencerDetailPage() {
     );
   };
 
+  const handleAttachTags = async (tagIds: number[]) => {
+    await attachTags(id, tagIds);
+    await fetchDetail();
+  };
+
+  const handleDetachTag = async (tagId: number) => {
+    await detachTag(id, tagId);
+    setInfluencer((prev) =>
+      prev ? { ...prev, tags: (prev.tags ?? []).filter((tag) => tag.id !== tagId) } : prev,
+    );
+  };
+
   if (loading) {
     return (
       <Container size='lg' py='xl'>
@@ -124,6 +137,8 @@ export default function InfluencerDetailPage() {
         onCreateAccount={handleCreateAccount}
         onUpdateAccount={handleUpdateAccount}
         onDeleteAccount={handleDeleteAccount}
+        onAttachTags={handleAttachTags}
+        onDetachTag={handleDetachTag}
       />
 
       <Divider my='xl' />

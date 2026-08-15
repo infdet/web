@@ -31,6 +31,17 @@ export default function AppNavbar({ onNavigate }: AppNavbarProps) {
 
       <Button
         component={Link}
+        href='/tags'
+        variant='subtle'
+        fullWidth
+        justify='start'
+        onClick={onNavigate}
+      >
+        {t('nav.tags')}
+      </Button>
+
+      <Button
+        component={Link}
         href='/posts/new'
         variant='subtle'
         fullWidth

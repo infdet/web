@@ -12,6 +12,7 @@ import LoginPage from './pages/Login';
 import PostDetailPage from './pages/PostDetail';
 import PostNewPage from './pages/PostNew';
 import RegisterPage from './pages/Register';
+import TagsPage from './pages/Tags';
 
 function HomePage() {
   const { t } = useTranslation();
@@ -54,6 +55,9 @@ export default function App() {
               </Route>
               <Route path='/influencers/:id'>
                 <InfluencerDetailPage />
+              </Route>
+              <Route path='/tags'>
+                <TagsPage />
               </Route>
               <Route path='/posts/new'>
                 <AuthGuard>
