@@ -1,22 +1,11 @@
-import {
-  ActionIcon,
-  Avatar,
-  Badge,
-  Box,
-  Button,
-  FileButton,
-  Group,
-  Image,
-  Stack,
-  Text,
-  Title,
-  Tooltip,
-} from '@mantine/core';
-import { ArrowLeftIcon, CameraIcon, ImageIcon, PencilIcon } from '@phosphor-icons/react';
+import { ActionIcon, Badge, Button, Group, Stack, Text, Title } from '@mantine/core';
+import { ArrowLeftIcon, PencilIcon } from '@phosphor-icons/react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'wouter';
 
 import AccountList from '#components/AccountList';
+import InfluencerAvatar from '#components/InfluencerAvatar';
+import InfluencerCover from '#components/InfluencerCover';
 import useAuthUser from '#hooks/useAuthUser';
 import type Influencer from '#types/Influencer';
 import { getInfluencerName } from '#utils/influencer';
@@ -50,53 +39,12 @@ export default function InfluencerInfo({
 
   return (
     <Group align='flex-start' gap='xl' wrap='wrap'>
-      <Box pos='relative' w={300} mx={{ base: 'auto', sm: 0 }} style={{ flexShrink: 0 }}>
-        {influencer.cover ? (
-          <Image
-            src={influencer.cover}
-            alt={t('influencer.cover')}
-            w='100%'
-            radius='md'
-            fit='cover'
-            style={{ aspectRatio: '9 / 16' }}
-          />
-        ) : (
-          <Box
-            bg='gray.2'
-            style={{
-              aspectRatio: '9 / 16',
-              borderRadius: 'var(--mantine-radius-md)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <ImageIcon size={40} color='var(--mantine-color-gray-5)' />
-          </Box>
-        )}
-
-        {showUpload && (
-          <FileButton onChange={onUploadCover} accept='image/*'>
-            {(props) => (
-              <Tooltip label={t('influencer.uploadCover')} withArrow>
-                <ActionIcon
-                  {...props}
-                  variant='filled'
-                  color='dark'
-                  radius='xl'
-                  aria-label={t('influencer.uploadCover')}
-                  loading={uploadingCover}
-                  pos='absolute'
-                  top={12}
-                  right={12}
-                >
-                  <CameraIcon size={16} />
-                </ActionIcon>
-              </Tooltip>
-            )}
-          </FileButton>
-        )}
-      </Box>
+      <InfluencerCover
+        src={influencer.cover}
+        showUpload={showUpload}
+        uploading={uploadingCover}
+        onUpload={onUploadCover}
+      />
 
       <Stack gap='md' style={{ flex: 1, minWidth: 280 }}>
         <Group justify='space-between'>
@@ -116,33 +64,12 @@ export default function InfluencerInfo({
         </Group>
 
         <Group align='center' gap='md' wrap='nowrap'>
-          <Box pos='relative'>
-            <Avatar src={influencer.avatar ?? undefined} size={80} radius='50%' color='gray'>
-              {!influencer.avatar && <CameraIcon size={28} />}
-            </Avatar>
-            {showUpload && (
-              <FileButton onChange={onUploadAvatar} accept='image/*'>
-                {(props) => (
-                  <Tooltip label={t('influencer.uploadAvatar')} withArrow>
-                    <ActionIcon
-                      {...props}
-                      variant='filled'
-                      color='dark'
-                      radius='xl'
-                      size='sm'
-                      aria-label={t('influencer.uploadAvatar')}
-                      loading={uploadingAvatar}
-                      pos='absolute'
-                      bottom={0}
-                      right={0}
-                    >
-                      <CameraIcon size={14} />
-                    </ActionIcon>
-                  </Tooltip>
-                )}
-              </FileButton>
-            )}
-          </Box>
+          <InfluencerAvatar
+            src={influencer.avatar}
+            showUpload={showUpload}
+            uploading={uploadingAvatar}
+            onUpload={onUploadAvatar}
+          />
           <Stack gap={2} style={{ flex: 1, minWidth: 0 }}>
             <Title order={2}>{getInfluencerName(influencer.name, t('influencer.unknown'))}</Title>
             <Text c='dimmed'>@{influencer.slug}</Text>
