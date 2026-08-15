@@ -47,10 +47,28 @@ export default function InfluencerInfo({
       />
 
       <Stack gap='md' style={{ flex: 1, minWidth: 280 }}>
-        <Group justify='space-between'>
-          <ActionIcon component={Link} href='/influencers' variant='subtle' color='gray'>
-            <ArrowLeftIcon size={20} />
-          </ActionIcon>
+        <Group align='center' gap='md' wrap='nowrap'>
+          <InfluencerAvatar
+            src={influencer.avatar}
+            showUpload={showUpload}
+            uploading={uploadingAvatar}
+            onUpload={onUploadAvatar}
+          />
+          <Stack gap={2} style={{ flex: 1, minWidth: 0 }}>
+            <Title order={2}>{getInfluencerName(influencer.name, t('influencer.unknown'))}</Title>
+            <Group gap='xs'>
+              {Object.entries(influencer.name).map(([locale, name]) => (
+                <Group key={locale} gap='xs'>
+                  <Badge variant='outline' size='xs' tt='uppercase'>
+                    {locale}
+                  </Badge>
+                  <Text size='sm' c='dimmed'>
+                    {name}
+                  </Text>
+                </Group>
+              ))}
+            </Group>
+          </Stack>
           {authUser && (
             <Button
               component={Link}
@@ -63,19 +81,6 @@ export default function InfluencerInfo({
           )}
         </Group>
 
-        <Group align='center' gap='md' wrap='nowrap'>
-          <InfluencerAvatar
-            src={influencer.avatar}
-            showUpload={showUpload}
-            uploading={uploadingAvatar}
-            onUpload={onUploadAvatar}
-          />
-          <Stack gap={2} style={{ flex: 1, minWidth: 0 }}>
-            <Title order={2}>{getInfluencerName(influencer.name, t('influencer.unknown'))}</Title>
-            <Text c='dimmed'>@{influencer.slug}</Text>
-          </Stack>
-        </Group>
-
         <AccountList
           accounts={influencer.accounts ?? []}
           showActions={showUpload}
@@ -83,20 +88,6 @@ export default function InfluencerInfo({
           onUpdateAccount={onUpdateAccount}
           onDeleteAccount={onDeleteAccount}
         />
-
-        <Stack gap={4}>
-          <Text fw={600}>{t('influencer.name')}</Text>
-          {Object.entries(influencer.name).map(([locale, name]) => (
-            <Group key={locale} gap='xs'>
-              <Badge variant='outline' size='xs' tt='uppercase'>
-                {locale}
-              </Badge>
-              <Text size='sm' c='dimmed'>
-                {name}
-              </Text>
-            </Group>
-          ))}
-        </Stack>
       </Stack>
     </Group>
   );
