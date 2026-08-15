@@ -1,4 +1,5 @@
 import type BaseModel from './BaseModel';
+import type Tag from './Tag';
 
 export type PostPlatform =
   | 'youtube'
@@ -21,6 +22,7 @@ export default interface Post extends BaseModel {
   publishedAt: string | null;
   embedUrl: string | null;
   deletedAt: string | null;
+  tags: Tag[];
 }
 
 export interface PostFormData {

@@ -50,3 +50,18 @@ export async function attachTags(influencerId: number, tagIds: number[]): Promis
 export async function detachTag(influencerId: number, tagId: number): Promise<void> {
   await xior.delete(`/influencers/${influencerId}/tags/${tagId}`);
 }
+
+// ── Post-Tag relationships ──
+
+export async function getPostTags(postId: number): Promise<Tag[]> {
+  const res = await xior.get<BaseResponse<Tag[]>>(`/posts/${postId}/tags`);
+  return res.data.data;
+}
+
+export async function attachPostTags(postId: number, tagIds: number[]): Promise<void> {
+  await xior.post(`/posts/${postId}/tags`, { tagIds });
+}
+
+export async function detachPostTag(postId: number, tagId: number): Promise<void> {
+  await xior.delete(`/posts/${postId}/tags/${tagId}`);
+}
