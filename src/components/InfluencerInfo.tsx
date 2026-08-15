@@ -9,7 +9,7 @@ import InfluencerCover from '#components/InfluencerCover';
 import TagList from '#components/TagList';
 import useAuthUser from '#hooks/useAuthUser';
 import type Influencer from '#types/Influencer';
-import { getInfluencerName } from '#utils/influencer';
+import { getLocalizedName } from '#utils/localized';
 
 interface InfluencerInfoProps {
   influencer: Influencer;
@@ -60,7 +60,7 @@ export default function InfluencerInfo({
             onUpload={onUploadAvatar}
           />
           <Stack gap={2} style={{ flex: 1, minWidth: 0 }}>
-            <Title order={2}>{getInfluencerName(influencer.name, t('influencer.unknown'))}</Title>
+            <Title order={2}>{getLocalizedName(influencer.name, t('influencer.unknown'))}</Title>
             <Group gap='xs'>
               {Object.entries(influencer.name).map(([locale, name]) => (
                 <Group key={locale} gap='xs'>

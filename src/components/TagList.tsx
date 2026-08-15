@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 import { getTags } from '#services/tag';
 import type Tag from '#types/Tag';
-import { getTagName } from '#utils/tag';
+import { getLocalizedName } from '#utils/localized';
 
 interface TagListProps {
   tags: Tag[];
@@ -92,7 +92,7 @@ export default function TagList({ tags, showActions, onAttach, onDetach }: TagLi
                 ) : undefined
               }
             >
-              {getTagName(tag.name, t('tag.unknown'))}
+              {getLocalizedName(tag.name, t('tag.unknown'))}
             </Badge>
           ))}
         </Group>
@@ -107,7 +107,7 @@ export default function TagList({ tags, showActions, onAttach, onDetach }: TagLi
           <MultiSelect
             data={availableTags.map((tag) => ({
               value: String(tag.id),
-              label: `${getTagName(tag.name, t('tag.unknown'))} (@${tag.slug})`,
+              label: `${getLocalizedName(tag.name, t('tag.unknown'))} (@${tag.slug})`,
             }))}
             value={selectedIds}
             onChange={setSelectedIds}

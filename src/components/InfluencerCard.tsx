@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'wouter';
 
 import type Influencer from '#types/Influencer';
-import { getInfluencerName } from '#utils/influencer';
+import { getLocalizedName } from '#utils/localized';
 
 interface InfluencerCardProps {
   influencer: Influencer;
@@ -32,7 +32,7 @@ export default function InfluencerCard({
               lineClamp={1}
               style={{ flex: 1, minWidth: 0 }}
             >
-              {getInfluencerName(influencer.name, t('influencer.unknown'))}
+              {getLocalizedName(influencer.name, t('influencer.unknown'))}
             </Anchor>
           </Group>
           {actions}

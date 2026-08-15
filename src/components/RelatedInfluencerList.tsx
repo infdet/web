@@ -17,7 +17,7 @@ import InfluencerCard from '#components/InfluencerCard';
 import { getInfluencers } from '#services/influencer';
 import { attachInfluencers, detachInfluencer, getPostInfluencers } from '#services/post';
 import type Influencer from '#types/Influencer';
-import { getInfluencerName } from '#utils/influencer';
+import { getLocalizedName } from '#utils/localized';
 
 interface RelatedInfluencerListProps {
   postId: number;
@@ -132,7 +132,7 @@ export default function RelatedInfluencerList({ postId, canManage }: RelatedInfl
           <MultiSelect
             data={availableInfluencers.map((inf) => ({
               value: String(inf.id),
-              label: `${getInfluencerName(inf.name, t('influencer.unknown'))} (@${inf.slug})`,
+              label: `${getLocalizedName(inf.name, t('influencer.unknown'))} (@${inf.slug})`,
             }))}
             value={selectedInfluencerIds}
             onChange={setSelectedInfluencerIds}

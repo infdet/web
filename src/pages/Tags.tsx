@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import TagFormModal from '#components/TagFormModal';
 import { createTag, deleteTag, getTags, updateTag } from '#services/tag';
 import type Tag from '#types/Tag';
-import { getTagName } from '#utils/tag';
+import { getLocalizedName } from '#utils/localized';
 
 export default function TagsPage() {
   const { t } = useTranslation();
@@ -104,7 +104,7 @@ export default function TagsPage() {
             {tags.map((tag) => (
               <Table.Tr key={tag.id}>
                 <Table.Td>@{tag.slug}</Table.Td>
-                <Table.Td>{getTagName(tag.name, t('tag.unknown'))}</Table.Td>
+                <Table.Td>{getLocalizedName(tag.name, t('tag.unknown'))}</Table.Td>
                 <Table.Td>
                   <Group gap={4} wrap='nowrap'>
                     <ActionIcon
