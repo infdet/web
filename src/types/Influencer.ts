@@ -7,6 +7,10 @@ export default interface Influencer extends BaseModel {
   name: Record<string, string>;
   avatar: string | null;
   cover: string | null;
+  gender: string | null;
+  birthDate: string | null;
+  age: number | null;
+  region: string | null;
   accounts: Account[];
   tags: Tag[];
 }

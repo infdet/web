@@ -30,6 +30,9 @@ interface AccountForm {
 interface InfluencerForm {
   slug: string;
   name: Record<string, string>;
+  gender: string | null;
+  birthDate: string;
+  region: string;
   accounts: AccountForm[];
 }
 
@@ -59,6 +62,9 @@ export default function InfluencerEditPage() {
     initialValues: {
       slug: '',
       name: { en: '', zh: '', ja: '', ko: '' },
+      gender: null,
+      birthDate: '',
+      region: '',
       accounts: [{ platform: '', username: '' }],
     },
     validate: {
@@ -88,6 +94,9 @@ export default function InfluencerEditPage() {
           ja: influencer.name?.ja ?? '',
           ko: influencer.name?.ko ?? '',
         },
+        gender: influencer.gender ?? null,
+        birthDate: influencer.birthDate ?? '',
+        region: influencer.region ?? '',
         accounts:
           accounts.length > 0
             ? accounts.map((a) => ({ id: a.id, platform: a.platform, username: a.username }))
@@ -119,6 +128,9 @@ export default function InfluencerEditPage() {
     const payload = {
       slug: values.slug.trim(),
       name,
+      gender: values.gender || null,
+      birthDate: values.birthDate || null,
+      region: values.region.trim().toLowerCase() || null,
     };
 
     try {
@@ -163,6 +175,12 @@ export default function InfluencerEditPage() {
     form.removeListItem('accounts', index);
   };
 
+  const genderOptions = [
+    { value: 'male', label: t('influencer.genderMale') },
+    { value: 'female', label: t('influencer.genderFemale') },
+    { value: 'other', label: t('influencer.genderOther') },
+  ];
+
   if (loading) {
     return (
       <Container size='sm' py='xl'>
@@ -195,6 +213,27 @@ export default function InfluencerEditPage() {
               {...form.getInputProps(`name.${lang.key}`)}
             />
           ))}
+
+          <Select
+            label={t('influencer.gender')}
+            placeholder={t('influencer.genderPlaceholder')}
+            data={genderOptions}
+            clearable
+            {...form.getInputProps('gender')}
+          />
+
+          <TextInput
+            type='date'
+            label={t('influencer.birthDate')}
+            {...form.getInputProps('birthDate')}
+          />
+
+          <TextInput
+            label={t('influencer.region')}
+            placeholder={t('influencer.regionPlaceholder')}
+            maxLength={2}
+            {...form.getInputProps('region')}
+          />
 
           <Fieldset legend={t('influencer.socialAccounts')}>
             <Stack gap='sm'>

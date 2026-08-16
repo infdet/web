@@ -1,4 +1,4 @@
-import { Button, Group, Stack, Title } from '@mantine/core';
+import { Button, Group, Stack, Text, Title } from '@mantine/core';
 import { PencilIcon } from '@phosphor-icons/react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'wouter';
@@ -43,6 +43,17 @@ export default function InfluencerInfo({
 
   const [authUser] = useAuthUser();
 
+  const genderLabels: Record<string, string> = {
+    male: t('influencer.genderMale'),
+    female: t('influencer.genderFemale'),
+    other: t('influencer.genderOther'),
+  };
+  const metaParts = [
+    influencer.gender ? genderLabels[influencer.gender] : null,
+    influencer.region ?? null,
+    influencer.age != null ? `${t('influencer.age')} ${influencer.age}` : null,
+  ].filter(Boolean);
+
   return (
     <Group align='flex-start' gap='xl' wrap='wrap'>
       <InfluencerCover
@@ -63,6 +74,11 @@ export default function InfluencerInfo({
           <Stack gap={2} style={{ flex: 1, minWidth: 0 }}>
             <Title order={2}>{getLocalizedName(influencer.name, t('influencer.unknown'))}</Title>
             <InfluencerNameList name={influencer.name} />
+            {metaParts.length > 0 && (
+              <Text size='sm' c='dimmed'>
+                {metaParts.join(' · ')}
+              </Text>
+            )}
           </Stack>
           {authUser && (
             <Button
