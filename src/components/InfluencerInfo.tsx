@@ -1,9 +1,11 @@
 import { Button, Group, Stack, Text, Title } from '@mantine/core';
 import { PencilIcon } from '@phosphor-icons/react';
+import { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'wouter';
 
 import AccountList from '#components/AccountList';
+import GenderEmoji from '#components/GenderEmoji';
 import InfluencerAvatar from '#components/InfluencerAvatar';
 import InfluencerCover from '#components/InfluencerCover';
 import InfluencerNameList from '#components/InfluencerNameList';
@@ -43,13 +45,8 @@ export default function InfluencerInfo({
 
   const [authUser] = useAuthUser();
 
-  const genderLabels: Record<string, string> = {
-    male: t('influencer.genderMale'),
-    female: t('influencer.genderFemale'),
-    other: t('influencer.genderOther'),
-  };
   const metaParts = [
-    influencer.gender ? genderLabels[influencer.gender] : null,
+    influencer.gender ? <GenderEmoji key='gender' gender={influencer.gender} /> : null,
     influencer.region ?? null,
     influencer.age != null ? `${t('influencer.age')} ${influencer.age}` : null,
     influencer.height != null ? `${t('influencer.height')} ${influencer.height}cm` : null,
@@ -59,7 +56,7 @@ export default function InfluencerInfo({
           .map((v) => (v != null ? String(v) : '—'))
           .join('-')}cm`
       : null,
-  ].filter(Boolean);
+  ].filter((part) => part != null);
 
   return (
     <Group align='flex-start' gap='xl' wrap='wrap'>
@@ -83,7 +80,12 @@ export default function InfluencerInfo({
             <InfluencerNameList name={influencer.name} />
             {metaParts.length > 0 && (
               <Text size='sm' c='dimmed'>
-                {metaParts.join(' · ')}
+                {metaParts.map((part, index) => (
+                  <Fragment key={index}>
+                    {index > 0 && ' · '}
+                    {part}
+                  </Fragment>
+                ))}
               </Text>
             )}
           </Stack>
