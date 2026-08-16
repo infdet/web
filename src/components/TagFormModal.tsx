@@ -68,7 +68,11 @@ export default function TagFormModal({
     }
 
     try {
-      await onSubmit({ slug: slug.trim(), name: trimmedName, forInfluencer });
+      await onSubmit({
+        slug: slug.trim(),
+        name: trimmedName,
+        forInfluencer,
+      });
       onClose();
     } catch (err: any) {
       setError(

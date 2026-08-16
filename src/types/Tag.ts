@@ -4,4 +4,5 @@ export default interface Tag extends BaseModel {
   slug: string;
   name: Record<string, string>;
   forInfluencer: boolean;
+  icon: string | null;
 }

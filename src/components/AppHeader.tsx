@@ -32,6 +32,9 @@ export default function AppHeader({ opened, onToggle }: AppHeaderProps) {
             <Anchor component={Link} href='/influencers' underline='never'>
               {t('nav.influencers')}
             </Anchor>
+            <Anchor component={Link} href='/tags' underline='never'>
+              {t('nav.tags')}
+            </Anchor>
             <Button
               component={Link}
               href='/posts/new'

@@ -37,6 +37,13 @@ export async function deleteTag(id: number): Promise<void> {
   await xior.delete(`/tags/${id}`);
 }
 
+export async function uploadTagIcon(id: number, file: File): Promise<Tag> {
+  const formData = new FormData();
+  formData.append('icon', file);
+  const res = await xior.post<BaseResponse<Tag>>(`/tags/${id}/icon`, formData);
+  return res.data.data;
+}
+
 // ── Influencer-Tag relationships ──
 
 export async function getInfluencerTags(influencerId: number): Promise<Tag[]> {

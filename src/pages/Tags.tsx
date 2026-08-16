@@ -1,20 +1,25 @@
-import { ActionIcon, Button, Container, Group, Loader, Table, Text, Title } from '@mantine/core';
-import { PencilIcon, PlusIcon, TrashIcon } from '@phosphor-icons/react';
+import { Button, Container, Group, SimpleGrid, Skeleton, Text, Title } from '@mantine/core';
+import { PlusIcon } from '@phosphor-icons/react';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import TagCard from '#components/TagCard';
 import TagFormModal from '#components/TagFormModal';
-import { createTag, deleteTag, getTags, updateTag } from '#services/tag';
+import useAuthUser from '#hooks/useAuthUser';
+import { createTag, deleteTag, getTags, updateTag, uploadTagIcon } from '#services/tag';
 import type Tag from '#types/Tag';
-import { getLocalizedName } from '#utils/localized';
 
 export default function TagsPage() {
   const { t } = useTranslation();
+  const [authUser] = useAuthUser();
+  const canManageTags = authUser?.role === 'editor' || authUser?.role === 'admin';
+  const canDeleteTags = authUser?.role === 'admin';
   const [tags, setTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [modalOpened, setModalOpened] = useState(false);
   const [editing, setEditing] = useState<Tag | null>(null);
+  const [uploadingId, setUploadingId] = useState<number | null>(null);
 
   const fetchTags = useCallback(async () => {
     setLoading(true);
@@ -64,6 +69,19 @@ export default function TagsPage() {
     }
   };
 
+  const handleUploadIcon = async (tag: Tag, file: File | null) => {
+    if (!file) return;
+    setUploadingId(tag.id);
+    try {
+      const updated = await uploadTagIcon(tag.id, file);
+      setTags((prev) => prev.map((x) => (x.id === updated.id ? updated : x)));
+    } catch {
+      // ignore
+    } finally {
+      setUploadingId(null);
+    }
+  };
+
   const handleSubmit = async (data: {
     slug: string;
     name: Record<string, string>;
@@ -79,62 +97,41 @@ export default function TagsPage() {
   };
 
   return (
-    <Container size='md' py='xl'>
+    <Container size='lg' py='xl'>
       <Group justify='space-between' mb='lg'>
         <Title order={2}>{t('tag.list')}</Title>
-        <Button leftSection={<PlusIcon size={18} />} onClick={openAdd}>
-          {t('tag.new')}
-        </Button>
+        {canManageTags && (
+          <Button leftSection={<PlusIcon size={18} />} onClick={openAdd}>
+            {t('tag.new')}
+          </Button>
+        )}
       </Group>
 
       {loading ? (
-        <Group justify='center'>
-          <Loader />
-        </Group>
+        <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }}>
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Skeleton key={i} height={120} />
+          ))}
+        </SimpleGrid>
       ) : tags.length === 0 ? (
         <Text c='dimmed' ta='center' py='xl'>
           {t('tag.noTags')}
         </Text>
       ) : (
-        <Table verticalSpacing='sm'>
-          <Table.Thead>
-            <Table.Tr>
-              <Table.Th>{t('tag.slug')}</Table.Th>
-              <Table.Th>{t('tag.name')}</Table.Th>
-              <Table.Th>{t('tag.forInfluencer')}</Table.Th>
-              <Table.Th w={100}></Table.Th>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>
-            {tags.map((tag) => (
-              <Table.Tr key={tag.id}>
-                <Table.Td>@{tag.slug}</Table.Td>
-                <Table.Td>{getLocalizedName(tag.name, t('tag.unknown'))}</Table.Td>
-                <Table.Td>{tag.forInfluencer ? '✓' : ''}</Table.Td>
-                <Table.Td>
-                  <Group gap={4} wrap='nowrap'>
-                    <ActionIcon
-                      variant='subtle'
-                      color='blue'
-                      size='sm'
-                      onClick={() => openEdit(tag)}
-                    >
-                      <PencilIcon size={14} />
-                    </ActionIcon>
-                    <ActionIcon
-                      variant='subtle'
-                      color='red'
-                      size='sm'
-                      onClick={() => handleDelete(tag)}
-                    >
-                      <TrashIcon size={14} />
-                    </ActionIcon>
-                  </Group>
-                </Table.Td>
-              </Table.Tr>
-            ))}
-          </Table.Tbody>
-        </Table>
+        <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }}>
+          {tags.map((tag) => (
+            <TagCard
+              key={tag.id}
+              tag={tag}
+              canEdit={canManageTags}
+              canDelete={canDeleteTags}
+              uploading={uploadingId === tag.id}
+              onEdit={openEdit}
+              onDelete={handleDelete}
+              onUploadIcon={handleUploadIcon}
+            />
+          ))}
+        </SimpleGrid>
       )}
 
       {error && (
