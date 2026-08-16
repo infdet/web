@@ -1,5 +1,5 @@
 import { ActionIcon, Box, FileButton, Image, Tooltip } from '@mantine/core';
-import { CameraIcon, ImageIcon } from '@phosphor-icons/react';
+import { CameraIcon } from '@phosphor-icons/react';
 import { useTranslation } from 'react-i18next';
 
 interface InfluencerCoverProps {
@@ -19,29 +19,15 @@ export default function InfluencerCover({
 
   return (
     <Box pos='relative' w={300} mx={{ base: 'auto', sm: 0 }} style={{ flexShrink: 0 }}>
-      {src ? (
-        <Image
-          src={src}
-          alt={t('influencer.cover')}
-          w='100%'
-          radius='md'
-          fit='cover'
-          style={{ aspectRatio: '9 / 16' }}
-        />
-      ) : (
-        <Box
-          bg='gray.2'
-          style={{
-            aspectRatio: '9 / 16',
-            borderRadius: 'var(--mantine-radius-md)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <ImageIcon size={40} color='var(--mantine-color-gray-5)' />
-        </Box>
-      )}
+      <Image
+        src={src ?? undefined}
+        fallbackSrc='/cover-fallback.svg'
+        alt={t('influencer.cover')}
+        w='100%'
+        radius='md'
+        fit='cover'
+        style={{ aspectRatio: '9 / 16' }}
+      />
 
       {showUpload && (
         <FileButton onChange={onUpload} accept='image/*'>
