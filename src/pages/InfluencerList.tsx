@@ -106,7 +106,7 @@ export default function InfluencerListPage() {
       )}
 
       {loading ? (
-        <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }}>
+        <SimpleGrid cols={{ base: 1, sm: 2, md: 3, lg: 4 }}>
           {Array.from({ length: 6 }).map((_, i) => (
             <Skeleton key={i} height={140} />
           ))}
@@ -116,7 +116,7 @@ export default function InfluencerListPage() {
           {t('influencer.noInfluencers')}
         </Text>
       ) : (
-        <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }}>
+        <SimpleGrid cols={{ base: 1, sm: 2, md: 3, lg: 4 }}>
           {influencers.map((influencer) => (
             <InfluencerCard key={influencer.id} influencer={influencer} />
           ))}
