@@ -1,4 +1,5 @@
 import { Button, Group, Modal, Stack, Switch, Text, TextInput } from '@mantine/core';
+import { useForm } from '@mantine/form';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -16,6 +17,12 @@ interface TagFormModalProps {
   }) => Promise<void>;
 }
 
+interface TagForm {
+  slug: string;
+  name: Record<string, string>;
+  forInfluencer: boolean;
+}
+
 const NAME_LANGUAGES = [
   { key: 'en', label: 'tag.nameEn', required: true },
   { key: 'zh', label: 'tag.nameZh' },
@@ -31,11 +38,23 @@ export default function TagFormModal({
   onSubmit,
 }: TagFormModalProps) {
   const { t } = useTranslation();
-  const [slug, setSlug] = useState('');
-  const [name, setName] = useState<Record<string, string>>({ en: '', zh: '', ja: '', ko: '' });
-  const [forInfluencer, setForInfluencer] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+
+  const form = useForm<TagForm>({
+    initialValues: {
+      slug: '',
+      name: { en: '', zh: '', ja: '', ko: '' },
+      forInfluencer: false,
+    },
+    validate: {
+      slug: (v) => (!v.trim() ? t('tag.slugRequired') : null),
+      name: {
+        en: (v) => (!v.trim() ? t('tag.nameEnRequired') : null),
+      },
+    },
+  });
+  const { setValues } = form;
 
   const initialValuesRef = useRef(initialValues);
   useEffect(() => {
@@ -45,33 +64,35 @@ export default function TagFormModal({
   useEffect(() => {
     if (!opened) return;
     const init = initialValuesRef.current;
-    setSlug(init?.slug ?? '');
-    setName({
-      en: init?.name?.en ?? '',
-      zh: init?.name?.zh ?? '',
-      ja: init?.name?.ja ?? '',
-      ko: init?.name?.ko ?? '',
+    setValues({
+      slug: init?.slug ?? '',
+      name: {
+        en: init?.name?.en ?? '',
+        zh: init?.name?.zh ?? '',
+        ja: init?.name?.ja ?? '',
+        ko: init?.name?.ko ?? '',
+      },
+      forInfluencer: init?.forInfluencer ?? false,
     });
-    setForInfluencer(init?.forInfluencer ?? false);
     setError('');
     setSaving(false);
-  }, [opened]);
+  }, [opened, setValues]);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (values: TagForm) => {
     setSaving(true);
     setError('');
 
     const trimmedName: Record<string, string> = {};
-    for (const [locale, value] of Object.entries(name)) {
+    for (const [locale, value] of Object.entries(values.name)) {
       const trimmed = value.trim();
       if (trimmed) trimmedName[locale] = trimmed;
     }
 
     try {
       await onSubmit({
-        slug: slug.trim(),
+        slug: values.slug.trim(),
         name: trimmedName,
-        forInfluencer,
+        forInfluencer: values.forInfluencer,
       });
       onClose();
     } catch (err: any) {
@@ -88,46 +109,45 @@ export default function TagFormModal({
 
   return (
     <Modal opened={opened} onClose={onClose} title={title} centered size='md'>
-      <Stack gap='sm'>
-        <TextInput
-          label={t('tag.slug')}
-          placeholder={t('tag.slugPlaceholder')}
-          value={slug}
-          onChange={(e) => setSlug(e.currentTarget.value)}
-          data-autofocus
-        />
-        {NAME_LANGUAGES.map((lang) => (
+      <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Stack gap='sm'>
           <TextInput
-            key={lang.key}
-            label={t(lang.label)}
-            required={lang.required}
-            value={name[lang.key] ?? ''}
-            onChange={(e) => setName((prev) => ({ ...prev, [lang.key]: e.currentTarget.value }))}
+            label={t('tag.slug')}
+            placeholder={t('tag.slugPlaceholder')}
+            data-autofocus
+            {...form.getInputProps('slug')}
           />
-        ))}
-        <Switch
-          label={t('tag.forInfluencer')}
-          checked={forInfluencer}
-          onChange={(e) => setForInfluencer(e.currentTarget.checked)}
-        />
-        {error && (
-          <Text c='red' size='sm'>
-            {error}
-          </Text>
-        )}
-        <Group justify='flex-end'>
-          <Button variant='default' onClick={onClose}>
-            {t('tag.cancel')}
-          </Button>
-          <Button
-            loading={saving}
-            disabled={!slug.trim() || !name.en?.trim()}
-            onClick={handleSubmit}
-          >
-            {t('tag.save')}
-          </Button>
-        </Group>
-      </Stack>
+          {NAME_LANGUAGES.map((lang) => (
+            <TextInput
+              key={lang.key}
+              label={t(lang.label)}
+              required={lang.required}
+              {...form.getInputProps(`name.${lang.key}`)}
+            />
+          ))}
+          <Switch
+            label={t('tag.forInfluencer')}
+            {...form.getInputProps('forInfluencer', { type: 'checkbox' })}
+          />
+          {error && (
+            <Text c='red' size='sm'>
+              {error}
+            </Text>
+          )}
+          <Group justify='flex-end'>
+            <Button variant='default' onClick={onClose}>
+              {t('tag.cancel')}
+            </Button>
+            <Button
+              type='submit'
+              loading={saving}
+              disabled={!form.values.slug.trim() || !form.values.name.en?.trim()}
+            >
+              {t('tag.save')}
+            </Button>
+          </Group>
+        </Stack>
+      </form>
     </Modal>
   );
 }
