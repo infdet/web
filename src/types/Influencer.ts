@@ -11,6 +11,11 @@ export default interface Influencer extends BaseModel {
   birthDate: string | null;
   age: number | null;
   region: string | null;
+  height: number | null;
+  weight: number | null;
+  bust: number | null;
+  waist: number | null;
+  hip: number | null;
   accounts: Account[];
   tags: Tag[];
 }

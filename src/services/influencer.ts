@@ -15,6 +15,11 @@ export interface InfluencerFormData {
   gender?: string | null;
   birthDate?: string | null;
   region?: string | null;
+  height?: number | null;
+  weight?: number | null;
+  bust?: number | null;
+  waist?: number | null;
+  hip?: number | null;
 }
 
 export async function getInfluencers(

@@ -52,6 +52,13 @@ export default function InfluencerInfo({
     influencer.gender ? genderLabels[influencer.gender] : null,
     influencer.region ?? null,
     influencer.age != null ? `${t('influencer.age')} ${influencer.age}` : null,
+    influencer.height != null ? `${t('influencer.height')} ${influencer.height}cm` : null,
+    influencer.weight != null ? `${t('influencer.weight')} ${influencer.weight}kg` : null,
+    influencer.bust != null || influencer.waist != null || influencer.hip != null
+      ? `${t('influencer.measurements')} ${[influencer.bust, influencer.waist, influencer.hip]
+          .map((v) => (v != null ? String(v) : '—'))
+          .join('-')}cm`
+      : null,
   ].filter(Boolean);
 
   return (

@@ -33,6 +33,11 @@ interface InfluencerForm {
   gender: string | null;
   birthDate: string;
   region: string;
+  height: string;
+  weight: string;
+  bust: string;
+  waist: string;
+  hip: string;
   accounts: AccountForm[];
 }
 
@@ -65,6 +70,11 @@ export default function InfluencerEditPage() {
       gender: null,
       birthDate: '',
       region: '',
+      height: '',
+      weight: '',
+      bust: '',
+      waist: '',
+      hip: '',
       accounts: [{ platform: '', username: '' }],
     },
     validate: {
@@ -97,6 +107,11 @@ export default function InfluencerEditPage() {
         gender: influencer.gender ?? null,
         birthDate: influencer.birthDate ?? '',
         region: influencer.region ?? '',
+        height: influencer.height?.toString() ?? '',
+        weight: influencer.weight?.toString() ?? '',
+        bust: influencer.bust?.toString() ?? '',
+        waist: influencer.waist?.toString() ?? '',
+        hip: influencer.hip?.toString() ?? '',
         accounts:
           accounts.length > 0
             ? accounts.map((a) => ({ id: a.id, platform: a.platform, username: a.username }))
@@ -131,6 +146,11 @@ export default function InfluencerEditPage() {
       gender: values.gender || null,
       birthDate: values.birthDate || null,
       region: values.region.trim().toLowerCase() || null,
+      height: values.height ? Number(values.height) : null,
+      weight: values.weight ? Number(values.weight) : null,
+      bust: values.bust ? Number(values.bust) : null,
+      waist: values.waist ? Number(values.waist) : null,
+      hip: values.hip ? Number(values.hip) : null,
     };
 
     try {
@@ -234,6 +254,28 @@ export default function InfluencerEditPage() {
             maxLength={2}
             {...form.getInputProps('region')}
           />
+
+          <TextInput
+            type='number'
+            label={t('influencer.height')}
+            {...form.getInputProps('height')}
+          />
+
+          <TextInput
+            type='number'
+            label={t('influencer.weight')}
+            {...form.getInputProps('weight')}
+          />
+
+          <Group grow>
+            <TextInput type='number' label={t('influencer.bust')} {...form.getInputProps('bust')} />
+            <TextInput
+              type='number'
+              label={t('influencer.waist')}
+              {...form.getInputProps('waist')}
+            />
+            <TextInput type='number' label={t('influencer.hip')} {...form.getInputProps('hip')} />
+          </Group>
 
           <Fieldset legend={t('influencer.socialAccounts')}>
             <Stack gap='sm'>
