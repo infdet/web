@@ -9,6 +9,7 @@ import GenderEmoji from '#components/GenderEmoji';
 import InfluencerAvatar from '#components/InfluencerAvatar';
 import InfluencerCover from '#components/InfluencerCover';
 import InfluencerNameList from '#components/InfluencerNameList';
+import RegionFlag from '#components/RegionFlag';
 import TagList from '#components/TagList';
 import useAuthUser from '#hooks/useAuthUser';
 import type Influencer from '#types/Influencer';
@@ -47,7 +48,7 @@ export default function InfluencerInfo({
 
   const metaParts = [
     influencer.gender ? <GenderEmoji key='gender' gender={influencer.gender} /> : null,
-    influencer.region ?? null,
+    <RegionFlag key='region' region={influencer.region} />,
     influencer.age != null ? `${t('influencer.age')} ${influencer.age}` : null,
     influencer.height != null ? `${t('influencer.height')} ${influencer.height}cm` : null,
     influencer.weight != null ? `${t('influencer.weight')} ${influencer.weight}kg` : null,

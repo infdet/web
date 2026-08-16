@@ -5,6 +5,7 @@ import { Link } from 'wouter';
 
 import GenderEmoji from '#components/GenderEmoji';
 import InfluencerNameList from '#components/InfluencerNameList';
+import RegionFlag from '#components/RegionFlag';
 import type Influencer from '#types/Influencer';
 import { getLocalizedName } from '#utils/localized';
 
@@ -34,6 +35,7 @@ export default function InfluencerCard({ influencer, actions }: InfluencerCardPr
               {localeName}
             </Anchor>
             <GenderEmoji gender={influencer.gender} />
+            <RegionFlag region={influencer.region} />
           </Group>
           {actions && <div onClick={(e) => e.stopPropagation()}>{actions}</div>}
         </Group>
