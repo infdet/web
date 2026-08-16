@@ -9,7 +9,7 @@ import {
   Text,
   Tooltip,
 } from '@mantine/core';
-import { CameraIcon, PencilIcon, Tag as TagIcon, TrashIcon } from '@phosphor-icons/react';
+import { CameraIcon, PencilIcon, TagIcon, TrashIcon } from '@phosphor-icons/react';
 import { useTranslation } from 'react-i18next';
 
 import type Tag from '#types/Tag';
@@ -37,12 +37,12 @@ export default function TagCard({
   const { t } = useTranslation();
 
   return (
-    <Card shadow='sm' padding='lg' radius='md' withBorder>
+    <Card shadow='sm' padding='xs' radius='md' withBorder>
       <Group justify='space-between' wrap='nowrap' gap='xs'>
         <Group gap='sm' wrap='nowrap' style={{ flex: 1, minWidth: 0 }}>
           <Box pos='relative'>
-            <Avatar src={tag.icon ?? undefined} radius='xl' size='lg'>
-              <TagIcon size={22} />
+            <Avatar src={tag.icon ?? undefined} radius='100%' size='xl'>
+              <TagIcon size={32} />
             </Avatar>
             {canEdit && (
               <FileButton onChange={(file) => onUploadIcon(tag, file)} accept='image/*'>
@@ -51,16 +51,15 @@ export default function TagCard({
                     <ActionIcon
                       {...props}
                       variant='filled'
-                      color='dark'
                       radius='xl'
-                      size='xs'
+                      size='sm'
                       aria-label={t('tag.uploadIcon')}
                       loading={uploading}
                       pos='absolute'
-                      bottom={-4}
-                      right={-4}
+                      bottom={0}
+                      right={0}
                     >
-                      <CameraIcon size={10} />
+                      <CameraIcon size={16} />
                     </ActionIcon>
                   </Tooltip>
                 )}
