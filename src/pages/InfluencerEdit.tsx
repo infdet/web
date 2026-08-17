@@ -17,6 +17,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useParams } from 'wouter';
 
+import GenderSelect from '#components/GenderSelect';
 import { createAccount, deleteAccount, updateAccount } from '#services/account';
 import { createInfluencer, getInfluencer, updateInfluencer } from '#services/influencer';
 import { PLATFORM_OPTIONS } from '#utils/platforms';
@@ -195,12 +196,6 @@ export default function InfluencerEditPage() {
     form.removeListItem('accounts', index);
   };
 
-  const genderOptions = [
-    { value: 'male', label: t('influencer.genderMale') },
-    { value: 'female', label: t('influencer.genderFemale') },
-    { value: 'other', label: t('influencer.genderOther') },
-  ];
-
   if (loading) {
     return (
       <Container size='sm' py='xl'>
@@ -234,13 +229,7 @@ export default function InfluencerEditPage() {
             />
           ))}
 
-          <Select
-            label={t('influencer.gender')}
-            placeholder={t('influencer.genderPlaceholder')}
-            data={genderOptions}
-            clearable
-            {...form.getInputProps('gender')}
-          />
+          <GenderSelect label={t('influencer.gender')} {...form.getInputProps('gender')} />
 
           <TextInput
             type='date'
