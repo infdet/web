@@ -22,6 +22,7 @@ import RegionSelect from '#components/RegionSelect';
 import { createAccount, deleteAccount, updateAccount } from '#services/account';
 import { createInfluencer, getInfluencer, updateInfluencer } from '#services/influencer';
 import { PLATFORM_OPTIONS } from '#utils/platforms';
+import { slugify } from '#utils/slug';
 
 interface AccountForm {
   id?: number;
@@ -63,6 +64,7 @@ export default function InfluencerEditPage() {
   const [loading, setLoading] = useState(!isNew);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [slugTouched, setSlugTouched] = useState(false);
   const [existingAccountIds, setExistingAccountIds] = useState<number[]>([]);
 
   const form = useForm<InfluencerForm>({
@@ -97,6 +99,9 @@ export default function InfluencerEditPage() {
     try {
       const influencer = await getInfluencer(Number(params.id));
       const accounts = influencer.accounts ?? [];
+      const nameEn = influencer.name?.en ?? '';
+      const slug = influencer.slug ?? '';
+      setSlugTouched(slugify(nameEn) !== slug);
       setExistingAccountIds(accounts.map((a) => a.id));
       form.setValues({
         slug: influencer.slug,
@@ -219,6 +224,10 @@ export default function InfluencerEditPage() {
             label={t('influencer.slug')}
             placeholder={t('influencer.slugPlaceholder')}
             {...form.getInputProps('slug')}
+            onChange={(e) => {
+              setSlugTouched(true);
+              form.setFieldValue('slug', e.currentTarget.value);
+            }}
           />
 
           {NAME_LANGUAGES.map((lang) => (
@@ -227,6 +236,13 @@ export default function InfluencerEditPage() {
               label={t(lang.label)}
               required={lang.required}
               {...form.getInputProps(`name.${lang.key}`)}
+              onChange={(e) => {
+                const value = e.currentTarget.value;
+                form.setFieldValue(`name.${lang.key}`, value);
+                if (lang.key === 'en' && !slugTouched) {
+                  form.setFieldValue('slug', slugify(value));
+                }
+              }}
             />
           ))}
 
