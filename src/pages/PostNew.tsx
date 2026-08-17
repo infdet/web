@@ -1,41 +1,41 @@
 import {
   ActionIcon,
   Alert,
-  Anchor,
-  AspectRatio,
-  Badge,
   Button,
   Container,
   Group,
-  NumberInput,
-  Paper,
   Stack,
   Text,
   TextInput,
   Title,
 } from '@mantine/core';
-import { ArrowLeftIcon, LinkIcon } from '@phosphor-icons/react';
+import { useForm } from '@mantine/form';
+import { ArrowLeftIcon } from '@phosphor-icons/react';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useSearchParams } from 'wouter';
 
+import PostPreview from '#components/PostPreview';
 import { createPost } from '#services/post';
 import parsePostUrl from '#utils/parsePostUrl';
+
+interface PostNewForm {
+  url: string;
+}
 
 export default function PostNewPage() {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const [, navigate] = useLocation();
 
-  const [url, setUrl] = useState(searchParams.get('url') ?? '');
-  const [title, setTitle] = useState('');
-  const [width, setWidth] = useState<number | string>('');
-  const [height, setHeight] = useState<number | string>('');
-  const [rotate, setRotate] = useState<number | string>('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
-  const parsed = useMemo(() => parsePostUrl(url), [url]);
+  const form = useForm<PostNewForm>({
+    initialValues: { url: searchParams.get('url') ?? '' },
+  });
+
+  const parsed = useMemo(() => parsePostUrl(form.values.url), [form.values.url]);
 
   const handleSubmit = async () => {
     if (!parsed) return;
@@ -47,14 +47,7 @@ export default function PostNewPage() {
         type: parsed.type,
         externalUrl: parsed.externalUrl,
         externalId: parsed.externalId,
-        title: title.trim() || null,
-        ...(parsed.type === 'video'
-          ? {
-              width: width === '' ? null : Number(width),
-              height: height === '' ? null : Number(height),
-              rotate: rotate === '' ? null : Number(rotate),
-            }
-          : {}),
+        title: null,
       });
       navigate(`/posts/${post.id}`);
     } catch (err: any) {
@@ -73,111 +66,45 @@ export default function PostNewPage() {
         <Title order={2}>{t('post.new')}</Title>
       </Group>
 
-      <Stack gap='md'>
-        <TextInput
-          label={t('post.url')}
-          placeholder={t('post.urlPlaceholder')}
-          value={url}
-          onChange={(e) => setUrl(e.currentTarget.value)}
-        />
+      <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Stack gap='md'>
+          <TextInput
+            label={t('post.url')}
+            placeholder={t('post.urlPlaceholder')}
+            {...form.getInputProps('url')}
+          />
 
-        {!url.trim() ? (
-          <Text c='dimmed' size='sm'>
-            {t('post.enterUrl')}
-          </Text>
-        ) : !parsed ? (
-          <Alert color='red'>{t('post.unsupportedUrl')}</Alert>
-        ) : (
-          <Stack gap='sm'>
-            <TextInput
-              label={t('post.postTitle')}
-              placeholder={t('post.postTitle')}
-              value={title}
-              onChange={(e) => setTitle(e.currentTarget.value)}
-            />
-            {parsed.type === 'video' && (
-              <Group grow>
-                <NumberInput
-                  label={t('post.width')}
-                  placeholder='1920'
-                  value={width}
-                  onChange={setWidth}
-                  min={0}
-                  allowDecimal={false}
-                />
-                <NumberInput
-                  label={t('post.height')}
-                  placeholder='1080'
-                  value={height}
-                  onChange={setHeight}
-                  min={0}
-                  allowDecimal={false}
-                />
-                <NumberInput
-                  label={t('post.rotate')}
-                  placeholder='0'
-                  value={rotate}
-                  onChange={setRotate}
-                  allowDecimal={false}
-                />
-              </Group>
-            )}
-            <Text fw={600}>{t('post.preview')}</Text>
-            <Paper withBorder radius='md' p='md'>
-              <Stack gap='sm'>
-                <Group gap='xs'>
-                  <Badge variant='light'>{t(`platform.${parsed.platform}`)}</Badge>
-                  <Badge variant='outline'>{t(`postType.${parsed.type}`)}</Badge>
-                </Group>
+          {!form.values.url.trim() ? (
+            <Text c='dimmed' size='sm'>
+              {t('post.enterUrl')}
+            </Text>
+          ) : !parsed ? (
+            <Alert color='red'>{t('post.unsupportedUrl')}</Alert>
+          ) : (
+            <Stack gap='sm'>
+              <Text fw={600}>{t('post.preview')}</Text>
+              <PostPreview
+                platform={parsed.platform}
+                type={parsed.type}
+                externalId={parsed.externalId}
+                externalUrl={parsed.externalUrl}
+                embedUrl={parsed.embedUrl}
+              />
+            </Stack>
+          )}
 
-                {parsed.embedUrl ? (
-                  <AspectRatio ratio={16 / 9}>
-                    <iframe
-                      src={parsed.embedUrl}
-                      title={`${parsed.platform} ${parsed.externalId}`}
-                      allowFullScreen
-                      allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-                      style={{ border: 0 }}
-                    />
-                  </AspectRatio>
-                ) : (
-                  <AspectRatio ratio={16 / 9}>
-                    <Stack gap={4} align='center' justify='center'>
-                      <Text size='sm' fw={600} c='dimmed'>
-                        {t(`platform.${parsed.platform}`)}
-                      </Text>
-                      <Text size='xs' c='dimmed'>
-                        {t(`postType.${parsed.type}`)}
-                      </Text>
-                    </Stack>
-                  </AspectRatio>
-                )}
+          {error && <Alert color='red'>{error}</Alert>}
 
-                <Group justify='space-between' wrap='nowrap' gap='xs'>
-                  <Text size='xs' c='dimmed' truncate style={{ flex: 1 }}>
-                    {parsed.externalId}
-                  </Text>
-                  <Anchor href={parsed.externalUrl} target='_blank' size='sm' rel='noreferrer'>
-                    <LinkIcon size={14} style={{ marginRight: 4 }} />
-                    {t('influencer.link')}
-                  </Anchor>
-                </Group>
-              </Stack>
-            </Paper>
-          </Stack>
-        )}
-
-        {error && <Alert color='red'>{error}</Alert>}
-
-        <Group justify='flex-end'>
-          <Button variant='default' onClick={() => navigate('/influencers')}>
-            {t('common.cancel')}
-          </Button>
-          <Button onClick={handleSubmit} loading={saving} disabled={!parsed}>
-            {t('post.create')}
-          </Button>
-        </Group>
-      </Stack>
+          <Group justify='flex-end'>
+            <Button variant='default' onClick={() => navigate('/influencers')}>
+              {t('common.cancel')}
+            </Button>
+            <Button type='submit' loading={saving} disabled={!parsed}>
+              {t('post.create')}
+            </Button>
+          </Group>
+        </Stack>
+      </form>
     </Container>
   );
 }

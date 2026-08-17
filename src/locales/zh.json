@@ -139,6 +139,7 @@
   "post": {
     "title": "帖子",
     "new": "新建帖子",
+    "edit": "编辑帖子",
     "notFound": "未找到该帖子。",
     "url": "帖子链接",
     "urlPlaceholder": "https://www.youtube.com/watch?v=...",
@@ -147,6 +148,7 @@
     "preview": "预览",
     "create": "创建",
     "createFailed": "创建帖子失败",
+    "saveFailed": "保存帖子失败",
     "externalId": "外部 ID",
     "externalUrl": "外部链接",
     "createdAt": "创建时间",

@@ -12,7 +12,7 @@ import {
   Text,
   Title,
 } from '@mantine/core';
-import { ArrowLeftIcon, LinkIcon, TrashIcon } from '@phosphor-icons/react';
+import { ArrowLeftIcon, LinkIcon, PencilIcon, TrashIcon } from '@phosphor-icons/react';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useParams } from 'wouter';
@@ -103,6 +103,11 @@ export default function PostDetailPage() {
         <Title order={2}>{t('post.title')}</Title>
         <Badge variant='light'>{t(`platform.${post.platform}`)}</Badge>
         <Badge variant='outline'>{t(`postType.${post.type}`)}</Badge>
+        {authUser && (
+          <ActionIcon component={Link} href={`/posts/${id}/edit`} variant='subtle'>
+            <PencilIcon size={18} />
+          </ActionIcon>
+        )}
         {authUser && (
           <ActionIcon variant='subtle' color='red' onClick={handleDelete}>
             <TrashIcon size={18} />

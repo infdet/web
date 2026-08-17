@@ -139,6 +139,7 @@
   "post": {
     "title": "Post",
     "new": "New Post",
+    "edit": "Edit Post",
     "notFound": "Post not found.",
     "url": "Post URL",
     "urlPlaceholder": "https://www.youtube.com/watch?v=...",
@@ -147,6 +148,7 @@
     "preview": "Preview",
     "create": "Create",
     "createFailed": "Failed to create post",
+    "saveFailed": "Failed to save post",
     "externalId": "External ID",
     "externalUrl": "External URL",
     "createdAt": "Created At",
