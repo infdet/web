@@ -1,4 +1,4 @@
-import { Avatar, Card, Group, Image, Stack, Text } from '@mantine/core';
+import { Avatar, Card, Group, Stack, Text } from '@mantine/core';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'wouter';
