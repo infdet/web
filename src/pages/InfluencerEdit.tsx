@@ -270,37 +270,28 @@ export default function InfluencerEditPage() {
             <NumberInput
               label={t('influencer.height')}
               suffix=' cm'
-              hideControls
               {...form.getInputProps('height')}
             />
 
             <NumberInput
               label={t('influencer.weight')}
               suffix=' kg'
-              hideControls
               {...form.getInputProps('weight')}
             />
 
             <NumberInput
               label={t('influencer.bust')}
               suffix=' cm'
-              hideControls
               {...form.getInputProps('bust')}
             />
 
             <NumberInput
               label={t('influencer.waist')}
               suffix=' cm'
-              hideControls
               {...form.getInputProps('waist')}
             />
 
-            <NumberInput
-              label={t('influencer.hip')}
-              suffix=' cm'
-              hideControls
-              {...form.getInputProps('hip')}
-            />
+            <NumberInput label={t('influencer.hip')} suffix=' cm' {...form.getInputProps('hip')} />
           </SimpleGrid>
 
           <Fieldset legend={t('influencer.socialAccounts')}>
