@@ -19,6 +19,9 @@ export default interface Post extends BaseModel {
   type: PostType;
   externalUrl: string;
   externalId: string;
+  title: string | null;
+  likeCount: number | null;
+  viewCount: number | null;
   publishedAt: string | null;
   embedUrl: string | null;
   deletedAt: string | null;
@@ -30,5 +33,8 @@ export interface PostFormData {
   type: PostType;
   externalUrl: string;
   externalId: string;
+  title?: string | null;
+  likeCount?: number | null;
+  viewCount?: number | null;
   publishedAt?: string | null;
 }

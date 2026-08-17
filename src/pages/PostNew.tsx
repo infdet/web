@@ -27,6 +27,7 @@ export default function PostNewPage() {
   const [, navigate] = useLocation();
 
   const [url, setUrl] = useState(searchParams.get('url') ?? '');
+  const [title, setTitle] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
@@ -42,6 +43,7 @@ export default function PostNewPage() {
         type: parsed.type,
         externalUrl: parsed.externalUrl,
         externalId: parsed.externalId,
+        title: title.trim() || null,
       });
       navigate(`/posts/${post.id}`);
     } catch (err: any) {
@@ -76,6 +78,12 @@ export default function PostNewPage() {
           <Alert color='red'>{t('post.unsupportedUrl')}</Alert>
         ) : (
           <Stack gap='sm'>
+            <TextInput
+              label={t('post.postTitle')}
+              placeholder={t('post.postTitle')}
+              value={title}
+              onChange={(e) => setTitle(e.currentTarget.value)}
+            />
             <Text fw={600}>{t('post.preview')}</Text>
             <Paper withBorder radius='md' p='md'>
               <Stack gap='sm'>

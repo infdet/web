@@ -46,6 +46,12 @@ export default function PostCard({ post, onDetach, onDelete }: PostCardProps) {
           </Group>
         </Group>
 
+        {post.title && (
+          <Text fw={600} lineClamp={2}>
+            {post.title}
+          </Text>
+        )}
+
         {embedUrl ? (
           <AspectRatio ratio={16 / 9}>
             <iframe
@@ -68,6 +74,15 @@ export default function PostCard({ post, onDetach, onDelete }: PostCardProps) {
             </Stack>
           </AspectRatio>
         )}
+
+        <Group gap='md'>
+          <Text size='xs' c='dimmed'>
+            {t('post.viewCount')}: {post.viewCount?.toLocaleString() ?? '—'}
+          </Text>
+          <Text size='xs' c='dimmed'>
+            {t('post.likeCount')}: {post.likeCount?.toLocaleString() ?? '—'}
+          </Text>
+        </Group>
 
         <Group justify='space-between' wrap='nowrap' gap='xs'>
           <Text size='xs' c='dimmed' truncate style={{ flex: 1 }}>

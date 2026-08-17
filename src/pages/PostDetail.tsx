@@ -139,6 +139,18 @@ export default function PostDetailPage() {
 
       <Stack gap='sm'>
         <Group justify='space-between'>
+          <Text fw={600}>{t('post.postTitle')}</Text>
+          <Text c='dimmed'>{post.title ?? '—'}</Text>
+        </Group>
+        <Group justify='space-between'>
+          <Text fw={600}>{t('post.viewCount')}</Text>
+          <Text c='dimmed'>{post.viewCount?.toLocaleString() ?? '—'}</Text>
+        </Group>
+        <Group justify='space-between'>
+          <Text fw={600}>{t('post.likeCount')}</Text>
+          <Text c='dimmed'>{post.likeCount?.toLocaleString() ?? '—'}</Text>
+        </Group>
+        <Group justify='space-between'>
           <Text fw={600}>{t('post.externalId')}</Text>
           <Text c='dimmed'>{post.externalId}</Text>
         </Group>
