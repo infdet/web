@@ -1,6 +1,6 @@
 import { Alert, Button, Group, Modal, Stack, Text, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import PostPreview from '#components/PostPreview';
@@ -22,6 +22,7 @@ export default function PostCreateModal({
 }: PostCreateModalProps) {
   const { t } = useTranslation();
   const [creating, setCreating] = useState(false);
+  const urlInputRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<{ url: string }>({
     initialValues: { url: '' },
@@ -33,6 +34,8 @@ export default function PostCreateModal({
   useEffect(() => {
     if (!opened) return;
     setValues({ url: '' });
+    const timer = setTimeout(() => urlInputRef.current?.focus(), 100);
+    return () => clearTimeout(timer);
   }, [opened, setValues]);
 
   const handleSubmit = async () => {
@@ -62,6 +65,7 @@ export default function PostCreateModal({
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack gap='md'>
           <TextInput
+            ref={urlInputRef}
             label={t('post.url')}
             placeholder={t('post.urlPlaceholder')}
             {...form.getInputProps('url')}
