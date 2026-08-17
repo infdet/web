@@ -150,6 +150,7 @@
     "externalId": "외부 ID",
     "externalUrl": "외부 URL",
     "createdAt": "생성일",
+    "publishedAt": "게시일",
     "postTitle": "제목",
     "likeCount": "좋아요 수",
     "viewCount": "조회 수",

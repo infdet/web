@@ -150,6 +150,7 @@
     "externalId": "External ID",
     "externalUrl": "External URL",
     "createdAt": "Created At",
+    "publishedAt": "Published At",
     "postTitle": "Title",
     "likeCount": "Likes",
     "viewCount": "Views",

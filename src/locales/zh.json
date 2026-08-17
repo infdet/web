@@ -150,6 +150,7 @@
     "externalId": "外部 ID",
     "externalUrl": "外部链接",
     "createdAt": "创建时间",
+    "publishedAt": "发布时间",
     "postTitle": "标题",
     "likeCount": "点赞数",
     "viewCount": "观看次数",

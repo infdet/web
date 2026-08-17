@@ -84,6 +84,12 @@ export default function PostCard({ post, onDetach, onDelete }: PostCardProps) {
           </Text>
         </Group>
 
+        {post.publishedAt && (
+          <Text size='xs' c='dimmed'>
+            {t('post.publishedAt')}: {new Date(post.publishedAt).toLocaleString()}
+          </Text>
+        )}
+
         <Group justify='space-between' wrap='nowrap' gap='xs'>
           <Text size='xs' c='dimmed' truncate style={{ flex: 1 }}>
             {post.externalId}

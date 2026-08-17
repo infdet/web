@@ -151,6 +151,12 @@ export default function PostDetailPage() {
           <Text c='dimmed'>{post.likeCount?.toLocaleString() ?? '—'}</Text>
         </Group>
         <Group justify='space-between'>
+          <Text fw={600}>{t('post.publishedAt')}</Text>
+          <Text c='dimmed'>
+            {post.publishedAt ? new Date(post.publishedAt).toLocaleString() : '—'}
+          </Text>
+        </Group>
+        <Group justify='space-between'>
           <Text fw={600}>{t('post.externalId')}</Text>
           <Text c='dimmed'>{post.externalId}</Text>
         </Group>

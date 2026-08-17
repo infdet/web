@@ -150,6 +150,7 @@
     "externalId": "外部 ID",
     "externalUrl": "外部 URL",
     "createdAt": "作成日時",
+    "publishedAt": "公開日時",
     "postTitle": "タイトル",
     "likeCount": "いいね数",
     "viewCount": "閲覧数",
