@@ -1,4 +1,4 @@
-import { Input, InputLabel, SegmentedControl } from '@mantine/core';
+import { Input, Text, SegmentedControl } from '@mantine/core';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -25,7 +25,11 @@ export default function GenderSelect({ label, value, onChange, error }: GenderSe
 
   return (
     <div>
-      {label && <InputLabel mb={6}>{label}</InputLabel>}
+      {label && (
+        <Text size='sm' fw={500} mb={3}>
+          {label}
+        </Text>
+      )}
       <SegmentedControl data={data} value={value ?? undefined} onChange={onChange} />
       {error && <Input.Error mt={6}>{error}</Input.Error>}
     </div>
