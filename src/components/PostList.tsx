@@ -1,49 +1,14 @@
-import {
-  Button,
-  Group,
-  Modal,
-  MultiSelect,
-  Pagination,
-  Select,
-  SimpleGrid,
-  Stack,
-  Text,
-  TextInput,
-} from '@mantine/core';
+import { Button, Group, Pagination, SimpleGrid, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { PlusIcon } from '@phosphor-icons/react';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import PostCard from '#components/PostCard';
-import {
-  attachPosts,
-  createPost,
-  deletePost,
-  detachPost,
-  getInfluencerPosts,
-  getPosts,
-} from '#services/post';
+import PostCreateModal from '#components/PostCreateModal';
+import { deletePost, detachPost, getInfluencerPosts } from '#services/post';
 import type Post from '#types/Post';
-import type { PostFormData, PostPlatform, PostType } from '#types/Post';
 import type { PaginationMeta } from '#types/Response';
-
-const PLATFORM_OPTIONS = [
-  { value: 'youtube', label: 'YouTube' },
-  { value: 'instagram', label: 'Instagram' },
-  { value: 'tiktok', label: 'TikTok' },
-  { value: 'twitter', label: 'Twitter / X' },
-  { value: 'facebook', label: 'Facebook' },
-  { value: 'bilibili', label: 'Bilibili' },
-  { value: 'weibo', label: 'Weibo' },
-  { value: 'douyin', label: 'Douyin' },
-  { value: 'xiaohongshu', label: 'Xiaohongshu' },
-];
-
-const TYPE_OPTIONS = [
-  { value: 'photo', label: 'Photo' },
-  { value: 'video', label: 'Video' },
-];
 
 const PER_PAGE = 12;
 
@@ -87,62 +52,8 @@ export default function PostList({ influencerId }: PostListProps) {
     loadPosts(1);
   }, [loadPosts]);
 
-  // Attach post modal
-  const [attachOpened, { open: openAttach, close: closeAttach }] = useDisclosure(false);
-  const [availablePosts, setAvailablePosts] = useState<Post[]>([]);
-  const [selectedPostIds, setSelectedPostIds] = useState<string[]>([]);
-  const [attaching, setAttaching] = useState(false);
-
   // Create post modal
   const [createOpened, { open: openCreate, close: closeCreate }] = useDisclosure(false);
-  const [newPost, setNewPost] = useState<PostFormData>({
-    platform: 'youtube',
-    type: 'video',
-    externalUrl: '',
-    externalId: '',
-  });
-  const [creating, setCreating] = useState(false);
-
-  const handleAttach = async () => {
-    if (selectedPostIds.length === 0) return;
-    setAttaching(true);
-    try {
-      await attachPosts(influencerId, selectedPostIds.map(Number));
-      await loadPosts(page);
-      closeAttach();
-      setSelectedPostIds([]);
-    } catch {
-      // ignore
-    } finally {
-      setAttaching(false);
-    }
-  };
-
-  const handleOpenAttach = async () => {
-    try {
-      const res = await getPosts({ perPage: 100 });
-      setAvailablePosts(res.data);
-      setSelectedPostIds([]);
-    } catch {
-      // ignore
-    }
-    openAttach();
-  };
-
-  const handleCreate = async () => {
-    setCreating(true);
-    try {
-      const created = await createPost(newPost);
-      await attachPosts(influencerId, [created.id]);
-      await loadPosts(page);
-      closeCreate();
-      setNewPost({ platform: 'youtube', type: 'video', externalUrl: '', externalId: '' });
-    } catch {
-      // ignore
-    } finally {
-      setCreating(false);
-    }
-  };
 
   const handleDetach = async (postId: number) => {
     if (!window.confirm(t('influencer.detachConfirm'))) return;
@@ -171,9 +82,6 @@ export default function PostList({ influencerId }: PostListProps) {
           {t('influencer.posts')} ({meta?.total ?? posts.length})
         </Text>
         <Group gap='xs'>
-          <Button variant='light' leftSection={<PlusIcon size={16} />} onClick={handleOpenAttach}>
-            {t('influencer.attachPosts')}
-          </Button>
           <Button variant='light' leftSection={<PlusIcon size={16} />} onClick={openCreate}>
             {t('influencer.createPost')}
           </Button>
@@ -207,84 +115,13 @@ export default function PostList({ influencerId }: PostListProps) {
         </Group>
       )}
 
-      {/* Attach Posts Modal */}
-      <Modal
-        opened={attachOpened}
-        onClose={closeAttach}
-        title={t('influencer.attachExistingPosts')}
-        size='lg'
-      >
-        <Stack gap='md'>
-          <MultiSelect
-            data={availablePosts.map((p) => ({
-              value: String(p.id),
-              label: `[${p.platform}] ${p.externalId} (${p.type})`,
-            }))}
-            value={selectedPostIds}
-            onChange={setSelectedPostIds}
-            placeholder={t('influencer.searchPosts')}
-            searchable
-            clearable
-          />
-          <Group justify='flex-end'>
-            <Button variant='default' onClick={closeAttach}>
-              {t('influencer.cancel')}
-            </Button>
-            <Button
-              onClick={handleAttach}
-              loading={attaching}
-              disabled={selectedPostIds.length === 0}
-            >
-              {t('influencer.attach')}
-            </Button>
-          </Group>
-        </Stack>
-      </Modal>
-
       {/* Create Post Modal */}
-      <Modal
+      <PostCreateModal
         opened={createOpened}
+        influencerId={influencerId}
         onClose={closeCreate}
-        title={t('influencer.createNewPost')}
-        size='md'
-      >
-        <Stack gap='md'>
-          <Select
-            label={t('influencer.platform')}
-            data={PLATFORM_OPTIONS}
-            value={newPost.platform}
-            onChange={(v) =>
-              setNewPost((prev) => ({ ...prev, platform: (v as PostPlatform) || 'youtube' }))
-            }
-          />
-          <Select
-            label={t('influencer.type')}
-            data={TYPE_OPTIONS}
-            value={newPost.type}
-            onChange={(v) => setNewPost((prev) => ({ ...prev, type: (v as PostType) || 'video' }))}
-          />
-          <TextInput
-            label={t('influencer.externalUrl')}
-            placeholder={t('influencer.externalUrlPlaceholder')}
-            value={newPost.externalUrl}
-            onChange={(e) => setNewPost((prev) => ({ ...prev, externalUrl: e.target.value }))}
-          />
-          <TextInput
-            label={t('influencer.externalId')}
-            placeholder={t('influencer.externalIdPlaceholder')}
-            value={newPost.externalId}
-            onChange={(e) => setNewPost((prev) => ({ ...prev, externalId: e.target.value }))}
-          />
-          <Group justify='flex-end'>
-            <Button variant='default' onClick={closeCreate}>
-              {t('influencer.cancel')}
-            </Button>
-            <Button onClick={handleCreate} loading={creating}>
-              {t('influencer.createAndAttach')}
-            </Button>
-          </Group>
-        </Stack>
-      </Modal>
+        onCreated={() => loadPosts(page)}
+      />
     </>
   );
 }
