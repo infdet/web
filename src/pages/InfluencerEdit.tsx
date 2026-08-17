@@ -5,7 +5,9 @@ import {
   Fieldset,
   Group,
   Loader,
+  NumberInput,
   Select,
+  SimpleGrid,
   Stack,
   Text,
   TextInput,
@@ -220,6 +222,24 @@ export default function InfluencerEditPage() {
 
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack gap='md'>
+          <SimpleGrid cols={{ base: 1, sm: 2 }}>
+            {NAME_LANGUAGES.map((lang) => (
+              <TextInput
+                key={lang.key}
+                label={t(lang.label)}
+                required={lang.required}
+                {...form.getInputProps(`name.${lang.key}`)}
+                onChange={(e) => {
+                  const value = e.currentTarget.value;
+                  form.setFieldValue(`name.${lang.key}`, value);
+                  if (lang.key === 'en' && !slugTouched) {
+                    form.setFieldValue('slug', slugify(value));
+                  }
+                }}
+              />
+            ))}
+          </SimpleGrid>
+
           <TextInput
             label={t('influencer.slug')}
             placeholder={t('influencer.slugPlaceholder')}
@@ -230,57 +250,58 @@ export default function InfluencerEditPage() {
             }}
           />
 
-          {NAME_LANGUAGES.map((lang) => (
+          <SimpleGrid cols={{ base: 1, sm: 3 }}>
+            <GenderSelect label={t('influencer.gender')} {...form.getInputProps('gender')} />
+
             <TextInput
-              key={lang.key}
-              label={t(lang.label)}
-              required={lang.required}
-              {...form.getInputProps(`name.${lang.key}`)}
-              onChange={(e) => {
-                const value = e.currentTarget.value;
-                form.setFieldValue(`name.${lang.key}`, value);
-                if (lang.key === 'en' && !slugTouched) {
-                  form.setFieldValue('slug', slugify(value));
-                }
-              }}
+              type='date'
+              label={t('influencer.birthDate')}
+              {...form.getInputProps('birthDate')}
             />
-          ))}
 
-          <GenderSelect label={t('influencer.gender')} {...form.getInputProps('gender')} />
+            <RegionSelect
+              label={t('influencer.region')}
+              placeholder={t('influencer.regionPlaceholder')}
+              {...form.getInputProps('region')}
+            />
+          </SimpleGrid>
 
-          <TextInput
-            type='date'
-            label={t('influencer.birthDate')}
-            {...form.getInputProps('birthDate')}
-          />
+          <SimpleGrid cols={{ base: 2, sm: 5 }}>
+            <NumberInput
+              label={t('influencer.height')}
+              suffix=' cm'
+              hideControls
+              {...form.getInputProps('height')}
+            />
 
-          <RegionSelect
-            label={t('influencer.region')}
-            placeholder={t('influencer.regionPlaceholder')}
-            {...form.getInputProps('region')}
-          />
+            <NumberInput
+              label={t('influencer.weight')}
+              suffix=' kg'
+              hideControls
+              {...form.getInputProps('weight')}
+            />
 
-          <TextInput
-            type='number'
-            label={t('influencer.height')}
-            {...form.getInputProps('height')}
-          />
+            <NumberInput
+              label={t('influencer.bust')}
+              suffix=' cm'
+              hideControls
+              {...form.getInputProps('bust')}
+            />
 
-          <TextInput
-            type='number'
-            label={t('influencer.weight')}
-            {...form.getInputProps('weight')}
-          />
-
-          <Group grow>
-            <TextInput type='number' label={t('influencer.bust')} {...form.getInputProps('bust')} />
-            <TextInput
-              type='number'
+            <NumberInput
               label={t('influencer.waist')}
+              suffix=' cm'
+              hideControls
               {...form.getInputProps('waist')}
             />
-            <TextInput type='number' label={t('influencer.hip')} {...form.getInputProps('hip')} />
-          </Group>
+
+            <NumberInput
+              label={t('influencer.hip')}
+              suffix=' cm'
+              hideControls
+              {...form.getInputProps('hip')}
+            />
+          </SimpleGrid>
 
           <Fieldset legend={t('influencer.socialAccounts')}>
             <Stack gap='sm'>
