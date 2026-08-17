@@ -156,6 +156,20 @@ export default function PostDetailPage() {
             {post.publishedAt ? new Date(post.publishedAt).toLocaleString() : '—'}
           </Text>
         </Group>
+        {post.type === 'video' && (
+          <>
+            <Group justify='space-between'>
+              <Text fw={600}>{t('post.dimensions')}</Text>
+              <Text c='dimmed'>
+                {post.width && post.height ? `${post.width} × ${post.height}` : '—'}
+              </Text>
+            </Group>
+            <Group justify='space-between'>
+              <Text fw={600}>{t('post.rotate')}</Text>
+              <Text c='dimmed'>{post.rotate != null ? `${post.rotate}°` : '—'}</Text>
+            </Group>
+          </>
+        )}
         <Group justify='space-between'>
           <Text fw={600}>{t('post.externalId')}</Text>
           <Text c='dimmed'>{post.externalId}</Text>

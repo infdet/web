@@ -7,6 +7,7 @@ import {
   Button,
   Container,
   Group,
+  NumberInput,
   Paper,
   Stack,
   Text,
@@ -28,6 +29,9 @@ export default function PostNewPage() {
 
   const [url, setUrl] = useState(searchParams.get('url') ?? '');
   const [title, setTitle] = useState('');
+  const [width, setWidth] = useState<number | string>('');
+  const [height, setHeight] = useState<number | string>('');
+  const [rotate, setRotate] = useState<number | string>('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
@@ -44,6 +48,13 @@ export default function PostNewPage() {
         externalUrl: parsed.externalUrl,
         externalId: parsed.externalId,
         title: title.trim() || null,
+        ...(parsed.type === 'video'
+          ? {
+              width: width === '' ? null : Number(width),
+              height: height === '' ? null : Number(height),
+              rotate: rotate === '' ? null : Number(rotate),
+            }
+          : {}),
       });
       navigate(`/posts/${post.id}`);
     } catch (err: any) {
@@ -84,6 +95,33 @@ export default function PostNewPage() {
               value={title}
               onChange={(e) => setTitle(e.currentTarget.value)}
             />
+            {parsed.type === 'video' && (
+              <Group grow>
+                <NumberInput
+                  label={t('post.width')}
+                  placeholder='1920'
+                  value={width}
+                  onChange={setWidth}
+                  min={0}
+                  allowDecimal={false}
+                />
+                <NumberInput
+                  label={t('post.height')}
+                  placeholder='1080'
+                  value={height}
+                  onChange={setHeight}
+                  min={0}
+                  allowDecimal={false}
+                />
+                <NumberInput
+                  label={t('post.rotate')}
+                  placeholder='0'
+                  value={rotate}
+                  onChange={setRotate}
+                  allowDecimal={false}
+                />
+              </Group>
+            )}
             <Text fw={600}>{t('post.preview')}</Text>
             <Paper withBorder radius='md' p='md'>
               <Stack gap='sm'>

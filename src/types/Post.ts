@@ -23,6 +23,9 @@ export default interface Post extends BaseModel {
   likeCount: number | null;
   viewCount: number | null;
   publishedAt: string | null;
+  width: number | null;
+  height: number | null;
+  rotate: number | null;
   embedUrl: string | null;
   deletedAt: string | null;
   tags: Tag[];
@@ -37,4 +40,7 @@ export interface PostFormData {
   likeCount?: number | null;
   viewCount?: number | null;
   publishedAt?: string | null;
+  width?: number | null;
+  height?: number | null;
+  rotate?: number | null;
 }
