@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocation, useParams } from 'wouter';
 
 import GenderSelect from '#components/GenderSelect';
+import RegionSelect from '#components/RegionSelect';
 import { createAccount, deleteAccount, updateAccount } from '#services/account';
 import { createInfluencer, getInfluencer, updateInfluencer } from '#services/influencer';
 import { PLATFORM_OPTIONS } from '#utils/platforms';
@@ -33,7 +34,7 @@ interface InfluencerForm {
   name: Record<string, string>;
   gender: string | null;
   birthDate: string;
-  region: string;
+  region: string | null;
   height: string;
   weight: string;
   bust: string;
@@ -70,7 +71,7 @@ export default function InfluencerEditPage() {
       name: { en: '', zh: '', ja: '', ko: '' },
       gender: null,
       birthDate: '',
-      region: '',
+      region: null,
       height: '',
       weight: '',
       bust: '',
@@ -107,7 +108,7 @@ export default function InfluencerEditPage() {
         },
         gender: influencer.gender ?? null,
         birthDate: influencer.birthDate ?? '',
-        region: influencer.region ?? '',
+        region: influencer.region ?? null,
         height: influencer.height?.toString() ?? '',
         weight: influencer.weight?.toString() ?? '',
         bust: influencer.bust?.toString() ?? '',
@@ -146,7 +147,7 @@ export default function InfluencerEditPage() {
       name,
       gender: values.gender || null,
       birthDate: values.birthDate || null,
-      region: values.region.trim().toLowerCase() || null,
+      region: values.region?.trim().toLowerCase() || null,
       height: values.height ? Number(values.height) : null,
       weight: values.weight ? Number(values.weight) : null,
       bust: values.bust ? Number(values.bust) : null,
@@ -237,10 +238,9 @@ export default function InfluencerEditPage() {
             {...form.getInputProps('birthDate')}
           />
 
-          <TextInput
+          <RegionSelect
             label={t('influencer.region')}
             placeholder={t('influencer.regionPlaceholder')}
-            maxLength={2}
             {...form.getInputProps('region')}
           />
 
