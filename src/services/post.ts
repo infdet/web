@@ -50,16 +50,16 @@ export async function getInfluencerPosts(
   return res.data;
 }
 
-export async function attachPosts(influencerId: number, postIds: number[]): Promise<void> {
-  await xior.post(`/influencers/${influencerId}/posts`, { postIds });
+export async function attachPosts(influencerId: number, postId: number): Promise<void> {
+  await xior.post(`/influencers/${influencerId}/posts`, { postId });
 }
 
 export async function detachPost(influencerId: number, postId: number): Promise<void> {
   await xior.delete(`/influencers/${influencerId}/posts/${postId}`);
 }
 
-export async function attachInfluencers(postId: number, influencerIds: number[]): Promise<void> {
-  await xior.post(`/posts/${postId}/influencers`, { influencerIds });
+export async function attachInfluencers(postId: number, influencerId: number): Promise<void> {
+  await xior.post(`/posts/${postId}/influencers`, { influencerId });
 }
 
 export async function detachInfluencer(postId: number, influencerId: number): Promise<void> {

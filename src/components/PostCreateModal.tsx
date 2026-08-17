@@ -46,7 +46,7 @@ export default function PostCreateModal({
         externalId: parsed.externalId,
         title: null,
       });
-      await attachPosts(influencerId, [created.id]);
+      await attachPosts(influencerId, created.id);
       await onCreated();
       onClose();
       setValues({ url: '' });

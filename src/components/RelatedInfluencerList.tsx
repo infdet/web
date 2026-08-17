@@ -1,13 +1,4 @@
-import {
-  ActionIcon,
-  Button,
-  Group,
-  Modal,
-  MultiSelect,
-  SimpleGrid,
-  Stack,
-  Text,
-} from '@mantine/core';
+import { ActionIcon, Button, Group, Modal, Select, SimpleGrid, Stack, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { PlusIcon, XIcon } from '@phosphor-icons/react';
 import { useCallback, useEffect, useState } from 'react';
@@ -31,7 +22,7 @@ export default function RelatedInfluencerList({ postId, canManage }: RelatedInfl
 
   const [attachOpened, { open: openAttach, close: closeAttach }] = useDisclosure(false);
   const [availableInfluencers, setAvailableInfluencers] = useState<Influencer[]>([]);
-  const [selectedInfluencerIds, setSelectedInfluencerIds] = useState<string[]>([]);
+  const [selectedInfluencerId, setSelectedInfluencerId] = useState<string | null>(null);
   const [attaching, setAttaching] = useState(false);
 
   const fetchInfluencers = useCallback(async () => {
@@ -53,7 +44,7 @@ export default function RelatedInfluencerList({ postId, canManage }: RelatedInfl
       const res = await getInfluencers({ perPage: 100 });
       const linkedIds = new Set(influencers.map((inf) => inf.id));
       setAvailableInfluencers(res.data.filter((inf) => !linkedIds.has(inf.id)));
-      setSelectedInfluencerIds([]);
+      setSelectedInfluencerId(null);
     } catch {
       // ignore
     }
@@ -61,13 +52,13 @@ export default function RelatedInfluencerList({ postId, canManage }: RelatedInfl
   };
 
   const handleAttach = async () => {
-    if (selectedInfluencerIds.length === 0) return;
+    if (!selectedInfluencerId) return;
     setAttaching(true);
     try {
-      await attachInfluencers(postId, selectedInfluencerIds.map(Number));
+      await attachInfluencers(postId, Number(selectedInfluencerId));
       await fetchInfluencers();
       closeAttach();
-      setSelectedInfluencerIds([]);
+      setSelectedInfluencerId(null);
     } catch {
       // ignore
     } finally {
@@ -129,13 +120,13 @@ export default function RelatedInfluencerList({ postId, canManage }: RelatedInfl
         size='lg'
       >
         <Stack gap='md'>
-          <MultiSelect
+          <Select
             data={availableInfluencers.map((inf) => ({
               value: String(inf.id),
               label: `${getLocalizedName(inf.name, t('influencer.unknown'))} (@${inf.slug})`,
             }))}
-            value={selectedInfluencerIds}
-            onChange={setSelectedInfluencerIds}
+            value={selectedInfluencerId}
+            onChange={setSelectedInfluencerId}
             placeholder={t('post.searchInfluencers')}
             searchable
             clearable
@@ -144,11 +135,7 @@ export default function RelatedInfluencerList({ postId, canManage }: RelatedInfl
             <Button variant='default' onClick={closeAttach}>
               {t('common.cancel')}
             </Button>
-            <Button
-              onClick={handleAttach}
-              loading={attaching}
-              disabled={selectedInfluencerIds.length === 0}
-            >
+            <Button onClick={handleAttach} loading={attaching} disabled={!selectedInfluencerId}>
               {t('post.attach')}
             </Button>
           </Group>
