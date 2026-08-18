@@ -143,7 +143,7 @@ export default function InfluencerDetailPage() {
 
       <Divider my='xl' />
 
-      <PostList influencerId={id} />
+      <PostList influencerId={influencer!.id} />
     </Container>
   );
 }

@@ -3,6 +3,7 @@ import { useForm } from '@mantine/form';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import useSlugSync from '#hooks/useSlugSync';
 import type Tag from '#types/Tag';
 
 interface TagFormModalProps {
@@ -40,6 +41,7 @@ export default function TagFormModal({
   const { t } = useTranslation();
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const { initSlugTouched, handleNameEnChange, handleSlugChange } = useSlugSync();
 
   const form = useForm<TagForm>({
     initialValues: {
@@ -64,10 +66,13 @@ export default function TagFormModal({
   useEffect(() => {
     if (!opened) return;
     const init = initialValuesRef.current;
+    const nameEn = init?.name?.en ?? '';
+    const slug = init?.slug ?? '';
+    initSlugTouched(nameEn, slug);
     setValues({
-      slug: init?.slug ?? '',
+      slug,
       name: {
-        en: init?.name?.en ?? '',
+        en: nameEn,
         zh: init?.name?.zh ?? '',
         ja: init?.name?.ja ?? '',
         ko: init?.name?.ko ?? '',
@@ -76,7 +81,7 @@ export default function TagFormModal({
     });
     setError('');
     setSaving(false);
-  }, [opened, setValues]);
+  }, [opened, setValues, initSlugTouched]);
 
   const handleSubmit = async (values: TagForm) => {
     setSaving(true);
@@ -111,20 +116,30 @@ export default function TagFormModal({
     <Modal opened={opened} onClose={onClose} title={title} centered size='md'>
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack gap='sm'>
-          <TextInput
-            label={t('tag.slug')}
-            placeholder={t('tag.slugPlaceholder')}
-            data-autofocus
-            {...form.getInputProps('slug')}
-          />
           {NAME_LANGUAGES.map((lang) => (
             <TextInput
               key={lang.key}
               label={t(lang.label)}
               required={lang.required}
               {...form.getInputProps(`name.${lang.key}`)}
+              onChange={(e) => {
+                const value = e.currentTarget.value;
+                if (lang.key === 'en') {
+                  handleNameEnChange(value, form.setFieldValue);
+                } else {
+                  form.setFieldValue(`name.${lang.key}`, value);
+                }
+              }}
             />
           ))}
+          <TextInput
+            label={t('tag.slug')}
+            placeholder={t('tag.slugPlaceholder')}
+            {...form.getInputProps('slug')}
+            onChange={(e) => {
+              handleSlugChange(e.currentTarget.value, form.setFieldValue);
+            }}
+          />
           <Switch
             label={t('tag.forInfluencer')}
             {...form.getInputProps('forInfluencer', { type: 'checkbox' })}
