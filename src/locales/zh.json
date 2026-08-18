@@ -9,7 +9,19 @@
     "newPost": "新建帖子",
     "profile": "个人中心",
     "login": "登录",
-    "logout": "退出"
+    "logout": "退出",
+    "plugin": "浏览器插件"
+  },
+  "plugin": {
+    "badge": "Firefox 扩展",
+    "title": "网红检测器 · 浏览器插件",
+    "description": "在 YouTube 上实时检测网红信息，安装 Firefox 扩展即可使用。",
+    "installFirefox": "安装 Firefox 插件",
+    "featuresTitle": "功能特性",
+    "feature1": "在 YouTube 视频页面自动显示网红信息",
+    "feature2": "安全可靠，无需注册即可使用",
+    "feature3": "快速识别内容创作者背景",
+    "compatible": "兼容"
   },
   "auth": {
     "welcomeBack": "欢迎回来",

@@ -9,7 +9,19 @@
     "newPost": "새 게시물",
     "profile": "프로필",
     "login": "로그인",
-    "logout": "로그아웃"
+    "logout": "로그아웃",
+    "plugin": "브라우저 플러그인"
+  },
+  "plugin": {
+    "badge": "Firefox 확장",
+    "title": "인플루언서 탐지기 · 브라우저 플러그인",
+    "description": "YouTube에서 실시간으로 인플루언서 정보를 감지합니다. Firefox 확장을 설치하세요.",
+    "installFirefox": "Firefox 확장 설치",
+    "featuresTitle": "기능",
+    "feature1": "YouTube 동영상 페이지에서 자동으로 인플루언서 정보 표시",
+    "feature2": "안전하고 신뢰할 수 있으며 등록이 필요 없음",
+    "feature3": "콘텐츠 크리에이터 배경을 빠르게 식별",
+    "compatible": "호환 대상"
   },
   "auth": {
     "welcomeBack": "다시 오신 것을 환영합니다",

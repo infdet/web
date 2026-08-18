@@ -9,7 +9,19 @@
     "newPost": "新規投稿",
     "profile": "プロフィール",
     "login": "ログイン",
-    "logout": "ログアウト"
+    "logout": "ログアウト",
+    "plugin": "ブラウザ拡張"
+  },
+  "plugin": {
+    "badge": "Firefox 拡張機能",
+    "title": "インフルエンサー検出器 · ブラウザ拡張",
+    "description": "YouTube でリアルタイムにインフルエンサー情報を検出します。Firefox 拡張機能をインストールしてください。",
+    "installFirefox": "Firefox 拡張機能をインストール",
+    "featuresTitle": "機能",
+    "feature1": "YouTube 動画ページで自動的にインフルエンサー情報を表示",
+    "feature2": "安全で信頼性が高く、登録不要",
+    "feature3": "コンテンツクリエイターの背景をすばやく特定",
+    "compatible": "対応"
   },
   "auth": {
     "welcomeBack": "おかえりなさい",

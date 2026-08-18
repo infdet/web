@@ -52,6 +52,17 @@ export default function AppNavbar({ onNavigate }: AppNavbarProps) {
         {t('nav.newPost')}
       </Button>
 
+      <Button
+        component={Link}
+        href='/plugin'
+        variant='subtle'
+        fullWidth
+        justify='start'
+        onClick={onNavigate}
+      >
+        {t('nav.plugin')}
+      </Button>
+
       {authUser ? (
         <Button
           component={Link}

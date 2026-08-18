@@ -9,6 +9,7 @@ import InfluencerDetailPage from './pages/InfluencerDetail';
 import InfluencerEditPage from './pages/InfluencerEdit';
 import InfluencerListPage from './pages/InfluencerList';
 import LoginPage from './pages/Login';
+import PluginDownloadPage from './pages/PluginDownload';
 import PostDetailPage from './pages/PostDetail';
 import PostEditPage from './pages/PostEdit';
 import PostNewPage from './pages/PostNew';
@@ -21,6 +22,9 @@ function HomePage() {
     <div style={{ padding: 40 }}>
       <h1>{t('app.title')}</h1>
       <p>{t('app.welcome')}</p>
+      <p>
+        <a href='/plugin'>{t('nav.plugin')}</a>
+      </p>
     </div>
   );
 }
@@ -72,6 +76,9 @@ export default function App() {
               </Route>
               <Route path='/posts/:id'>
                 <PostDetailPage />
+              </Route>
+              <Route path='/plugin'>
+                <PluginDownloadPage />
               </Route>
             </Switch>
           </AppLayout>

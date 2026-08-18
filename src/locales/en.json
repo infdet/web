@@ -9,7 +9,19 @@
     "newPost": "New Post",
     "profile": "Profile",
     "login": "Login",
-    "logout": "Logout"
+    "logout": "Logout",
+    "plugin": "Browser Plugin"
+  },
+  "plugin": {
+    "badge": "Firefox Add-on",
+    "title": "Influencer Detector · Browser Plugin",
+    "description": "Detect influencer info in real-time on YouTube. Install the Firefox add-on to get started.",
+    "installFirefox": "Install Firefox Add-on",
+    "featuresTitle": "Features",
+    "feature1": "Auto-display influencer info on YouTube video pages",
+    "feature2": "Safe and reliable, no registration required",
+    "feature3": "Quickly identify content creator backgrounds",
+    "compatible": "Compatible with"
   },
   "auth": {
     "welcomeBack": "Welcome back",

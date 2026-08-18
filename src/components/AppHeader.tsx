@@ -44,6 +44,9 @@ export default function AppHeader({ opened, onToggle }: AppHeaderProps) {
             >
               {t('nav.newPost')}
             </Button>
+            <Anchor component={Link} href='/plugin' underline='never'>
+              {t('nav.plugin')}
+            </Anchor>
           </Group>
         </Group>
 
