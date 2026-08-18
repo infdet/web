@@ -92,6 +92,7 @@
     "link": "링크",
     "type": "유형",
     "attachPosts": "게시물 연결",
+    "importPosts": "게시물 가져오기",
     "createPost": "게시물 생성",
     "attachExistingPosts": "기존 게시물 연결",
     "searchPosts": "게시물 검색...",

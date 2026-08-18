@@ -1,11 +1,13 @@
 import { Button, Group, Pagination, SimpleGrid, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { PlusIcon } from '@phosphor-icons/react';
+import { DownloadSimpleIcon, PlusIcon } from '@phosphor-icons/react';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import PostCard from '#components/PostCard';
 import PostCreateModal from '#components/PostCreateModal';
+import useAuthUser from '#hooks/useAuthUser';
+import { importInfluencerPosts } from '#services/influencer';
 import { deletePost, detachPost, getInfluencerPosts } from '#services/post';
 import type Post from '#types/Post';
 import type { PaginationMetadata } from '#types/Response';
@@ -18,11 +20,15 @@ interface PostListProps {
 
 export default function PostList({ influencerId }: PostListProps) {
   const { t } = useTranslation();
+  const [authUser] = useAuthUser();
 
   const [posts, setPosts] = useState<Post[]>([]);
   const [metadata, setMetadata] = useState<PaginationMetadata | null>(null);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [importing, setImporting] = useState(false);
+
+  const canManage = authUser && (authUser.role === 'editor' || authUser.role === 'admin');
 
   const loadPosts = useCallback(
     async (targetPage: number) => {
@@ -79,6 +85,20 @@ export default function PostList({ influencerId }: PostListProps) {
     }
   };
 
+  const handleImportPosts = async () => {
+    setImporting(true);
+    try {
+      const result = await importInfluencerPosts(influencerId);
+      if (result.created > 0 || result.attached > 0) {
+        await loadPosts(1);
+      }
+    } catch {
+      // ignore
+    } finally {
+      setImporting(false);
+    }
+  };
+
   return (
     <>
       <Group justify='space-between' mb='sm'>
@@ -86,6 +106,16 @@ export default function PostList({ influencerId }: PostListProps) {
           {t('influencer.posts')} ({metadata?.total ?? posts.length})
         </Text>
         <Group gap='xs'>
+          {canManage && (
+            <Button
+              variant='light'
+              leftSection={<DownloadSimpleIcon size={16} />}
+              loading={importing}
+              onClick={handleImportPosts}
+            >
+              {t('influencer.importPosts')}
+            </Button>
+          )}
           <Button variant='light' leftSection={<PlusIcon size={16} />} onClick={openCreate}>
             {t('influencer.createPost')}
           </Button>

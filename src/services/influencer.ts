@@ -58,6 +58,17 @@ export async function uploadAvatar(id: number, file: File): Promise<Influencer> 
   return res.data.data;
 }
 
+export interface ImportPostsResult {
+  total: number;
+  created: number;
+  attached: number;
+}
+
+export async function importInfluencerPosts(id: number): Promise<ImportPostsResult> {
+  const res = await xior.post<ImportPostsResult>(`/influencers/${id}/import-posts`);
+  return res.data;
+}
+
 export async function uploadCover(id: number, file: File): Promise<Influencer> {
   const formData = new FormData();
   formData.append('cover', file);

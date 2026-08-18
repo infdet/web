@@ -92,6 +92,7 @@
     "link": "链接",
     "type": "类型",
     "attachPosts": "关联帖子",
+    "importPosts": "导入帖子",
     "createPost": "新建帖子",
     "attachExistingPosts": "关联已有帖子",
     "searchPosts": "搜索帖子...",

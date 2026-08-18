@@ -92,6 +92,7 @@
     "link": "Link",
     "type": "Type",
     "attachPosts": "Attach Posts",
+    "importPosts": "Import Posts",
     "createPost": "Create Post",
     "attachExistingPosts": "Attach Existing Posts",
     "searchPosts": "Search posts...",
