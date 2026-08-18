@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react';
-
-import { slugify } from '#utils/slug';
+import slugify from 'slugify';
 
 /**
  * Hook to sync the `slug` field with `name.en` / `name.en` changes. - When name.en changes and the
