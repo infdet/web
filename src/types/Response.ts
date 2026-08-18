@@ -2,7 +2,7 @@ export interface BaseResponse<T> {
   data: T;
 }
 
-export interface PaginationMeta {
+export interface PaginationMetadata {
   total: number;
   perPage: number;
   currentPage: number;
@@ -15,5 +15,5 @@ export interface PaginationMeta {
 }
 
 export interface PaginatedResponse<T> extends BaseResponse<T[]> {
-  meta: PaginationMeta;
+  metadata: PaginationMetadata;
 }

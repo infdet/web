@@ -8,7 +8,7 @@ import PostCard from '#components/PostCard';
 import PostCreateModal from '#components/PostCreateModal';
 import { deletePost, detachPost, getInfluencerPosts } from '#services/post';
 import type Post from '#types/Post';
-import type { PaginationMeta } from '#types/Response';
+import type { PaginationMetadata } from '#types/Response';
 
 const PER_PAGE = 12;
 
@@ -20,7 +20,7 @@ export default function PostList({ influencerId }: PostListProps) {
   const { t } = useTranslation();
 
   const [posts, setPosts] = useState<Post[]>([]);
-  const [meta, setMeta] = useState<PaginationMeta | null>(null);
+  const [metadata, setMetadata] = useState<PaginationMetadata | null>(null);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
 
@@ -32,12 +32,16 @@ export default function PostList({ influencerId }: PostListProps) {
         let res = await getInfluencerPosts(influencerId, { page: currentPage, perPage: PER_PAGE });
         // After a deletion the current page can become empty; fall back to the
         // last available page in that case.
-        if (res.data.length === 0 && res.meta.lastPage > 0 && currentPage > res.meta.lastPage) {
-          currentPage = res.meta.lastPage;
+        if (
+          res.data.length === 0 &&
+          res.metadata.lastPage > 0 &&
+          currentPage > res.metadata.lastPage
+        ) {
+          currentPage = res.metadata.lastPage;
           res = await getInfluencerPosts(influencerId, { page: currentPage, perPage: PER_PAGE });
         }
         setPosts(res.data);
-        setMeta(res.meta);
+        setMetadata(res.metadata);
         setPage(currentPage);
       } catch {
         // ignore
@@ -79,7 +83,7 @@ export default function PostList({ influencerId }: PostListProps) {
     <>
       <Group justify='space-between' mb='sm'>
         <Text fw={600} size='lg'>
-          {t('influencer.posts')} ({meta?.total ?? posts.length})
+          {t('influencer.posts')} ({metadata?.total ?? posts.length})
         </Text>
         <Group gap='xs'>
           <Button variant='light' leftSection={<PlusIcon size={16} />} onClick={openCreate}>
@@ -109,9 +113,9 @@ export default function PostList({ influencerId }: PostListProps) {
         </SimpleGrid>
       )}
 
-      {meta && meta.lastPage > 1 && (
+      {metadata && metadata.lastPage > 1 && (
         <Group justify='center' mt='md'>
-          <Pagination value={page} onChange={(p) => loadPosts(p)} total={meta.lastPage} />
+          <Pagination value={page} onChange={(p) => loadPosts(p)} total={metadata.lastPage} />
         </Group>
       )}
 

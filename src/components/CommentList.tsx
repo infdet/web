@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 import useAuthUser from '#hooks/useAuthUser';
 import { createComment, deleteComment, getComments, updateComment } from '#services/comment';
 import type Comment from '#types/Comment';
-import type { PaginationMeta } from '#types/Response';
+import type { PaginationMetadata } from '#types/Response';
 
 const PER_PAGE = 20;
 
@@ -29,7 +29,7 @@ export default function CommentList({ postId }: CommentListProps) {
   const [authUser] = useAuthUser();
 
   const [comments, setComments] = useState<Comment[]>([]);
-  const [meta, setMeta] = useState<PaginationMeta | null>(null);
+  const [metadata, setMetadata] = useState<PaginationMetadata | null>(null);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
 
@@ -45,7 +45,7 @@ export default function CommentList({ postId }: CommentListProps) {
       try {
         const res = await getComments(postId, { page: targetPage, perPage: PER_PAGE });
         setComments(res.data);
-        setMeta(res.meta);
+        setMetadata(res.metadata);
         setPage(targetPage);
       } catch {
         // ignore
@@ -195,8 +195,8 @@ export default function CommentList({ postId }: CommentListProps) {
         </Stack>
       )}
 
-      {meta && meta.lastPage > 1 && (
-        <Pagination total={meta.lastPage} value={page} onChange={loadComments} />
+      {metadata && metadata.lastPage > 1 && (
+        <Pagination total={metadata.lastPage} value={page} onChange={loadComments} />
       )}
     </Stack>
   );

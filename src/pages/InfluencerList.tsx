@@ -18,14 +18,14 @@ import InfluencerCard from '#components/InfluencerCard';
 import { getInfluencers } from '#services/influencer';
 import { getTags } from '#services/tag';
 import type Influencer from '#types/Influencer';
-import type { PaginationMeta } from '#types/Response';
+import type { PaginationMetadata } from '#types/Response';
 import type Tag from '#types/Tag';
 import { getLocalizedName } from '#utils/localized';
 
 export default function InfluencerListPage() {
   const { t } = useTranslation();
   const [influencers, setInfluencers] = useState<Influencer[]>([]);
-  const [meta, setMeta] = useState<PaginationMeta | null>(null);
+  const [metadata, setMetadata] = useState<PaginationMetadata | null>(null);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [availableTags, setAvailableTags] = useState<Tag[]>([]);
@@ -36,7 +36,7 @@ export default function InfluencerListPage() {
     try {
       const res = await getInfluencers({ page: p, perPage: 12, tagIds });
       setInfluencers(res.data);
-      setMeta(res.meta);
+      setMetadata(res.metadata);
     } catch {
       // ignore
     } finally {
@@ -123,9 +123,9 @@ export default function InfluencerListPage() {
         </SimpleGrid>
       )}
 
-      {meta && meta.lastPage > 1 && (
+      {metadata && metadata.lastPage > 1 && (
         <Group justify='center' mt='lg'>
-          <Pagination total={meta.lastPage} value={page} onChange={setPage} />
+          <Pagination total={metadata.lastPage} value={page} onChange={setPage} />
         </Group>
       )}
     </Container>
