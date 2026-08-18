@@ -1,6 +1,8 @@
 import { useCallback, useState } from 'react';
 import slugify from 'slugify';
 
+const slugOpts = { lower: true };
+
 /**
  * Hook to sync the `slug` field with `name.en` / `name.en` changes. - When name.en changes and the
  * user hasn't manually touched the slug, the slug is auto-generated via `slugify()`. - When the
@@ -14,7 +16,7 @@ export default function useSlugSync() {
    * i.e. the user has manually set it before.
    */
   const initSlugTouched = useCallback((nameEn: string, slug: string) => {
-    setSlugTouched(slugify(nameEn) !== slug);
+    setSlugTouched(slugify(nameEn, slugOpts) !== slug);
   }, []);
 
   /**
@@ -25,7 +27,7 @@ export default function useSlugSync() {
     (value: string, setFieldValue: (field: string, value: unknown) => void) => {
       setFieldValue('name.en', value);
       if (!slugTouched) {
-        setFieldValue('slug', slugify(value));
+        setFieldValue('slug', slugify(value, slugOpts));
       }
     },
     [slugTouched],
