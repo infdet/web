@@ -21,7 +21,7 @@ export default function InfluencerCard({ influencer, actions }: InfluencerCardPr
   return (
     <Card
       component={Link}
-      href={`/influencers/${influencer.id}`}
+      href={`/influencers/${influencer.slug}`}
       shadow='sm'
       radius='md'
       padding='xs'

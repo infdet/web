@@ -170,10 +170,10 @@ export default function InfluencerEditPage() {
             createAccount(influencer.id, { platform: a.platform, username: a.username }),
           ),
         );
-        navigate(`/influencers/${influencer.id}`);
+        navigate(`/influencers/${influencer.slug}`);
       } else {
         const influencerId = Number(params.id);
-        await updateInfluencer(influencerId, payload);
+        const updated = await updateInfluencer(influencerId, payload);
 
         const submittedIds = new Set(accounts.filter((a) => a.id).map((a) => a.id as number));
         const removedIds = existingAccountIds.filter((id) => !submittedIds.has(id));
@@ -187,7 +187,7 @@ export default function InfluencerEditPage() {
           ),
         ]);
 
-        navigate(`/influencers/${influencerId}`);
+        navigate(`/influencers/${updated.slug}`);
       }
     } catch (err: any) {
       setError(err?.response?.data?.message || err?.message || t('influencer.saveFailed'));

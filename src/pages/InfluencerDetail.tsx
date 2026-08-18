@@ -14,7 +14,7 @@ import type Influencer from '#types/Influencer';
 export default function InfluencerDetailPage() {
   const { t } = useTranslation();
   const params = useParams();
-  const id = Number(params.id);
+  const idOrSlug = params.id || '';
 
   const [authUser] = useAuthUser();
   const [influencer, setInfluencer] = useState<Influencer | null>(null);
@@ -24,17 +24,17 @@ export default function InfluencerDetailPage() {
   const [uploadingCover, setUploadingCover] = useState(false);
 
   const fetchDetail = useCallback(async () => {
-    if (!id) return;
+    if (!idOrSlug) return;
     setLoading(true);
     try {
-      const inf = await getInfluencer(id);
+      const inf = await getInfluencer(idOrSlug);
       setInfluencer(inf);
     } catch {
       // ignore
     } finally {
       setLoading(false);
     }
-  }, [id]);
+  }, [idOrSlug]);
 
   useEffect(() => {
     fetchDetail();
@@ -44,7 +44,7 @@ export default function InfluencerDetailPage() {
     if (!file) return;
     setUploadingAvatar(true);
     try {
-      const updated = await uploadAvatar(id, file);
+      const updated = await uploadAvatar(influencer!.id, file);
       setInfluencer(updated);
     } catch {
       // ignore
@@ -57,7 +57,7 @@ export default function InfluencerDetailPage() {
     if (!file) return;
     setUploadingCover(true);
     try {
-      const updated = await uploadCover(id, file);
+      const updated = await uploadCover(influencer!.id, file);
       setInfluencer(updated);
     } catch {
       // ignore
@@ -67,7 +67,7 @@ export default function InfluencerDetailPage() {
   };
 
   const handleCreateAccount = async (data: { platform: string; username: string }) => {
-    const account = await createAccount(id, data);
+    const account = await createAccount(influencer!.id, data);
     setInfluencer((prev) =>
       prev ? { ...prev, accounts: [...(prev.accounts ?? []), account] } : prev,
     );
@@ -77,7 +77,7 @@ export default function InfluencerDetailPage() {
     accountId: number,
     data: { platform: string; username: string },
   ) => {
-    const account = await updateAccount(id, accountId, data);
+    const account = await updateAccount(influencer!.id, accountId, data);
     setInfluencer((prev) =>
       prev
         ? {
@@ -89,19 +89,19 @@ export default function InfluencerDetailPage() {
   };
 
   const handleDeleteAccount = async (accountId: number) => {
-    await deleteAccount(id, accountId);
+    await deleteAccount(influencer!.id, accountId);
     setInfluencer((prev) =>
       prev ? { ...prev, accounts: (prev.accounts ?? []).filter((a) => a.id !== accountId) } : prev,
     );
   };
 
   const handleAttachTags = async (tagIds: number[]) => {
-    await attachTags(id, tagIds);
+    await attachTags(influencer!.id, tagIds);
     await fetchDetail();
   };
 
   const handleDetachTag = async (tagId: number) => {
-    await detachTag(id, tagId);
+    await detachTag(influencer!.id, tagId);
     setInfluencer((prev) =>
       prev ? { ...prev, tags: (prev.tags ?? []).filter((tag) => tag.id !== tagId) } : prev,
     );

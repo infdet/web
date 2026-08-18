@@ -29,8 +29,8 @@ export async function getInfluencers(
   return res.data;
 }
 
-export async function getInfluencer(id: number): Promise<Influencer> {
-  const res = await xior.get<BaseResponse<Influencer>>(`/influencers/${id}`);
+export async function getInfluencer(idOrSlug: number | string): Promise<Influencer> {
+  const res = await xior.get<BaseResponse<Influencer>>(`/influencers/${idOrSlug}`);
   return res.data.data;
 }
 
