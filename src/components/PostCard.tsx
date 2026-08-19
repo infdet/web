@@ -1,9 +1,10 @@
 import { ActionIcon, Anchor, AspectRatio, Badge, Card, Group, Stack, Text } from '@mantine/core';
-import { EyeIcon, LinkIcon, TrashIcon } from '@phosphor-icons/react';
+import { EyeIcon, LinkIcon, TagIcon, TrashIcon } from '@phosphor-icons/react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'wouter';
 
 import type Post from '#types/Post';
+import { getLocalizedName } from '#utils/localized';
 
 interface PostCardProps {
   post: Post;
@@ -88,6 +89,17 @@ export default function PostCard({ post, onDetach, onDelete }: PostCardProps) {
           <Text size='xs' c='dimmed'>
             {t('post.publishedAt')}: {new Date(post.publishedAt).toLocaleString()}
           </Text>
+        )}
+
+        {post.tags && post.tags.length > 0 && (
+          <Group gap={4}>
+            <TagIcon size={12} />
+            {post.tags.map((tag) => (
+              <Badge key={tag.id} variant='light' size='xs' radius='sm'>
+                {getLocalizedName(tag.name)}
+              </Badge>
+            ))}
+          </Group>
         )}
 
         <Group justify='space-between' wrap='nowrap' gap='xs'>
