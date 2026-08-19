@@ -1,12 +1,17 @@
 import { ActionIcon, Button, Group, Modal, Select, SimpleGrid, Stack, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { PlusIcon, XIcon } from '@phosphor-icons/react';
+import { PlusIcon, XIcon, MagicWandIcon } from '@phosphor-icons/react';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import InfluencerCard from '#components/InfluencerCard';
 import { getInfluencers } from '#services/influencer';
-import { attachInfluencers, detachInfluencer, getPostInfluencers } from '#services/post';
+import {
+  attachInfluencers,
+  detachInfluencer,
+  getPostInfluencers,
+  inferPostInfluencers,
+} from '#services/post';
 import type Influencer from '#types/Influencer';
 import { getLocalizedName } from '#utils/localized';
 
@@ -24,6 +29,7 @@ export default function RelatedInfluencerList({ postId, canManage }: RelatedInfl
   const [availableInfluencers, setAvailableInfluencers] = useState<Influencer[]>([]);
   const [selectedInfluencerId, setSelectedInfluencerId] = useState<string | null>(null);
   const [attaching, setAttaching] = useState(false);
+  const [inferring, setInferring] = useState(false);
 
   const fetchInfluencers = useCallback(async () => {
     if (!postId) return;
@@ -76,6 +82,20 @@ export default function RelatedInfluencerList({ postId, canManage }: RelatedInfl
     }
   };
 
+  const handleInfer = async () => {
+    setInferring(true);
+    try {
+      const result = await inferPostInfluencers(postId);
+      if (result.attached.length > 0) {
+        await fetchInfluencers();
+      }
+    } catch {
+      // ignore
+    } finally {
+      setInferring(false);
+    }
+  };
+
   return (
     <>
       <Group justify='space-between' mb='sm'>
@@ -83,9 +103,19 @@ export default function RelatedInfluencerList({ postId, canManage }: RelatedInfl
           {t('post.influencers')} ({influencers.length})
         </Text>
         {canManage && (
-          <Button variant='light' leftSection={<PlusIcon size={16} />} onClick={handleOpenAttach}>
-            {t('post.attachInfluencers')}
-          </Button>
+          <Group gap='xs'>
+            <Button
+              variant='light'
+              leftSection={<MagicWandIcon size={16} />}
+              onClick={handleInfer}
+              loading={inferring}
+            >
+              {t('post.inferInfluencers')}
+            </Button>
+            <Button variant='light' leftSection={<PlusIcon size={16} />} onClick={handleOpenAttach}>
+              {t('post.attachInfluencers')}
+            </Button>
+          </Group>
         )}
       </Group>
       {influencers.length === 0 ? (

@@ -183,7 +183,8 @@
     "attachInfluencers": "关联网红",
     "searchInfluencers": "搜索网红...",
     "attach": "关联",
-    "detachInfluencerConfirm": "确定要移除此网红关联吗？"
+    "detachInfluencerConfirm": "确定要移除此网红关联吗？",
+    "inferInfluencers": "自动推断"
   },
   "comment": {
     "title": "评论",

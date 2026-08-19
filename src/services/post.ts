@@ -65,3 +65,14 @@ export async function attachInfluencers(postId: number, influencerId: number): P
 export async function detachInfluencer(postId: number, influencerId: number): Promise<void> {
   await xior.delete(`/posts/${postId}/influencers/${influencerId}`);
 }
+
+// ── Auto-infer ──
+
+export interface InferInfluencersResult {
+  attached: number[];
+}
+
+export async function inferPostInfluencers(postId: number): Promise<InferInfluencersResult> {
+  const res = await xior.post<InferInfluencersResult>(`/posts/${postId}/infer-influencers`);
+  return res.data;
+}

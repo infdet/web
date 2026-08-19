@@ -183,7 +183,8 @@
     "attachInfluencers": "Attach Influencers",
     "searchInfluencers": "Search influencers...",
     "attach": "Attach",
-    "detachInfluencerConfirm": "Remove this influencer from post?"
+    "detachInfluencerConfirm": "Remove this influencer from post?",
+    "inferInfluencers": "Auto-Infer"
   },
   "comment": {
     "title": "Comments",
