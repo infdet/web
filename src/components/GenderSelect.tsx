@@ -18,7 +18,7 @@ interface GenderSelectProps {
 export default function GenderSelect({ label, value, onChange, error }: GenderSelectProps) {
   const { t } = useTranslation();
 
-  const data = (['male', 'female', 'other'] as const).map((key) => ({
+  const data = (['female', 'male', 'other'] as const).map((key) => ({
     value: key,
     label: `${GENDER_EMOJIS[key]} ${t(`influencer.gender${key[0].toUpperCase()}${key.slice(1)}`)}`,
   }));
@@ -30,7 +30,7 @@ export default function GenderSelect({ label, value, onChange, error }: GenderSe
           {label}
         </Text>
       )}
-      <SegmentedControl data={data} value={value ?? undefined} onChange={onChange} />
+      <SegmentedControl data={data} value={value ?? 'female'} onChange={onChange} />
       {error && <Input.Error mt={6}>{error}</Input.Error>}
     </div>
   );

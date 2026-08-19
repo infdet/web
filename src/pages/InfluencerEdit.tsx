@@ -73,7 +73,7 @@ export default function InfluencerEditPage() {
     initialValues: {
       slug: '',
       name: { en: '', zh: '', ja: '', ko: '' },
-      gender: null,
+      gender: 'female',
       birthDate: '',
       region: null,
       height: '',
