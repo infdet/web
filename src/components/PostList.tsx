@@ -12,7 +12,7 @@ import { deletePost, detachPost, getInfluencerPosts } from '#services/post';
 import type Post from '#types/Post';
 import type { PaginationMetadata } from '#types/Response';
 
-const PER_PAGE = 12;
+const PER_PAGE = 24;
 
 interface PostListProps {
   influencerId: number;
