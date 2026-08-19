@@ -91,6 +91,8 @@
     "regionPlaceholder": "예: kr",
     "filterByRegion": "지역별 필터",
     "clearRegionFilter": "지역 초기화",
+    "filterByGender": "성별 필터",
+    "clearGenderFilter": "성별 초기화",
     "height": "키",
     "weight": "몸무게",
     "bust": "가슴둘레",

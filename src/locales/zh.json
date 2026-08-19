@@ -91,6 +91,8 @@
     "regionPlaceholder": "例如 cn",
     "filterByRegion": "按地区筛选",
     "clearRegionFilter": "清除地区",
+    "filterByGender": "按性别筛选",
+    "clearGenderFilter": "清除性别",
     "height": "身高",
     "weight": "体重",
     "bust": "胸围",

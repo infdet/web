@@ -4,6 +4,7 @@ import {
   Container,
   Group,
   Pagination,
+  Select,
   SimpleGrid,
   Skeleton,
   Text,
@@ -32,23 +33,27 @@ export default function InfluencerListPage() {
   const [availableTags, setAvailableTags] = useState<Tag[]>([]);
   const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
+  const [selectedGender, setSelectedGender] = useState<string | null>(null);
 
-  const fetchData = useCallback(async (p: number, tagIds: number[], region: string | null) => {
-    setLoading(true);
-    try {
-      const res = await getInfluencers({ page: p, perPage: 24, tagIds, region });
-      setInfluencers(res.data);
-      setMetadata(res.metadata);
-    } catch {
-      // ignore
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const fetchData = useCallback(
+    async (p: number, tagIds: number[], region: string | null, gender: string | null) => {
+      setLoading(true);
+      try {
+        const res = await getInfluencers({ page: p, perPage: 24, tagIds, region, gender });
+        setInfluencers(res.data);
+        setMetadata(res.metadata);
+      } catch {
+        // ignore
+      } finally {
+        setLoading(false);
+      }
+    },
+    [],
+  );
 
   useEffect(() => {
-    fetchData(page, selectedTagIds, selectedRegion);
-  }, [page, selectedTagIds, selectedRegion, fetchData]);
+    fetchData(page, selectedTagIds, selectedRegion, selectedGender);
+  }, [page, selectedTagIds, selectedRegion, selectedGender, fetchData]);
 
   useEffect(() => {
     let cancelled = false;
@@ -69,6 +74,11 @@ export default function InfluencerListPage() {
     setPage(1);
   };
 
+  const clearGenderFilter = () => {
+    setSelectedGender(null);
+    setPage(1);
+  };
+
   return (
     <Container size='lg' py='xl'>
       <Group justify='space-between' mb='lg'>
@@ -76,6 +86,28 @@ export default function InfluencerListPage() {
         <Button component={Link} href='/influencers/new' leftSection={<PlusIcon size={18} />}>
           {t('influencer.new')}
         </Button>
+      </Group>
+
+      <Group gap='xs' mb='lg' align='center'>
+        <Text size='sm' fw={500} c='dimmed'>
+          {t('influencer.filterByGender')}
+        </Text>
+        <Select
+          size='sm'
+          placeholder={t('influencer.genderPlaceholder')}
+          value={selectedGender}
+          onChange={(value) => {
+            setSelectedGender(value);
+            setPage(1);
+          }}
+          data={[
+            { value: 'female', label: `♀️ ${t('influencer.genderFemale')}` },
+            { value: 'male', label: `♂️ ${t('influencer.genderMale')}` },
+            { value: 'other', label: `⚧️ ${t('influencer.genderOther')}` },
+          ]}
+          clearable
+          w={150}
+        />
       </Group>
 
       <Group gap='xs' mb='lg' align='center'>

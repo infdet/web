@@ -91,6 +91,8 @@
     "regionPlaceholder": "e.g. cn",
     "filterByRegion": "Filter by region",
     "clearRegionFilter": "Clear region",
+    "filterByGender": "Filter by gender",
+    "clearGenderFilter": "Clear gender",
     "height": "Height",
     "weight": "Weight",
     "bust": "Bust",

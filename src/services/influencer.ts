@@ -8,6 +8,7 @@ export interface InfluencerListParams {
   perPage?: number;
   tagIds?: number[];
   region?: string | null;
+  gender?: string | null;
 }
 
 export interface InfluencerFormData {

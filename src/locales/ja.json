@@ -91,6 +91,8 @@
     "regionPlaceholder": "例: jp",
     "filterByRegion": "地域で絞り込む",
     "clearRegionFilter": "地域をクリア",
+    "filterByGender": "性別で絞り込む",
+    "clearGenderFilter": "性別をクリア",
     "height": "身長",
     "weight": "体重",
     "bust": "バスト",
