@@ -1,4 +1,4 @@
-import { Avatar, Card, Group, Stack, Text } from '@mantine/core';
+import { Avatar, Badge, Card, Group, Stack, Text } from '@mantine/core';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'wouter';
@@ -28,12 +28,14 @@ export default function InfluencerCard({ influencer, actions }: InfluencerCardPr
       withBorder
     >
       <Group wrap='nowrap' align='stretch' gap='xs'>
-        <Avatar src={influencer.avatar} size={64} />
+        <Avatar src={influencer.avatar} size={60} />
 
         <Stack gap='xs' style={{ flex: 1, minWidth: 0 }}>
           <Group justify='space-between' wrap='nowrap' gap='xs'>
             <Text fw={600} lineClamp={1} style={{ flex: 1, minWidth: 0 }}>
               {localeName}
+              <GenderEmoji gender={influencer.gender} />
+              <RegionFlag region={influencer.region} />
             </Text>
             {actions && (
               <div
@@ -46,10 +48,15 @@ export default function InfluencerCard({ influencer, actions }: InfluencerCardPr
               </div>
             )}
           </Group>
-          <Group>
-            <GenderEmoji gender={influencer.gender} />
-            <RegionFlag region={influencer.region} />
-          </Group>
+          {influencer.tags && influencer.tags.length > 0 && (
+            <Group gap='xs'>
+              {influencer.tags.map((tag) => (
+                <Badge key={tag.id} size='sm'>
+                  {getLocalizedName(tag.name, tag.slug)}
+                </Badge>
+              ))}
+            </Group>
+          )}
         </Stack>
       </Group>
     </Card>
