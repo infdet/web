@@ -89,6 +89,8 @@
     "age": "Age",
     "region": "Region",
     "regionPlaceholder": "e.g. cn",
+    "filterByRegion": "Filter by region",
+    "clearRegionFilter": "Clear region",
     "height": "Height",
     "weight": "Weight",
     "bust": "Bust",

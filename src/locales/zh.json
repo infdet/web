@@ -89,6 +89,8 @@
     "age": "年龄",
     "region": "所属地区",
     "regionPlaceholder": "例如 cn",
+    "filterByRegion": "按地区筛选",
+    "clearRegionFilter": "清除地区",
     "height": "身高",
     "weight": "体重",
     "bust": "胸围",

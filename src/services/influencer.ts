@@ -7,6 +7,7 @@ export interface InfluencerListParams {
   page?: number;
   perPage?: number;
   tagIds?: number[];
+  region?: string | null;
 }
 
 export interface InfluencerFormData {

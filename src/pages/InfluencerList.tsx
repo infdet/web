@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'wouter';
 
 import InfluencerCard from '#components/InfluencerCard';
+import RegionSelect from '#components/RegionSelect';
 import { getInfluencers } from '#services/influencer';
 import { getTags } from '#services/tag';
 import type Influencer from '#types/Influencer';
@@ -30,11 +31,12 @@ export default function InfluencerListPage() {
   const [loading, setLoading] = useState(true);
   const [availableTags, setAvailableTags] = useState<Tag[]>([]);
   const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
+  const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
 
-  const fetchData = useCallback(async (p: number, tagIds: number[]) => {
+  const fetchData = useCallback(async (p: number, tagIds: number[], region: string | null) => {
     setLoading(true);
     try {
-      const res = await getInfluencers({ page: p, perPage: 24, tagIds });
+      const res = await getInfluencers({ page: p, perPage: 24, tagIds, region });
       setInfluencers(res.data);
       setMetadata(res.metadata);
     } catch {
@@ -45,8 +47,8 @@ export default function InfluencerListPage() {
   }, []);
 
   useEffect(() => {
-    fetchData(page, selectedTagIds);
-  }, [page, selectedTagIds, fetchData]);
+    fetchData(page, selectedTagIds, selectedRegion);
+  }, [page, selectedTagIds, selectedRegion, fetchData]);
 
   useEffect(() => {
     let cancelled = false;
@@ -74,6 +76,20 @@ export default function InfluencerListPage() {
         <Button component={Link} href='/influencers/new' leftSection={<PlusIcon size={18} />}>
           {t('influencer.new')}
         </Button>
+      </Group>
+
+      <Group gap='xs' mb='lg' align='center'>
+        <Text size='sm' fw={500} c='dimmed'>
+          {t('influencer.filterByRegion')}
+        </Text>
+        <RegionSelect
+          placeholder={t('influencer.regionPlaceholder')}
+          value={selectedRegion}
+          onChange={(value) => {
+            setSelectedRegion(value);
+            setPage(1);
+          }}
+        />
       </Group>
 
       {availableTags.length > 0 && (
