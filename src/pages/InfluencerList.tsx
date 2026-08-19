@@ -34,7 +34,7 @@ export default function InfluencerListPage() {
   const fetchData = useCallback(async (p: number, tagIds: number[]) => {
     setLoading(true);
     try {
-      const res = await getInfluencers({ page: p, perPage: 12, tagIds });
+      const res = await getInfluencers({ page: p, perPage: 24, tagIds });
       setInfluencers(res.data);
       setMetadata(res.metadata);
     } catch {
