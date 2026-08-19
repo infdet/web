@@ -1,12 +1,9 @@
 import {
-  ActionIcon,
   Button,
   Container,
-  Fieldset,
   Group,
   Loader,
   NumberInput,
-  Select,
   SimpleGrid,
   Stack,
   Text,
@@ -14,7 +11,6 @@ import {
   Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { PlusIcon, TrashIcon } from '@phosphor-icons/react';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useParams } from 'wouter';
@@ -22,15 +18,7 @@ import { useLocation, useParams } from 'wouter';
 import GenderSelect from '#components/GenderSelect';
 import RegionSelect from '#components/RegionSelect';
 import useSlugSync from '#hooks/useSlugSync';
-import { createAccount, deleteAccount, updateAccount } from '#services/account';
 import { createInfluencer, getInfluencer, updateInfluencer } from '#services/influencer';
-import { PLATFORM_OPTIONS } from '#utils/platforms';
-
-interface AccountForm {
-  id?: number;
-  platform: string;
-  username: string;
-}
 
 interface InfluencerForm {
   slug: string;
@@ -43,7 +31,6 @@ interface InfluencerForm {
   bust: string;
   waist: string;
   hip: string;
-  accounts: AccountForm[];
 }
 
 const NAME_LANGUAGES = [
@@ -67,7 +54,6 @@ export default function InfluencerEditPage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const { initSlugTouched, handleNameEnChange, handleSlugChange } = useSlugSync();
-  const [existingAccountIds, setExistingAccountIds] = useState<number[]>([]);
 
   const form = useForm<InfluencerForm>({
     initialValues: {
@@ -81,16 +67,11 @@ export default function InfluencerEditPage() {
       bust: '',
       waist: '',
       hip: '',
-      accounts: [{ platform: '', username: '' }],
     },
     validate: {
       slug: (v) => (!v.trim() ? t('influencer.slugRequired') : null),
       name: {
         en: (v) => (!v.trim() ? t('influencer.nameEnRequired') : null),
-      },
-      accounts: {
-        platform: (v) => (!v ? t('influencer.platformRequired') : null),
-        username: (v) => (!v ? t('influencer.usernameRequired') : null),
       },
     },
   });
@@ -100,11 +81,9 @@ export default function InfluencerEditPage() {
     setLoading(true);
     try {
       const influencer = await getInfluencer(Number(params.id));
-      const accounts = influencer.accounts ?? [];
       const nameEn = influencer.name?.en ?? '';
       const slug = influencer.slug ?? '';
       initSlugTouched(nameEn, slug);
-      setExistingAccountIds(accounts.map((a) => a.id));
       form.setValues({
         slug: influencer.slug,
         name: {
@@ -121,10 +100,6 @@ export default function InfluencerEditPage() {
         bust: influencer.bust?.toString() ?? '',
         waist: influencer.waist?.toString() ?? '',
         hip: influencer.hip?.toString() ?? '',
-        accounts:
-          accounts.length > 0
-            ? accounts.map((a) => ({ id: a.id, platform: a.platform, username: a.username }))
-            : [{ platform: '', username: '' }],
       });
     } catch {
       setError(t('influencer.loadFailed'));
@@ -147,8 +122,6 @@ export default function InfluencerEditPage() {
       if (trimmed) name[locale] = trimmed;
     }
 
-    const accounts = values.accounts.filter((a) => a.platform && a.username);
-
     const payload = {
       slug: values.slug.trim(),
       name,
@@ -165,43 +138,17 @@ export default function InfluencerEditPage() {
     try {
       if (isNew) {
         const influencer = await createInfluencer(payload);
-        await Promise.all(
-          accounts.map((a) =>
-            createAccount(influencer.id, { platform: a.platform, username: a.username }),
-          ),
-        );
         navigate(`/influencers/${influencer.slug}`);
       } else {
         const influencerId = Number(params.id);
-        const updated = await updateInfluencer(influencerId, payload);
-
-        const submittedIds = new Set(accounts.filter((a) => a.id).map((a) => a.id as number));
-        const removedIds = existingAccountIds.filter((id) => !submittedIds.has(id));
-
-        await Promise.all([
-          ...removedIds.map((id) => deleteAccount(influencerId, id)),
-          ...accounts.map((a) =>
-            a.id
-              ? updateAccount(influencerId, a.id, { platform: a.platform, username: a.username })
-              : createAccount(influencerId, { platform: a.platform, username: a.username }),
-          ),
-        ]);
-
-        navigate(`/influencers/${updated.slug}`);
+        await updateInfluencer(influencerId, payload);
+        navigate(`/influencers/${payload.slug}`);
       }
     } catch (err: any) {
       setError(err?.response?.data?.message || err?.message || t('influencer.saveFailed'));
     } finally {
       setSaving(false);
     }
-  };
-
-  const addAccount = () => {
-    form.insertListItem('accounts', { platform: '', username: '' });
-  };
-
-  const removeAccount = (index: number) => {
-    form.removeListItem('accounts', index);
   };
 
   if (loading) {
@@ -293,39 +240,6 @@ export default function InfluencerEditPage() {
 
             <NumberInput label={t('influencer.hip')} suffix=' cm' {...form.getInputProps('hip')} />
           </SimpleGrid>
-
-          <Fieldset legend={t('influencer.socialAccounts')}>
-            <Stack gap='sm'>
-              {form.values.accounts.map((_, index) => (
-                <Group key={form.key(`accounts.${index}`)} gap='sm' align='flex-start'>
-                  <Select
-                    data={PLATFORM_OPTIONS}
-                    placeholder={t('influencer.platformPlaceholder')}
-                    searchable
-                    style={{ flex: 1 }}
-                    {...form.getInputProps(`accounts.${index}.platform`)}
-                  />
-                  <TextInput
-                    placeholder={t('influencer.usernamePlaceholder')}
-                    style={{ flex: 1 }}
-                    {...form.getInputProps(`accounts.${index}.username`)}
-                  />
-                  <ActionIcon
-                    color='red'
-                    variant='subtle'
-                    onClick={() => removeAccount(index)}
-                    disabled={form.values.accounts.length <= 1}
-                    mt={2}
-                  >
-                    <TrashIcon size={16} />
-                  </ActionIcon>
-                </Group>
-              ))}
-              <Button variant='light' leftSection={<PlusIcon size={16} />} onClick={addAccount}>
-                {t('influencer.addAccount')}
-              </Button>
-            </Stack>
-          </Fieldset>
 
           {error && (
             <Text c='red' size='sm'>
