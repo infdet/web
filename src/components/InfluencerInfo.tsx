@@ -18,10 +18,7 @@ import { getLocalizedName } from '#utils/localized';
 interface InfluencerInfoProps {
   influencer: Influencer;
   showUpload: boolean;
-  uploadingAvatar: boolean;
-  uploadingCover: boolean;
-  onUploadAvatar: (file: File | null) => void;
-  onUploadCover: (file: File | null) => void;
+  onInfluencerChanged: (updated: Influencer) => void;
   onCreateAccount: (data: { platform: string; username: string }) => Promise<void>;
   onUpdateAccount: (id: number, data: { platform: string; username: string }) => Promise<void>;
   onDeleteAccount: (id: number) => Promise<void>;
@@ -32,10 +29,7 @@ interface InfluencerInfoProps {
 export default function InfluencerInfo({
   influencer,
   showUpload,
-  uploadingAvatar,
-  uploadingCover,
-  onUploadAvatar,
-  onUploadCover,
+  onInfluencerChanged,
   onCreateAccount,
   onUpdateAccount,
   onDeleteAccount,
@@ -64,8 +58,8 @@ export default function InfluencerInfo({
       <InfluencerCover
         src={influencer.cover}
         showUpload={showUpload}
-        uploading={uploadingCover}
-        onUpload={onUploadCover}
+        influencerId={influencer.id}
+        onCoverChanged={onInfluencerChanged}
       />
 
       <Stack gap='md' style={{ flex: 1, minWidth: 280 }}>
@@ -73,8 +67,8 @@ export default function InfluencerInfo({
           <InfluencerAvatar
             src={influencer.avatar}
             showUpload={showUpload}
-            uploading={uploadingAvatar}
-            onUpload={onUploadAvatar}
+            influencerId={influencer.id}
+            onAvatarChanged={onInfluencerChanged}
           />
           <Stack gap={2} style={{ flex: 1, minWidth: 0 }}>
             <Title order={2}>{getLocalizedName(influencer.name, t('influencer.unknown'))}</Title>

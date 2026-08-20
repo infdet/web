@@ -7,7 +7,7 @@ import InfluencerInfo from '#components/InfluencerInfo';
 import PostList from '#components/PostList';
 import useAuthUser from '#hooks/useAuthUser';
 import { createAccount, deleteAccount, updateAccount } from '#services/account';
-import { getInfluencer, uploadAvatar, uploadCover } from '#services/influencer';
+import { getInfluencer } from '#services/influencer';
 import { attachTags, detachTag } from '#services/tag';
 import type Influencer from '#types/Influencer';
 
@@ -19,9 +19,6 @@ export default function InfluencerDetailPage() {
   const [authUser] = useAuthUser();
   const [influencer, setInfluencer] = useState<Influencer | null>(null);
   const [loading, setLoading] = useState(true);
-
-  const [uploadingAvatar, setUploadingAvatar] = useState(false);
-  const [uploadingCover, setUploadingCover] = useState(false);
 
   const fetchDetail = useCallback(async () => {
     if (!idOrSlug) return;
@@ -40,30 +37,8 @@ export default function InfluencerDetailPage() {
     fetchDetail();
   }, [fetchDetail]);
 
-  const handleUploadAvatar = async (file: File | null) => {
-    if (!file) return;
-    setUploadingAvatar(true);
-    try {
-      const updated = await uploadAvatar(influencer!.id, file);
-      setInfluencer(updated);
-    } catch {
-      // ignore
-    } finally {
-      setUploadingAvatar(false);
-    }
-  };
-
-  const handleUploadCover = async (file: File | null) => {
-    if (!file) return;
-    setUploadingCover(true);
-    try {
-      const updated = await uploadCover(influencer!.id, file);
-      setInfluencer(updated);
-    } catch {
-      // ignore
-    } finally {
-      setUploadingCover(false);
-    }
+  const handleInfluencerChanged = (updated: Influencer) => {
+    setInfluencer(updated);
   };
 
   const handleCreateAccount = async (data: { platform: string; username: string }) => {
@@ -130,10 +105,7 @@ export default function InfluencerDetailPage() {
       <InfluencerInfo
         influencer={influencer}
         showUpload={!!authUser}
-        uploadingAvatar={uploadingAvatar}
-        uploadingCover={uploadingCover}
-        onUploadAvatar={handleUploadAvatar}
-        onUploadCover={handleUploadCover}
+        onInfluencerChanged={handleInfluencerChanged}
         onCreateAccount={handleCreateAccount}
         onUpdateAccount={handleUpdateAccount}
         onDeleteAccount={handleDeleteAccount}
