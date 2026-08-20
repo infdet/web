@@ -74,11 +74,6 @@ export default function InfluencerListPage() {
     setPage(1);
   };
 
-  const clearGenderFilter = () => {
-    setSelectedGender(null);
-    setPage(1);
-  };
-
   return (
     <Container size='lg' py='xl'>
       <Group justify='space-between' mb='lg'>
