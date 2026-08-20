@@ -55,6 +55,8 @@
     "nameZh": "名前（中国語）",
     "nameJa": "名前（日本語）",
     "nameKo": "名前（韓国語）",
+    "alias": "別名",
+    "aliasPlaceholder": "カンマ区切り、例: John, Johnny, J",
     "slugRequired": "スラッグは必須です",
     "nameEnRequired": "英語名は必須です",
     "platformRequired": "プラットフォームは必須です",

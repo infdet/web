@@ -55,6 +55,8 @@
     "nameZh": "Name (Chinese)",
     "nameJa": "Name (Japanese)",
     "nameKo": "Name (Korean)",
+    "alias": "Aliases",
+    "aliasPlaceholder": "Comma-separated, e.g. John, Johnny, J",
     "slugRequired": "Slug is required",
     "nameEnRequired": "English name is required",
     "platformRequired": "Platform is required",

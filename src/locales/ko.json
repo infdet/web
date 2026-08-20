@@ -55,6 +55,8 @@
     "nameZh": "이름 (중국어)",
     "nameJa": "이름 (일본어)",
     "nameKo": "이름 (한국어)",
+    "alias": "별칭",
+    "aliasPlaceholder": "쉼표로 구분, 예: John, Johnny, J",
     "slugRequired": "슬러그는 필수입니다",
     "nameEnRequired": "영어 이름은 필수입니다",
     "platformRequired": "플랫폼은 필수입니다",

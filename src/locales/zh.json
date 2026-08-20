@@ -55,6 +55,8 @@
     "nameZh": "名称（中文）",
     "nameJa": "名称（日语）",
     "nameKo": "名称（韩语）",
+    "alias": "别名",
+    "aliasPlaceholder": "逗号分隔，如：John, Johnny, J",
     "slugRequired": "标识符不能为空",
     "nameEnRequired": "英文名称不能为空",
     "platformRequired": "请选择平台",

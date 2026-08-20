@@ -23,6 +23,7 @@ import { createInfluencer, getInfluencer, updateInfluencer } from '#services/inf
 interface InfluencerForm {
   slug: string;
   name: Record<string, string>;
+  alias: string;
   gender: string | null;
   birthDate: string;
   region: string | null;
@@ -59,6 +60,7 @@ export default function InfluencerEditPage() {
     initialValues: {
       slug: '',
       name: { en: '', zh: '', ja: '', ko: '' },
+      alias: '',
       gender: 'female',
       birthDate: '',
       region: null,
@@ -100,6 +102,7 @@ export default function InfluencerEditPage() {
         bust: influencer.bust?.toString() ?? '',
         waist: influencer.waist?.toString() ?? '',
         hip: influencer.hip?.toString() ?? '',
+        alias: (influencer.alias ?? []).join(', '),
       });
     } catch {
       setError(t('influencer.loadFailed'));
@@ -125,6 +128,10 @@ export default function InfluencerEditPage() {
     const payload = {
       slug: values.slug.trim(),
       name,
+      alias: values.alias
+        .split(',')
+        .map((a) => a.trim())
+        .filter((a) => a.length > 0),
       gender: values.gender || null,
       birthDate: values.birthDate || null,
       region: values.region?.trim().toLowerCase() || null,
@@ -195,6 +202,12 @@ export default function InfluencerEditPage() {
             onChange={(e) => {
               handleSlugChange(e.currentTarget.value, form.setFieldValue);
             }}
+          />
+
+          <TextInput
+            label={t('influencer.alias')}
+            placeholder={t('influencer.aliasPlaceholder')}
+            {...form.getInputProps('alias')}
           />
 
           <SimpleGrid cols={{ base: 1, sm: 3 }}>

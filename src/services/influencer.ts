@@ -14,6 +14,7 @@ export interface InfluencerListParams {
 export interface InfluencerFormData {
   slug: string;
   name: Record<string, string>;
+  alias?: string[];
   gender?: string | null;
   birthDate?: string | null;
   region?: string | null;
