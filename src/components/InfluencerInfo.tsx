@@ -18,15 +18,9 @@ import { getLocalizedName } from '#utils/localized';
 interface InfluencerInfoProps {
   influencer: Influencer;
   onInfluencerChanged: (updated: Influencer) => void;
-  /** Called after accounts or tags change (so parent can re-fetch). */
-  onAccountsTagsChanged: () => void;
 }
 
-export default function InfluencerInfo({
-  influencer,
-  onInfluencerChanged,
-  onAccountsTagsChanged,
-}: InfluencerInfoProps) {
+export default function InfluencerInfo({ influencer, onInfluencerChanged }: InfluencerInfoProps) {
   const { t } = useTranslation();
 
   const [authUser] = useAuthUser();
@@ -92,7 +86,6 @@ export default function InfluencerInfo({
           accounts={influencer.accounts ?? []}
           showActions={canEdit}
           influencerId={influencer.id}
-          onAccountsChanged={onAccountsTagsChanged}
         />
 
         <TagList
@@ -100,7 +93,6 @@ export default function InfluencerInfo({
           showActions={canEdit}
           entityType='influencer'
           entityId={influencer.id}
-          onTagsChanged={onAccountsTagsChanged}
         />
       </Stack>
     </Group>

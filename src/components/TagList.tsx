@@ -14,8 +14,6 @@ interface TagListProps {
   /** Entity type determines which API to call and which tags are available to attach. */
   entityType: 'influencer' | 'post';
   entityId: number;
-  /** Called after tags are attached (so parent can re-fetch if needed). */
-  onTagsChanged?: () => void;
 }
 
 export default function TagList({
@@ -23,7 +21,6 @@ export default function TagList({
   showActions,
   entityType,
   entityId,
-  onTagsChanged,
 }: TagListProps) {
   const { t } = useTranslation();
 
@@ -62,9 +59,11 @@ export default function TagList({
       } else {
         await attachPostTags(entityId, tagIds);
       }
+      // Add attached tags to local state from availableTags (avoids re-fetch)
+      const attached = availableTags.filter((t) => tagIds.includes(t.id));
+      setTags((prev) => [...prev, ...attached]);
       closeAttach();
       setSelectedIds([]);
-      onTagsChanged?.();
     } catch {
       // ignore
     } finally {

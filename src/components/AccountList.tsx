@@ -12,15 +12,12 @@ interface AccountListProps {
   accounts: Account[];
   showActions: boolean;
   influencerId: number;
-  /** Called after accounts change (so parent can re-fetch). */
-  onAccountsChanged?: () => void;
 }
 
 export default function AccountList({
   accounts: initialAccounts,
   showActions,
   influencerId,
-  onAccountsChanged,
 }: AccountListProps) {
   const { t } = useTranslation();
 
@@ -69,11 +66,9 @@ export default function AccountList({
     if (editing) {
       const updated = await updateAccount(influencerId, editing.id, data);
       setAccounts((prev) => prev.map((a) => (a.id === editing.id ? updated : a)));
-      onAccountsChanged?.();
     } else {
       const created = await createAccount(influencerId, data);
       setAccounts((prev) => [...prev, created]);
-      onAccountsChanged?.();
     }
   };
 

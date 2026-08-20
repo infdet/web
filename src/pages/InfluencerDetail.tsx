@@ -33,10 +33,6 @@ export default function InfluencerDetailPage() {
     fetchDetail();
   }, [fetchDetail]);
 
-  const handleInfluencerChanged = (updated: Influencer) => {
-    setInfluencer(updated);
-  };
-
   if (loading) {
     return (
       <Container size='lg' py='xl'>
@@ -57,11 +53,7 @@ export default function InfluencerDetailPage() {
 
   return (
     <Container size='lg' py='xl'>
-      <InfluencerInfo
-        influencer={influencer}
-        onInfluencerChanged={handleInfluencerChanged}
-        onAccountsTagsChanged={fetchDetail}
-      />
+      <InfluencerInfo influencer={influencer} onInfluencerChanged={setInfluencer} />
 
       <Divider my='xl' />
 

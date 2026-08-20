@@ -189,7 +189,6 @@ export default function PostDetailPage() {
         showActions={canManageInfluencers}
         entityType='post'
         entityId={id}
-        onTagsChanged={fetchPost}
       />
 
       <Divider my='xl' />
