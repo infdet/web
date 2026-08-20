@@ -11,7 +11,7 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { ArrowLeftIcon } from '@phosphor-icons/react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useSearchParams } from 'wouter';
 
@@ -30,12 +30,17 @@ export default function PostNewPage() {
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const urlInputRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<PostNewForm>({
     initialValues: { url: searchParams.get('url') ?? '' },
   });
 
   const parsed = useMemo(() => parsePostUrl(form.values.url), [form.values.url]);
+
+  useEffect(() => {
+    urlInputRef.current?.focus();
+  }, []);
 
   const handleSubmit = async () => {
     if (!parsed) return;
@@ -69,6 +74,7 @@ export default function PostNewPage() {
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack gap='md'>
           <TextInput
+            ref={urlInputRef}
             label={t('post.url')}
             placeholder={t('post.urlPlaceholder')}
             {...form.getInputProps('url')}
