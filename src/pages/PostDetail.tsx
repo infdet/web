@@ -22,7 +22,6 @@ import RelatedInfluencerList from '#components/RelatedInfluencerList';
 import TagList from '#components/TagList';
 import useAuthUser from '#hooks/useAuthUser';
 import { deletePost, getPost } from '#services/post';
-import { attachPostTags, detachPostTag } from '#services/tag';
 import type Post from '#types/Post';
 
 export default function PostDetailPage() {
@@ -62,18 +61,6 @@ export default function PostDetailPage() {
     } catch {
       // ignore
     }
-  };
-
-  const handleAttachTags = async (tagIds: number[]) => {
-    await attachPostTags(id, tagIds);
-    await fetchPost();
-  };
-
-  const handleDetachTag = async (tagId: number) => {
-    await detachPostTag(id, tagId);
-    setPost((prev) =>
-      prev ? { ...prev, tags: (prev.tags ?? []).filter((tag) => tag.id !== tagId) } : prev,
-    );
   };
 
   if (loading) {
@@ -200,8 +187,9 @@ export default function PostDetailPage() {
       <TagList
         tags={post.tags ?? []}
         showActions={canManageInfluencers}
-        onAttach={handleAttachTags}
-        onDetach={handleDetachTag}
+        entityType='post'
+        entityId={id}
+        onTagsChanged={fetchPost}
       />
 
       <Divider my='xl' />

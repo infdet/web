@@ -22,8 +22,8 @@ interface InfluencerInfoProps {
   onCreateAccount: (data: { platform: string; username: string }) => Promise<void>;
   onUpdateAccount: (id: number, data: { platform: string; username: string }) => Promise<void>;
   onDeleteAccount: (id: number) => Promise<void>;
-  onAttachTags: (tagIds: number[]) => Promise<void>;
-  onDetachTag: (tagId: number) => Promise<void>;
+  /** Called after tags are attached (so parent can re-fetch). */
+  onTagsChanged: () => void;
 }
 
 export default function InfluencerInfo({
@@ -33,8 +33,7 @@ export default function InfluencerInfo({
   onCreateAccount,
   onUpdateAccount,
   onDeleteAccount,
-  onAttachTags,
-  onDetachTag,
+  onTagsChanged,
 }: InfluencerInfoProps) {
   const { t } = useTranslation();
 
@@ -107,9 +106,9 @@ export default function InfluencerInfo({
         <TagList
           tags={influencer.tags ?? []}
           showActions={showUpload}
-          forInfluencerOnly
-          onAttach={onAttachTags}
-          onDetach={onDetachTag}
+          entityType='influencer'
+          entityId={influencer.id}
+          onTagsChanged={onTagsChanged}
         />
       </Stack>
     </Group>

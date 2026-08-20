@@ -1,35 +1,43 @@
 import { Badge, Button, Group, Modal, MultiSelect, Stack, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { PlusIcon, XIcon } from '@phosphor-icons/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { getTags } from '#services/tag';
+import { attachPostTags, attachTags, detachPostTag, detachTag, getTags } from '#services/tag';
 import type Tag from '#types/Tag';
 import { getLocalizedName } from '#utils/localized';
 
 interface TagListProps {
   tags: Tag[];
   showActions: boolean;
-  /** When true, only tags marked `forInfluencer` can be attached. */
-  forInfluencerOnly?: boolean;
-  onAttach: (tagIds: number[]) => Promise<void>;
-  onDetach: (tagId: number) => Promise<void>;
+  /** Entity type determines which API to call and which tags are available to attach. */
+  entityType: 'influencer' | 'post';
+  entityId: number;
+  /** Called after tags are attached (so parent can re-fetch if needed). */
+  onTagsChanged?: () => void;
 }
 
 export default function TagList({
-  tags,
+  tags: initialTags,
   showActions,
-  forInfluencerOnly = false,
-  onAttach,
-  onDetach,
+  entityType,
+  entityId,
+  onTagsChanged,
 }: TagListProps) {
   const { t } = useTranslation();
+
+  const [tags, setTags] = useState<Tag[]>(initialTags);
+  useEffect(() => {
+    setTags(initialTags);
+  }, [initialTags]);
 
   const [attachOpened, { open: openAttach, close: closeAttach }] = useDisclosure(false);
   const [availableTags, setAvailableTags] = useState<Tag[]>([]);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [attaching, setAttaching] = useState(false);
+
+  const forInfluencerOnly = entityType === 'influencer';
 
   const handleOpenAttach = async () => {
     try {
@@ -48,9 +56,15 @@ export default function TagList({
     if (selectedIds.length === 0) return;
     setAttaching(true);
     try {
-      await onAttach(selectedIds.map(Number));
+      const tagIds = selectedIds.map(Number);
+      if (entityType === 'influencer') {
+        await attachTags(entityId, tagIds);
+      } else {
+        await attachPostTags(entityId, tagIds);
+      }
       closeAttach();
       setSelectedIds([]);
+      onTagsChanged?.();
     } catch {
       // ignore
     } finally {
@@ -61,7 +75,12 @@ export default function TagList({
   const handleDetach = async (tag: Tag) => {
     if (!window.confirm(t('tag.detachConfirm'))) return;
     try {
-      await onDetach(tag.id);
+      if (entityType === 'influencer') {
+        await detachTag(entityId, tag.id);
+      } else {
+        await detachPostTag(entityId, tag.id);
+      }
+      setTags((prev) => prev.filter((t) => t.id !== tag.id));
     } catch {
       // ignore
     }
