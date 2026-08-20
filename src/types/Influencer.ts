@@ -6,6 +6,7 @@ export default interface Influencer extends BaseModel {
   slug: string;
   name: Record<string, string>;
   alias: string[];
+  excludeKeywords: string[];
   avatar: string | null;
   cover: string | null;
   gender: string | null;

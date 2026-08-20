@@ -57,6 +57,8 @@
     "nameKo": "名称（韩语）",
     "alias": "别名",
     "aliasPlaceholder": "逗号分隔，如：John, Johnny, J",
+    "excludeKeywords": "排除关键词",
+    "excludeKeywordsPlaceholder": "逗号分隔黑名单，如：张三丰, 演员李四",
     "slugRequired": "标识符不能为空",
     "nameEnRequired": "英文名称不能为空",
     "platformRequired": "请选择平台",

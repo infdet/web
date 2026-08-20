@@ -57,6 +57,8 @@
     "nameKo": "名前（韓国語）",
     "alias": "別名",
     "aliasPlaceholder": "カンマ区切り、例: John, Johnny, J",
+    "excludeKeywords": "除外キーワード",
+    "excludeKeywordsPlaceholder": "カンマ区切りブラックリスト、例: John Smith, John Doe",
     "slugRequired": "スラッグは必須です",
     "nameEnRequired": "英語名は必須です",
     "platformRequired": "プラットフォームは必須です",

@@ -24,6 +24,7 @@ interface InfluencerForm {
   slug: string;
   name: Record<string, string>;
   alias: string;
+  excludeKeywords: string;
   gender: string | null;
   birthDate: string;
   region: string | null;
@@ -61,6 +62,7 @@ export default function InfluencerEditPage() {
       slug: '',
       name: { en: '', zh: '', ja: '', ko: '' },
       alias: '',
+      excludeKeywords: '',
       gender: 'female',
       birthDate: '',
       region: null,
@@ -103,6 +105,7 @@ export default function InfluencerEditPage() {
         waist: influencer.waist?.toString() ?? '',
         hip: influencer.hip?.toString() ?? '',
         alias: (influencer.alias ?? []).join(', '),
+        excludeKeywords: (influencer.excludeKeywords ?? []).join(', '),
       });
     } catch {
       setError(t('influencer.loadFailed'));
@@ -132,6 +135,10 @@ export default function InfluencerEditPage() {
         .split(',')
         .map((a) => a.trim())
         .filter((a) => a.length > 0),
+      excludeKeywords: values.excludeKeywords
+        .split(',')
+        .map((k) => k.trim())
+        .filter((k) => k.length > 0),
       gender: values.gender || null,
       birthDate: values.birthDate || null,
       region: values.region?.trim().toLowerCase() || null,
@@ -208,6 +215,12 @@ export default function InfluencerEditPage() {
             label={t('influencer.alias')}
             placeholder={t('influencer.aliasPlaceholder')}
             {...form.getInputProps('alias')}
+          />
+
+          <TextInput
+            label={t('influencer.excludeKeywords')}
+            placeholder={t('influencer.excludeKeywordsPlaceholder')}
+            {...form.getInputProps('excludeKeywords')}
           />
 
           <SimpleGrid cols={{ base: 1, sm: 3 }}>

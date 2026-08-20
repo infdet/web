@@ -57,6 +57,8 @@
     "nameKo": "Name (Korean)",
     "alias": "Aliases",
     "aliasPlaceholder": "Comma-separated, e.g. John, Johnny, J",
+    "excludeKeywords": "Exclude Keywords",
+    "excludeKeywordsPlaceholder": "Comma-separated blacklist, e.g. John Smith, John Doe",
     "slugRequired": "Slug is required",
     "nameEnRequired": "English name is required",
     "platformRequired": "Platform is required",

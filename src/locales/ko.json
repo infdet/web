@@ -57,6 +57,8 @@
     "nameKo": "이름 (한국어)",
     "alias": "별칭",
     "aliasPlaceholder": "쉼표로 구분, 예: John, Johnny, J",
+    "excludeKeywords": "제외 키워드",
+    "excludeKeywordsPlaceholder": "쉼표로 구분 블랙리스트, 예: John Smith, John Doe",
     "slugRequired": "슬러그는 필수입니다",
     "nameEnRequired": "영어 이름은 필수입니다",
     "platformRequired": "플랫폼은 필수입니다",
