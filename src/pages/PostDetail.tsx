@@ -90,12 +90,12 @@ export default function PostDetailPage() {
         <Title order={2}>{t('post.title')}</Title>
         <Badge variant='light'>{t(`platform.${post.platform}`)}</Badge>
         <Badge variant='outline'>{t(`postType.${post.type}`)}</Badge>
-        {authUser && (
+        {canManageInfluencers && (
           <ActionIcon component={Link} href={`/posts/${id}/edit`} variant='subtle'>
             <PencilIcon size={18} />
           </ActionIcon>
         )}
-        {authUser && (
+        {canManageInfluencers && (
           <ActionIcon variant='subtle' color='red' onClick={handleDelete}>
             <TrashIcon size={18} />
           </ActionIcon>

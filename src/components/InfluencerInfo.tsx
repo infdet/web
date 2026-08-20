@@ -17,7 +17,6 @@ import { getLocalizedName } from '#utils/localized';
 
 interface InfluencerInfoProps {
   influencer: Influencer;
-  showUpload: boolean;
   onInfluencerChanged: (updated: Influencer) => void;
   onCreateAccount: (data: { platform: string; username: string }) => Promise<void>;
   onUpdateAccount: (id: number, data: { platform: string; username: string }) => Promise<void>;
@@ -28,7 +27,6 @@ interface InfluencerInfoProps {
 
 export default function InfluencerInfo({
   influencer,
-  showUpload,
   onInfluencerChanged,
   onCreateAccount,
   onUpdateAccount,
@@ -38,6 +36,7 @@ export default function InfluencerInfo({
   const { t } = useTranslation();
 
   const [authUser] = useAuthUser();
+  const canEdit = authUser?.role === 'editor' || authUser?.role === 'admin';
 
   const metaParts = [
     influencer.gender ? <GenderEmoji key='gender' gender={influencer.gender} /> : null,
@@ -56,7 +55,7 @@ export default function InfluencerInfo({
     <Group align='flex-start' gap='xl' wrap='wrap'>
       <InfluencerCover
         src={influencer.cover}
-        showUpload={showUpload}
+        showUpload={canEdit}
         influencerId={influencer.id}
         onCoverChanged={onInfluencerChanged}
       />
@@ -65,7 +64,7 @@ export default function InfluencerInfo({
         <Group align='center' gap='md' wrap='nowrap'>
           <InfluencerAvatar
             src={influencer.avatar}
-            showUpload={showUpload}
+            showUpload={canEdit}
             influencerId={influencer.id}
             onAvatarChanged={onInfluencerChanged}
           />
@@ -97,7 +96,7 @@ export default function InfluencerInfo({
 
         <AccountList
           accounts={influencer.accounts ?? []}
-          showActions={showUpload}
+          showActions={canEdit}
           onCreateAccount={onCreateAccount}
           onUpdateAccount={onUpdateAccount}
           onDeleteAccount={onDeleteAccount}
@@ -105,7 +104,7 @@ export default function InfluencerInfo({
 
         <TagList
           tags={influencer.tags ?? []}
-          showActions={showUpload}
+          showActions={canEdit}
           entityType='influencer'
           entityId={influencer.id}
           onTagsChanged={onTagsChanged}

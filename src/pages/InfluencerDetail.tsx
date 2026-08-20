@@ -5,7 +5,6 @@ import { useParams } from 'wouter';
 
 import InfluencerInfo from '#components/InfluencerInfo';
 import PostList from '#components/PostList';
-import useAuthUser from '#hooks/useAuthUser';
 import { createAccount, deleteAccount, updateAccount } from '#services/account';
 import { getInfluencer } from '#services/influencer';
 import type Influencer from '#types/Influencer';
@@ -15,7 +14,6 @@ export default function InfluencerDetailPage() {
   const params = useParams();
   const idOrSlug = params.id || '';
 
-  const [authUser] = useAuthUser();
   const [influencer, setInfluencer] = useState<Influencer | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -91,7 +89,6 @@ export default function InfluencerDetailPage() {
     <Container size='lg' py='xl'>
       <InfluencerInfo
         influencer={influencer}
-        showUpload={!!authUser}
         onInfluencerChanged={handleInfluencerChanged}
         onCreateAccount={handleCreateAccount}
         onUpdateAccount={handleUpdateAccount}
