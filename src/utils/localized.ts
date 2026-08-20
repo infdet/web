@@ -1,4 +1,4 @@
-import i18n from '../i18n';
+import i18n from '../config/i18n';
 
 /**
  * Resolve a multilingual name map to a single display string. Prefers the translation matching the

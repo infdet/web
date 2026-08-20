@@ -5,7 +5,7 @@ import xior from 'xior';
 
 import '@mantine/core/styles.css';
 
-import './i18n';
+import './config/i18n.ts';
 import { getAuthToken } from '#services/auth';
 
 import App from './App.tsx';
