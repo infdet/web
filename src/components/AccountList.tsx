@@ -1,28 +1,34 @@
 import { Button, Group, Stack, Text } from '@mantine/core';
 import { PlusIcon } from '@phosphor-icons/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import AccountFormModal from '#components/AccountFormModal';
 import AccountLink from '#components/AccountLink';
+import { createAccount, deleteAccount, updateAccount } from '#services/account';
 import type Account from '#types/Account';
 
 interface AccountListProps {
   accounts: Account[];
   showActions: boolean;
-  onCreateAccount: (data: { platform: string; username: string }) => Promise<void>;
-  onUpdateAccount: (id: number, data: { platform: string; username: string }) => Promise<void>;
-  onDeleteAccount: (id: number) => Promise<void>;
+  influencerId: number;
+  /** Called after accounts change (so parent can re-fetch). */
+  onAccountsChanged?: () => void;
 }
 
 export default function AccountList({
-  accounts,
+  accounts: initialAccounts,
   showActions,
-  onCreateAccount,
-  onUpdateAccount,
-  onDeleteAccount,
+  influencerId,
+  onAccountsChanged,
 }: AccountListProps) {
   const { t } = useTranslation();
+
+  const [accounts, setAccounts] = useState<Account[]>(initialAccounts);
+  useEffect(() => {
+    setAccounts(initialAccounts);
+  }, [initialAccounts]);
+
   const [modalOpened, setModalOpened] = useState(false);
   const [editing, setEditing] = useState<Account | null>(null);
   const [error, setError] = useState('');
@@ -47,7 +53,8 @@ export default function AccountList({
     if (!window.confirm(t('influencer.deleteAccountConfirm'))) return;
     setError('');
     try {
-      await onDeleteAccount(account.id);
+      await deleteAccount(influencerId, account.id);
+      setAccounts((prev) => prev.filter((a) => a.id !== account.id));
     } catch (err: any) {
       setError(
         err?.response?.data?.error ||
@@ -60,9 +67,13 @@ export default function AccountList({
 
   const handleSubmit = async (data: { platform: string; username: string }) => {
     if (editing) {
-      await onUpdateAccount(editing.id, data);
+      const updated = await updateAccount(influencerId, editing.id, data);
+      setAccounts((prev) => prev.map((a) => (a.id === editing.id ? updated : a)));
+      onAccountsChanged?.();
     } else {
-      await onCreateAccount(data);
+      const created = await createAccount(influencerId, data);
+      setAccounts((prev) => [...prev, created]);
+      onAccountsChanged?.();
     }
   };
 

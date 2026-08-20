@@ -18,20 +18,14 @@ import { getLocalizedName } from '#utils/localized';
 interface InfluencerInfoProps {
   influencer: Influencer;
   onInfluencerChanged: (updated: Influencer) => void;
-  onCreateAccount: (data: { platform: string; username: string }) => Promise<void>;
-  onUpdateAccount: (id: number, data: { platform: string; username: string }) => Promise<void>;
-  onDeleteAccount: (id: number) => Promise<void>;
-  /** Called after tags are attached (so parent can re-fetch). */
-  onTagsChanged: () => void;
+  /** Called after accounts or tags change (so parent can re-fetch). */
+  onAccountsTagsChanged: () => void;
 }
 
 export default function InfluencerInfo({
   influencer,
   onInfluencerChanged,
-  onCreateAccount,
-  onUpdateAccount,
-  onDeleteAccount,
-  onTagsChanged,
+  onAccountsTagsChanged,
 }: InfluencerInfoProps) {
   const { t } = useTranslation();
 
@@ -97,9 +91,8 @@ export default function InfluencerInfo({
         <AccountList
           accounts={influencer.accounts ?? []}
           showActions={canEdit}
-          onCreateAccount={onCreateAccount}
-          onUpdateAccount={onUpdateAccount}
-          onDeleteAccount={onDeleteAccount}
+          influencerId={influencer.id}
+          onAccountsChanged={onAccountsTagsChanged}
         />
 
         <TagList
@@ -107,7 +100,7 @@ export default function InfluencerInfo({
           showActions={canEdit}
           entityType='influencer'
           entityId={influencer.id}
-          onTagsChanged={onTagsChanged}
+          onTagsChanged={onAccountsTagsChanged}
         />
       </Stack>
     </Group>

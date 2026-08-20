@@ -5,7 +5,6 @@ import { useParams } from 'wouter';
 
 import InfluencerInfo from '#components/InfluencerInfo';
 import PostList from '#components/PostList';
-import { createAccount, deleteAccount, updateAccount } from '#services/account';
 import { getInfluencer } from '#services/influencer';
 import type Influencer from '#types/Influencer';
 
@@ -38,35 +37,6 @@ export default function InfluencerDetailPage() {
     setInfluencer(updated);
   };
 
-  const handleCreateAccount = async (data: { platform: string; username: string }) => {
-    const account = await createAccount(influencer!.id, data);
-    setInfluencer((prev) =>
-      prev ? { ...prev, accounts: [...(prev.accounts ?? []), account] } : prev,
-    );
-  };
-
-  const handleUpdateAccount = async (
-    accountId: number,
-    data: { platform: string; username: string },
-  ) => {
-    const account = await updateAccount(influencer!.id, accountId, data);
-    setInfluencer((prev) =>
-      prev
-        ? {
-            ...prev,
-            accounts: (prev.accounts ?? []).map((a) => (a.id === accountId ? account : a)),
-          }
-        : prev,
-    );
-  };
-
-  const handleDeleteAccount = async (accountId: number) => {
-    await deleteAccount(influencer!.id, accountId);
-    setInfluencer((prev) =>
-      prev ? { ...prev, accounts: (prev.accounts ?? []).filter((a) => a.id !== accountId) } : prev,
-    );
-  };
-
   if (loading) {
     return (
       <Container size='lg' py='xl'>
@@ -90,10 +60,7 @@ export default function InfluencerDetailPage() {
       <InfluencerInfo
         influencer={influencer}
         onInfluencerChanged={handleInfluencerChanged}
-        onCreateAccount={handleCreateAccount}
-        onUpdateAccount={handleUpdateAccount}
-        onDeleteAccount={handleDeleteAccount}
-        onTagsChanged={fetchDetail}
+        onAccountsTagsChanged={fetchDetail}
       />
 
       <Divider my='xl' />
