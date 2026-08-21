@@ -10,7 +10,8 @@
     "profile": "个人中心",
     "login": "登录",
     "logout": "退出",
-    "plugin": "浏览器插件"
+    "plugin": "浏览器插件",
+    "admin": "管理"
   },
   "plugin": {
     "badge": "Firefox 扩展",
@@ -125,6 +126,19 @@
     "detachConfirm": "确定要移除此帖子关联吗？",
     "deletePostConfirm": "确定要永久删除此帖子吗？",
     "deleteAccountConfirm": "确定要移除这个账号吗？"
+  },
+  "admin": {
+    "accounts": "账号管理",
+    "addAccount": "添加账号",
+    "editAccount": "编辑账号",
+    "deleteAccountConfirm": "确定要删除此账号吗？",
+    "platform": "平台",
+    "username": "用户名",
+    "url": "链接",
+    "filterByPlatform": "按平台筛选",
+    "noAccounts": "暂无账号数据。",
+    "loadFailed": "加载失败",
+    "saveFailed": "保存失败"
   },
   "tag": {
     "title": "标签",

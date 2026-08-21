@@ -10,7 +10,8 @@
     "profile": "프로필",
     "login": "로그인",
     "logout": "로그아웃",
-    "plugin": "브라우저 플러그인"
+    "plugin": "브라우저 플러그인",
+    "admin": "관리"
   },
   "plugin": {
     "badge": "Firefox 확장",
@@ -125,6 +126,19 @@
     "detachConfirm": "이 게시물의 연결을 해제하시겠습니까?",
     "deletePostConfirm": "이 게시물을 영구적으로 삭제하시겠습니까?",
     "deleteAccountConfirm": "이 계정을 삭제하시겠습니까?"
+  },
+  "admin": {
+    "accounts": "계정 관리",
+    "addAccount": "계정 추가",
+    "editAccount": "계정 편집",
+    "deleteAccountConfirm": "이 계정을 삭제하시겠습니까?",
+    "platform": "플랫폼",
+    "username": "사용자 이름",
+    "url": "URL",
+    "filterByPlatform": "플랫폼별 필터",
+    "noAccounts": "계정이 없습니다.",
+    "loadFailed": "로드 실패",
+    "saveFailed": "저장 실패"
   },
   "tag": {
     "title": "태그",

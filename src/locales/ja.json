@@ -10,7 +10,8 @@
     "profile": "プロフィール",
     "login": "ログイン",
     "logout": "ログアウト",
-    "plugin": "ブラウザ拡張"
+    "plugin": "ブラウザ拡張",
+    "admin": "管理"
   },
   "plugin": {
     "badge": "Firefox 拡張機能",
@@ -125,6 +126,19 @@
     "detachConfirm": "この投稿の関連付けを解除しますか？",
     "deletePostConfirm": "この投稿を完全に削除しますか？",
     "deleteAccountConfirm": "このアカウントを削除しますか？"
+  },
+  "admin": {
+    "accounts": "アカウント管理",
+    "addAccount": "アカウント追加",
+    "editAccount": "アカウント編集",
+    "deleteAccountConfirm": "このアカウントを削除してもよろしいですか？",
+    "platform": "プラットフォーム",
+    "username": "ユーザー名",
+    "url": "URL",
+    "filterByPlatform": "プラットフォームで絞り込む",
+    "noAccounts": "アカウントがありません。",
+    "loadFailed": "読み込み失敗",
+    "saveFailed": "保存失敗"
   },
   "tag": {
     "title": "タグ",

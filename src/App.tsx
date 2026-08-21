@@ -5,6 +5,7 @@ import AppLayout from '#components/AppLayout';
 import AuthGuard from '#components/AuthGuard';
 import AuthValidate from '#components/AuthValidate';
 
+import AdminAccountsPage from './pages/AdminAccounts';
 import InfluencerDetailPage from './pages/InfluencerDetail';
 import InfluencerEditPage from './pages/InfluencerEdit';
 import InfluencerListPage from './pages/InfluencerList';
@@ -79,6 +80,11 @@ export default function App() {
               </Route>
               <Route path='/plugin'>
                 <PluginDownloadPage />
+              </Route>
+              <Route path='/admin/accounts'>
+                <AuthGuard>
+                  <AdminAccountsPage />
+                </AuthGuard>
               </Route>
             </Switch>
           </AppLayout>

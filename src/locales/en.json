@@ -10,7 +10,8 @@
     "profile": "Profile",
     "login": "Login",
     "logout": "Logout",
-    "plugin": "Browser Plugin"
+    "plugin": "Browser Plugin",
+    "admin": "Admin"
   },
   "plugin": {
     "badge": "Firefox Add-on",
@@ -125,6 +126,19 @@
     "detachConfirm": "Remove this post from influencer?",
     "deletePostConfirm": "Permanently delete this post?",
     "deleteAccountConfirm": "Remove this account?"
+  },
+  "admin": {
+    "accounts": "Account Management",
+    "addAccount": "Add Account",
+    "editAccount": "Edit Account",
+    "deleteAccountConfirm": "Are you sure you want to delete this account?",
+    "platform": "Platform",
+    "username": "Username",
+    "url": "URL",
+    "filterByPlatform": "Filter by platform",
+    "noAccounts": "No accounts found.",
+    "loadFailed": "Failed to load",
+    "saveFailed": "Save failed"
   },
   "tag": {
     "title": "Tags",

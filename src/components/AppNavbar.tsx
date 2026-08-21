@@ -63,6 +63,19 @@ export default function AppNavbar({ onNavigate }: AppNavbarProps) {
         {t('nav.plugin')}
       </Button>
 
+      {authUser?.role === 'admin' && (
+        <Button
+          component={Link}
+          href='/admin/accounts'
+          variant='subtle'
+          fullWidth
+          justify='start'
+          onClick={onNavigate}
+        >
+          {t('nav.admin')}
+        </Button>
+      )}
+
       {authUser ? (
         <Button
           component={Link}
