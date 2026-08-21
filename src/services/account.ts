@@ -51,8 +51,8 @@ export interface ImportPostsResult {
   attached: number;
 }
 
-export async function importAccountPosts(id: number): Promise<ImportPostsResult> {
-  const res = await xior.post<ImportPostsResult>(`/accounts/${id}/import-posts`);
+export async function importAccountPosts(id: number, full = false): Promise<ImportPostsResult> {
+  const res = await xior.post<ImportPostsResult>(`/accounts/${id}/import-posts`, { full });
   return res.data;
 }
 
