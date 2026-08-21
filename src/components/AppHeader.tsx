@@ -47,6 +47,11 @@ export default function AppHeader({ opened, onToggle }: AppHeaderProps) {
             <Anchor component={Link} href='/plugin' underline='never'>
               {t('nav.plugin')}
             </Anchor>
+            {authUser?.role === 'admin' && (
+              <Anchor component={Link} href='/admin/accounts' underline='never'>
+                {t('nav.admin')}
+              </Anchor>
+            )}
           </Group>
         </Group>
 

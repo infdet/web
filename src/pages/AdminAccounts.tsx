@@ -50,7 +50,7 @@ export default function AdminAccountsPage() {
 
       const res = await getAccountsAdmin(params);
       setAccounts(res.data);
-      setTotal(res.meta.total);
+      setTotal(res.metadata.total);
     } catch (err: any) {
       setError(err?.response?.data?.message || err?.message || t('admin.loadFailed'));
     } finally {
