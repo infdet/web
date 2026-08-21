@@ -137,6 +137,7 @@
     "url": "URL",
     "posts": "投稿数",
     "filterByPlatform": "プラットフォームで絞り込む",
+    "searchUsername": "ユーザー名を検索…",
     "noAccounts": "アカウントがありません。",
     "loadFailed": "読み込み失敗",
     "saveFailed": "保存失敗",

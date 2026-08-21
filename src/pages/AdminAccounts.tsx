@@ -8,6 +8,7 @@ import {
   Select,
   Table,
   Text,
+  TextInput,
   Tooltip,
 } from '@mantine/core';
 import {
@@ -42,6 +43,7 @@ export default function AdminAccountsPage() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [platformFilter, setPlatformFilter] = useState<string | null>(null);
+  const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
 
   const [modalOpened, setModalOpened] = useState(false);
@@ -53,11 +55,12 @@ export default function AdminAccountsPage() {
   const fetchAccounts = async () => {
     setLoading(true);
     try {
-      const params: { page: number; perPage: number; platform?: string } = {
+      const params: { page: number; perPage: number; platform?: string; search?: string } = {
         page,
         perPage: PER_PAGE,
       };
       if (platformFilter) params.platform = platformFilter;
+      if (search) params.search = search;
 
       const res = await getAccountsAdmin(params);
       setAccounts(res.data);
@@ -71,7 +74,7 @@ export default function AdminAccountsPage() {
 
   useEffect(() => {
     fetchAccounts();
-  }, [page, platformFilter]);
+  }, [page, platformFilter, search]);
 
   const openAdd = () => {
     setEditing(null);
@@ -152,6 +155,15 @@ export default function AdminAccountsPage() {
       </Group>
 
       <Group mb='md'>
+        <TextInput
+          placeholder={t('admin.searchUsername')}
+          value={search}
+          onChange={(e) => {
+            setSearch(e.currentTarget.value);
+            setPage(1);
+          }}
+          w={240}
+        />
         <Select
           placeholder={t('admin.filterByPlatform')}
           data={PLATFORM_OPTIONS}

@@ -137,6 +137,7 @@
     "url": "URL",
     "posts": "게시물 수",
     "filterByPlatform": "플랫폼별 필터",
+    "searchUsername": "사용자 이름 검색…",
     "noAccounts": "계정이 없습니다.",
     "loadFailed": "로드 실패",
     "saveFailed": "저장 실패",

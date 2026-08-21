@@ -137,6 +137,7 @@
     "url": "URL",
     "posts": "Posts",
     "filterByPlatform": "Filter by platform",
+    "searchUsername": "Search username…",
     "noAccounts": "No accounts found.",
     "loadFailed": "Failed to load",
     "saveFailed": "Save failed",

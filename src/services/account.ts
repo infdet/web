@@ -14,6 +14,7 @@ export interface AccountListParams {
   page?: number;
   perPage?: number;
   platform?: string;
+  search?: string;
 }
 
 export async function getAccountsAdmin(
