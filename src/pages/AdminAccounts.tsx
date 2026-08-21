@@ -3,13 +3,13 @@ import {
   Badge,
   Button,
   Group,
+  Loader,
   Pagination,
   Select,
-  Stack,
   Table,
   Text,
 } from '@mantine/core';
-import { PencilIcon, PlusIcon, TrashIcon } from '@phosphor-icons/react';
+import { DownloadSimpleIcon, PencilIcon, PlusIcon, TrashIcon } from '@phosphor-icons/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -19,6 +19,7 @@ import {
   createAccountAdmin,
   deleteAccountAdmin,
   getAccountsAdmin,
+  importAccountPosts,
   updateAccountAdmin,
 } from '#services/account';
 import type Account from '#types/Account';
@@ -38,6 +39,7 @@ export default function AdminAccountsPage() {
   const [modalOpened, setModalOpened] = useState(false);
   const [editing, setEditing] = useState<Account | null>(null);
   const [error, setError] = useState('');
+  const [importingId, setImportingId] = useState<number | null>(null);
 
   const fetchAccounts = async () => {
     setLoading(true);
@@ -83,6 +85,21 @@ export default function AdminAccountsPage() {
       setTotal((prev) => prev - 1);
     } catch (err: any) {
       setError(err?.response?.data?.message || err?.message || t('admin.saveFailed'));
+    }
+  };
+
+  const handleImport = async (account: Account) => {
+    setError('');
+    setImportingId(account.id);
+    try {
+      const result = await importAccountPosts(account.id);
+      alert(
+        `${t('admin.importDone')}: ${t('admin.importTotal')} ${result.total}, ${t('admin.importCreated')} ${result.created}, ${t('admin.importAttached')} ${result.attached}`,
+      );
+    } catch (err: any) {
+      setError(err?.response?.data?.message || err?.message || t('admin.saveFailed'));
+    } finally {
+      setImportingId(null);
     }
   };
 
@@ -184,6 +201,17 @@ export default function AdminAccountsPage() {
                 </Table.Td>
                 <Table.Td>
                   <Group gap={4} wrap='nowrap'>
+                    {importingId === account.id ? (
+                      <Loader size={16} />
+                    ) : (
+                      <ActionIcon
+                        variant='subtle'
+                        color='green'
+                        onClick={() => handleImport(account)}
+                      >
+                        <DownloadSimpleIcon size={16} />
+                      </ActionIcon>
+                    )}
                     <ActionIcon variant='subtle' color='blue' onClick={() => openEdit(account)}>
                       <PencilIcon size={16} />
                     </ActionIcon>

@@ -138,7 +138,12 @@
     "filterByPlatform": "플랫폼별 필터",
     "noAccounts": "계정이 없습니다.",
     "loadFailed": "로드 실패",
-    "saveFailed": "저장 실패"
+    "saveFailed": "저장 실패",
+    "importPosts": "게시물 가져오기",
+    "importDone": "가져오기 완료",
+    "importTotal": "총계",
+    "importCreated": "생성됨",
+    "importAttached": "연결됨"
   },
   "tag": {
     "title": "태그",

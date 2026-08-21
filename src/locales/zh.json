@@ -138,7 +138,12 @@
     "filterByPlatform": "按平台筛选",
     "noAccounts": "暂无账号数据。",
     "loadFailed": "加载失败",
-    "saveFailed": "保存失败"
+    "saveFailed": "保存失败",
+    "importPosts": "导入帖子",
+    "importDone": "导入完成",
+    "importTotal": "总数",
+    "importCreated": "新建",
+    "importAttached": "已关联"
   },
   "tag": {
     "title": "标签",

@@ -1,3 +1,4 @@
+import type Account from './Account';
 import type BaseModel from './BaseModel';
 import type Tag from './Tag';
 
@@ -28,6 +29,7 @@ export default interface Post extends BaseModel {
   rotate: number | null;
   embedUrl: string | null;
   deletedAt: string | null;
+  account?: Account | null;
   tags: Tag[];
 }
 

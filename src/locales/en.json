@@ -138,7 +138,12 @@
     "filterByPlatform": "Filter by platform",
     "noAccounts": "No accounts found.",
     "loadFailed": "Failed to load",
-    "saveFailed": "Save failed"
+    "saveFailed": "Save failed",
+    "importPosts": "Import Posts",
+    "importDone": "Import done",
+    "importTotal": "Total",
+    "importCreated": "Created",
+    "importAttached": "Attached"
   },
   "tag": {
     "title": "Tags",

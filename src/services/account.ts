@@ -45,6 +45,17 @@ export async function deleteAccountAdmin(id: number): Promise<void> {
   await xior.delete(`/accounts/${id}`);
 }
 
+export interface ImportPostsResult {
+  total: number;
+  created: number;
+  attached: number;
+}
+
+export async function importAccountPosts(id: number): Promise<ImportPostsResult> {
+  const res = await xior.post<ImportPostsResult>(`/accounts/${id}/import-posts`);
+  return res.data;
+}
+
 // --- Influencer-scoped account APIs ---
 
 export async function getAccounts(influencerId: number): Promise<Account[]> {
