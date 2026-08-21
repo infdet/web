@@ -8,6 +8,7 @@ import {
   Select,
   Table,
   Text,
+  Tooltip,
 } from '@mantine/core';
 import {
   DownloadSimpleIcon,
@@ -96,11 +97,11 @@ export default function AdminAccountsPage() {
     }
   };
 
-  const handleImport = async (account: Account) => {
+  const handleImport = async (account: Account, full = false) => {
     setError('');
     setImportingId(account.id);
     try {
-      const result = await importAccountPosts(account.id);
+      const result = await importAccountPosts(account.id, full);
       alert(
         `${t('admin.importDone')}: ${t('admin.importTotal')} ${result.total}, ${t('admin.importCreated')} ${result.created}, ${t('admin.importAttached')} ${result.attached}`,
       );
@@ -227,13 +228,26 @@ export default function AdminAccountsPage() {
                     {importingId === account.id ? (
                       <Loader size={16} />
                     ) : (
-                      <ActionIcon
-                        variant='subtle'
-                        color='green'
-                        onClick={() => handleImport(account)}
-                      >
-                        <DownloadSimpleIcon size={16} />
-                      </ActionIcon>
+                      <>
+                        <Tooltip label={t('admin.importPosts')}>
+                          <ActionIcon
+                            variant='subtle'
+                            color='green'
+                            onClick={() => handleImport(account)}
+                          >
+                            <DownloadSimpleIcon size={16} />
+                          </ActionIcon>
+                        </Tooltip>
+                        <Tooltip label={t('admin.importAllPosts')}>
+                          <ActionIcon
+                            variant='subtle'
+                            color='orange'
+                            onClick={() => handleImport(account, true)}
+                          >
+                            <DownloadSimpleIcon size={16} weight='fill' />
+                          </ActionIcon>
+                        </Tooltip>
+                      </>
                     )}
                     {inferringId === account.id ? (
                       <Loader size={16} />

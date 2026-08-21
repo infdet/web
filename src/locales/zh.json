@@ -140,6 +140,7 @@
     "loadFailed": "加载失败",
     "saveFailed": "保存失败",
     "importPosts": "导入帖子",
+    "importAllPosts": "全量导入",
     "importDone": "导入完成",
     "importTotal": "总数",
     "importCreated": "新建",
