@@ -143,7 +143,11 @@
     "importDone": "Import done",
     "importTotal": "Total",
     "importCreated": "Created",
-    "importAttached": "Attached"
+    "importAttached": "Attached",
+    "inferPosts": "Infer Influencers",
+    "inferDone": "Inference done",
+    "inferTotal": "Posts processed",
+    "inferMatched": "Matched"
   },
   "tag": {
     "title": "Tags",

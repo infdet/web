@@ -143,7 +143,11 @@
     "importDone": "导入完成",
     "importTotal": "总数",
     "importCreated": "新建",
-    "importAttached": "已关联"
+    "importAttached": "已关联",
+    "inferPosts": "推断网红",
+    "inferDone": "推断完成",
+    "inferTotal": "处理帖子",
+    "inferMatched": "匹配到网红"
   },
   "tag": {
     "title": "标签",

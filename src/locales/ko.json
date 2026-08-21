@@ -143,7 +143,11 @@
     "importDone": "가져오기 완료",
     "importTotal": "총계",
     "importCreated": "생성됨",
-    "importAttached": "연결됨"
+    "importAttached": "연결됨",
+    "inferPosts": "인플루언서 추론",
+    "inferDone": "추론 완료",
+    "inferTotal": "처리 게시물",
+    "inferMatched": "매칭됨"
   },
   "tag": {
     "title": "태그",

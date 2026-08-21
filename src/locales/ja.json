@@ -143,7 +143,11 @@
     "importDone": "インポート完了",
     "importTotal": "合計",
     "importCreated": "新規作成",
-    "importAttached": "関連付け済み"
+    "importAttached": "関連付け済み",
+    "inferPosts": "インフルエンサー推論",
+    "inferDone": "推論完了",
+    "inferTotal": "処理投稿",
+    "inferMatched": "マッチ"
   },
   "tag": {
     "title": "タグ",

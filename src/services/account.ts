@@ -56,6 +56,16 @@ export async function importAccountPosts(id: number): Promise<ImportPostsResult>
   return res.data;
 }
 
+export interface InferInfluencersResult {
+  total: number;
+  matched: number;
+}
+
+export async function inferAccountPostInfluencers(id: number): Promise<InferInfluencersResult> {
+  const res = await xior.post<InferInfluencersResult>(`/accounts/${id}/infer-influencers`);
+  return res.data;
+}
+
 // --- Influencer-scoped account APIs ---
 
 export async function getAccounts(influencerId: number): Promise<Account[]> {

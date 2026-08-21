@@ -9,7 +9,13 @@ import {
   Table,
   Text,
 } from '@mantine/core';
-import { DownloadSimpleIcon, PencilIcon, PlusIcon, TrashIcon } from '@phosphor-icons/react';
+import {
+  DownloadSimpleIcon,
+  MagicWandIcon,
+  PencilIcon,
+  PlusIcon,
+  TrashIcon,
+} from '@phosphor-icons/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -20,6 +26,7 @@ import {
   deleteAccountAdmin,
   getAccountsAdmin,
   importAccountPosts,
+  inferAccountPostInfluencers,
   updateAccountAdmin,
 } from '#services/account';
 import type Account from '#types/Account';
@@ -40,6 +47,7 @@ export default function AdminAccountsPage() {
   const [editing, setEditing] = useState<Account | null>(null);
   const [error, setError] = useState('');
   const [importingId, setImportingId] = useState<number | null>(null);
+  const [inferringId, setInferringId] = useState<number | null>(null);
 
   const fetchAccounts = async () => {
     setLoading(true);
@@ -100,6 +108,21 @@ export default function AdminAccountsPage() {
       setError(err?.response?.data?.message || err?.message || t('admin.saveFailed'));
     } finally {
       setImportingId(null);
+    }
+  };
+
+  const handleInfer = async (account: Account) => {
+    setError('');
+    setInferringId(account.id);
+    try {
+      const result = await inferAccountPostInfluencers(account.id);
+      alert(
+        `${t('admin.inferDone')}: ${t('admin.inferTotal')} ${result.total}, ${t('admin.inferMatched')} ${result.matched}`,
+      );
+    } catch (err: any) {
+      setError(err?.response?.data?.message || err?.message || t('admin.saveFailed'));
+    } finally {
+      setInferringId(null);
     }
   };
 
@@ -210,6 +233,17 @@ export default function AdminAccountsPage() {
                         onClick={() => handleImport(account)}
                       >
                         <DownloadSimpleIcon size={16} />
+                      </ActionIcon>
+                    )}
+                    {inferringId === account.id ? (
+                      <Loader size={16} />
+                    ) : (
+                      <ActionIcon
+                        variant='subtle'
+                        color='violet'
+                        onClick={() => handleInfer(account)}
+                      >
+                        <MagicWandIcon size={16} />
                       </ActionIcon>
                     )}
                     <ActionIcon variant='subtle' color='blue' onClick={() => openEdit(account)}>
