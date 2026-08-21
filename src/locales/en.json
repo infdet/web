@@ -135,6 +135,7 @@
     "platform": "Platform",
     "username": "Username",
     "url": "URL",
+    "posts": "Posts",
     "filterByPlatform": "Filter by platform",
     "noAccounts": "No accounts found.",
     "loadFailed": "Failed to load",

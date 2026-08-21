@@ -135,6 +135,7 @@
     "platform": "플랫폼",
     "username": "사용자 이름",
     "url": "URL",
+    "posts": "게시물 수",
     "filterByPlatform": "플랫폼별 필터",
     "noAccounts": "계정이 없습니다.",
     "loadFailed": "로드 실패",

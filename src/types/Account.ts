@@ -4,4 +4,5 @@ export default interface Account {
   username: string;
   externalId: string | null;
   url: string | null;
+  postCount: number;
 }

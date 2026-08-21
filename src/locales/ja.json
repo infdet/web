@@ -135,6 +135,7 @@
     "platform": "プラットフォーム",
     "username": "ユーザー名",
     "url": "URL",
+    "posts": "投稿数",
     "filterByPlatform": "プラットフォームで絞り込む",
     "noAccounts": "アカウントがありません。",
     "loadFailed": "読み込み失敗",

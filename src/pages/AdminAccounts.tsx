@@ -179,13 +179,14 @@ export default function AdminAccountsPage() {
             <Table.Th>{t('admin.platform')}</Table.Th>
             <Table.Th>{t('admin.username')}</Table.Th>
             <Table.Th>{t('admin.url')}</Table.Th>
+            <Table.Th style={{ width: 70 }}>{t('admin.posts')}</Table.Th>
             <Table.Th style={{ width: 100 }} />
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>
           {accounts.length === 0 && !loading ? (
             <Table.Tr>
-              <Table.Td colSpan={5}>
+              <Table.Td colSpan={6}>
                 <Text c='dimmed' ta='center' py='md'>
                   {t('admin.noAccounts')}
                 </Text>
@@ -222,6 +223,11 @@ export default function AdminAccountsPage() {
                       —
                     </Text>
                   )}
+                </Table.Td>
+                <Table.Td>
+                  <Badge variant='light' color='gray'>
+                    {account.postCount ?? 0}
+                  </Badge>
                 </Table.Td>
                 <Table.Td>
                   <Group gap={4} wrap='nowrap'>

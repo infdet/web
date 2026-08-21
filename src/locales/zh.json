@@ -135,6 +135,7 @@
     "platform": "平台",
     "username": "用户名",
     "url": "链接",
+    "posts": "帖子数",
     "filterByPlatform": "按平台筛选",
     "noAccounts": "暂无账号数据。",
     "loadFailed": "加载失败",
